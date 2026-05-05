@@ -19,6 +19,12 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
 from langchain_core.documents import Document
 from rank_bm25 import BM25Okapi
+from resilience import (
+    CircuitBreaker,
+    Fallbacks,
+    make_retry_decorator,
+    logger as resilience_logger,
+)
 
 
 class HybridPolicyRetriever:
@@ -54,7 +60,12 @@ class HybridPolicyRetriever:
             openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
             openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
             temperature=0.0,
+            max_retries=2,
+            timeout=15,
         )
+
+        self.llm_circuit = CircuitBreaker("rerank-llm", failure_threshold=3, recovery_timeout=60.0)
+        self.embedding_circuit = CircuitBreaker("embeddings", failure_threshold=3, recovery_timeout=60.0)
 
         # Load dense store
         self.vectorstore = Chroma(
@@ -104,9 +115,19 @@ class HybridPolicyRetriever:
 
     def _dense_retrieve(self, query: str, k: int = 5) -> List[Tuple[Document, float]]:
         """Chroma vector search. Returns (doc, score) where higher is better."""
-        docs_and_scores = self.vectorstore.similarity_search_with_score(query, k=k)
-        # Chroma returns cosine distance (lower = better), invert for ranking
-        return [(doc, -score) for doc, score in docs_and_scores]
+        def _search():
+            return self.vectorstore.similarity_search_with_score(query, k=k)
+
+        try:
+            docs_and_scores = self.embedding_circuit.call(
+                _search,
+                lambda *a, **kw: [],  # fallback: empty list (sparse search will compensate)
+            )
+            # Chroma returns cosine distance (lower = better), invert for ranking
+            return [(doc, -score) for doc, score in docs_and_scores]
+        except Exception as e:
+            resilience_logger.warning(f"[dense_retrieve] Failed: {e}")
+            return []
 
     def _sparse_retrieve(self, query: str, k: int = 5) -> List[Tuple[Document, float]]:
         """BM25 keyword search. Returns (doc, score) where higher is better."""
@@ -141,6 +162,14 @@ class HybridPolicyRetriever:
         sorted_docs = sorted(doc_scores.items(), key=lambda x: x[1], reverse=True)
         return [(doc_map[key], score) for key, score in sorted_docs]
 
+    @make_retry_decorator(max_attempts=2)
+    def _score_single_doc(self, prompt: str) -> int:
+        """Score one document with retry logic."""
+        response = self.llm.invoke(prompt)
+        content = response.content.strip()
+        match = re.search(r"\b(\d+)\b", content)
+        return int(match.group(1)) if match else 5
+
     def _llm_rerank(
         self,
         query: str,
@@ -161,13 +190,14 @@ class HybridPolicyRetriever:
                 "Relevance score (1-10):"
             )
             try:
-                response = self.llm.invoke(prompt)
-                content = response.content.strip()
-                match = re.search(r"\b(\d+)\b", content)
-                score = int(match.group(1)) if match else 5
+                score = self.llm_circuit.call(
+                    self._score_single_doc,
+                    lambda *a, **kw: 5,  # fallback score
+                    prompt,
+                )
                 score = max(1, min(10, score))
             except Exception as e:
-                print(f"[retrieval] Re-rank error: {e}")
+                resilience_logger.warning(f"[llm_rerank] Failed for doc: {e}")
                 score = 5
             scored.append((doc, float(score)))
 
