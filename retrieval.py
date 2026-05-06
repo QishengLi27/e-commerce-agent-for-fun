@@ -1,8 +1,8 @@
 """
-Hybrid Retrieval Module for RAG
+Hybrid Retrieval Module for RAG (pgvector edition)
 
 Combines:
-- Dense retrieval: Chroma vector search (semantic similarity)
+- Dense retrieval: pgvector (PostgreSQL) vector search
 - Sparse retrieval: BM25 keyword search
 - Fusion: Reciprocal Rank Fusion (RRF)
 - Re-ranking: LLM-based relevance scoring
@@ -13,7 +13,7 @@ import re
 import pickle
 from typing import List, Tuple
 
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import PGVector
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
@@ -26,35 +26,35 @@ from resilience import (
     logger as resilience_logger,
 )
 
+PG_CONNECTION = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecommerce"
+
 
 class HybridPolicyRetriever:
     """
-    Hybrid retriever that fuses Chroma (dense) and BM25 (sparse) results,
+    Hybrid retriever that fuses pgvector (dense) and BM25 (sparse) results,
     with optional LLM-based re-ranking.
     """
 
     def __init__(
         self,
         text_file: str = "store_policies.txt",
-        chroma_dir: str = "./chroma_db",
-        bm25_cache: str = "./chroma_db/bm25_index.pkl",
+        bm25_cache: str = "./bm25_index.pkl",
         chunk_size: int = 500,
         chunk_overlap: int = 50,
     ):
         self.text_file = text_file
-        self.chroma_dir = chroma_dir
         self.bm25_cache = bm25_cache
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
 
-        # Embeddings (same config as agent.py)
+        # Embeddings
         self.embeddings = OpenAIEmbeddings(
             model="embedding-2",
             openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
             openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
         )
 
-        # LLM for re-ranking (same config as agent.py)
+        # LLM for re-ranking
         self.llm = ChatOpenAI(
             model="glm-4-flash",
             openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
@@ -64,19 +64,21 @@ class HybridPolicyRetriever:
             timeout=15,
         )
 
-        self.llm_circuit = CircuitBreaker("rerank-llm", failure_threshold=3, recovery_timeout=60.0)
-        self.embedding_circuit = CircuitBreaker("embeddings", failure_threshold=3, recovery_timeout=60.0)
-
-        # Load dense store
-        self.vectorstore = Chroma(
-            persist_directory=self.chroma_dir,
+        # Load pgvector dense store
+        self.vectorstore = PGVector(
+            connection_string=PG_CONNECTION,
             embedding_function=self.embeddings,
+            collection_name="store_policies",
+            distance_strategy="cosine",
         )
 
         # Build or load BM25 index
         self.chunks: List[Document] = []
         self.bm25 = None
         self._load_or_build_bm25()
+
+        self.llm_circuit = CircuitBreaker("rerank-llm", failure_threshold=3, recovery_timeout=60.0)
+        self.embedding_circuit = CircuitBreaker("embeddings", failure_threshold=3, recovery_timeout=60.0)
 
     def _tokenize(self, text: str) -> List[str]:
         """Simple tokenizer for BM25."""
@@ -107,23 +109,23 @@ class HybridPolicyRetriever:
         tokenized = [self._tokenize(c.page_content) for c in self.chunks]
         self.bm25 = BM25Okapi(tokenized)
 
-        # Save cache
         os.makedirs(os.path.dirname(self.bm25_cache) or ".", exist_ok=True)
         with open(self.bm25_cache, "wb") as f:
             pickle.dump({"chunks": self.chunks, "bm25": self.bm25}, f)
         print(f"[retrieval] Built and cached BM25 index ({len(self.chunks)} chunks)")
 
     def _dense_retrieve(self, query: str, k: int = 5) -> List[Tuple[Document, float]]:
-        """Chroma vector search. Returns (doc, score) where higher is better."""
+        """pgvector search. Returns (doc, score) where higher is better."""
         def _search():
             return self.vectorstore.similarity_search_with_score(query, k=k)
 
         try:
             docs_and_scores = self.embedding_circuit.call(
                 _search,
-                lambda *a, **kw: [],  # fallback: empty list (sparse search will compensate)
+                lambda *a, **kw: [],
             )
-            # Chroma returns cosine distance (lower = better), invert for ranking
+            # pgvector COSINE distance: lower = better, same as Chroma
+            # Invert so higher = better for RRF ranking
             return [(doc, -score) for doc, score in docs_and_scores]
         except Exception as e:
             resilience_logger.warning(f"[dense_retrieve] Failed: {e}")
@@ -192,7 +194,7 @@ class HybridPolicyRetriever:
             try:
                 score = self.llm_circuit.call(
                     self._score_single_doc,
-                    lambda *a, **kw: 5,  # fallback score
+                    lambda *a, **kw: 5,
                     prompt,
                 )
                 score = max(1, min(10, score))

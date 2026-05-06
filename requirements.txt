@@ -4,3 +4,4 @@ langchain-openai==1.2.1
 langchain-community==0.4.1
 chromadb>=0.4.22
 rank-bm25>=0.2.2
+psycopg2-binary>=2.9.0

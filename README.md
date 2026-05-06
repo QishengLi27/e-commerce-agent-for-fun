@@ -32,6 +32,11 @@ A lightweight AI customer service agent for an online store using LangChain, Chr
    python agent.py
    ```
 
+## Plans and Memory
+
+- Review the project roadmap in `plans/future_plans.md`.
+- The new `memory.py` module stores recent conversation history in `memory_store.json`.
+
 ## Test Scenarios
 
 1. **Test RAG/Vector DB**: "What is your policy on returning electronics?"
