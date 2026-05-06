@@ -1,9 +1,9 @@
 from langchain_openai import ChatOpenAI
-from langchain_community.cache import InMemoryCache
 from langchain_community.vectorstores import PGVector
 from langchain_openai import OpenAIEmbeddings
 from langchain.tools import tool
-from langchain.agents import create_agent
+from langchain.agents import create_react_agent
+from langchain.prompts import PromptTemplate
 from setup_db import get_order_status
 from retrieval import get_policy_retriever
 from memory import MemoryStore
@@ -123,11 +123,38 @@ llm_circuit = CircuitBreaker("llm", failure_threshold=3, recovery_timeout=60.0)
 
 tools = [order_status_tool, policy_retriever_tool]
 
-system_prompt = """
-You are a helpful e-commerce support agent. Use the order_status_tool for order statuses and the policy_retriever_tool for store policy questions.
+system_prompt_template = """
+You are a helpful e-commerce support agent for an online store.
+You have access to the following tools:
+
+{tools}
+
+When you are not sure, answer honestly and do not hallucinate.
+Use the exact available tools for order or policy lookup when needed.
+
+Use the following format:
+Question: the input question you must answer
+Thought: you should always think about what to do
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+Thought: I now know the final answer
+Final Answer: the final answer to the original input question
+
+Conversation history:
+{conversation_history}
+
+Question: {input}
+Thought:{agent_scratchpad}
 """
 
-agent = create_agent(llm, tools, system_prompt=system_prompt)
+prompt = PromptTemplate.from_template(
+    system_prompt_template,
+    input_variables=["input", "conversation_history"],
+)
+
+agent = create_react_agent(llm, tools, prompt)
 
 _agent_call_count = 0
 _agent_call_reset_time = time.time()
@@ -180,10 +207,16 @@ def run_agent_with_cache(user_input: str, max_agent_calls: int = 5):
         return cached
 
     memory_messages = memory_store.get_recent_messages()
+    conversation_history = "\n".join(
+        [f"{m['role'].capitalize()}: {m['content']}" for m in memory_messages]
+    ) if memory_messages else "No prior conversation."
 
     def _invoke_agent():
         return agent.invoke(
-            {"messages": memory_messages + [{"role": "user", "content": cleaned_input}]}
+            {
+                "input": cleaned_input,
+                "conversation_history": conversation_history,
+            }
         )
 
     try:
