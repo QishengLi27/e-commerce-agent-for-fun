@@ -17,17 +17,23 @@ A lightweight AI customer service agent for an online store using LangChain, Chr
    pip install --force-reinstall -r requirements.txt
    ```
 
-2. Set up the database:
+2. **Start PostgreSQL + pgvector**: The agent requires a running PostgreSQL instance with pgvector extension.
+   ```
+   # Using Docker (recommended for development)
+   docker run -d --name pgvector -p 5432:5432 -e POSTGRES_PASSWORD=postgres pgvector/pgvector:pg16
+   ```
+
+3. Set up the database:
    ```
    python setup_db.py
    ```
 
-3. Set up the vector database:
+4. Set up the vector database:
    ```
    python setup_vector_db.py
    ```
 
-4. Run the agent:
+5. Run the agent:
    ```
    python agent.py
    ```
@@ -36,6 +42,8 @@ A lightweight AI customer service agent for an online store using LangChain, Chr
 
 - Review the project roadmap in `plans/future_plans.md`.
 - The new `memory.py` module stores recent conversation history in `memory_store.json`.
+- The agent now uses ReAct-style reasoning with tool calling for better decision-making.
+- **Status**: Agent successfully implemented and tested with ReAct reasoning and memory.
 
 ## Test Scenarios
 

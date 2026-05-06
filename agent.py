@@ -1,17 +1,3 @@
-from langchain_openai import ChatOpenAI
-from langchain_community.vectorstores import PGVector
-from langchain_openai import OpenAIEmbeddings
-from langchain.tools import tool
-from langchain.agents import create_react_agent
-from langchain.prompts import PromptTemplate
-from setup_db import get_order_status
-from retrieval import get_policy_retriever
-from memory import MemoryStore
-from resilience import (
-    CircuitBreaker,
-    Fallbacks,
-    make_retry_decorator,
-)
 import os
 import time
 import logging
@@ -22,6 +8,21 @@ logger = logging.getLogger(__name__)
 # ─── Shared Config ────────────────────────────────────────────────────────────
 
 PG_CONNECTION = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecommerce"
+
+from langchain_openai import ChatOpenAI
+from langchain_community.vectorstores import PGVector
+from langchain_openai import OpenAIEmbeddings
+from langchain.tools import tool
+from langchain.agents import create_agent
+from langchain_core.messages import HumanMessage
+from setup_db import get_order_status
+from retrieval import get_policy_retriever
+from memory import MemoryStore
+from resilience import (
+    CircuitBreaker,
+    Fallbacks,
+    make_retry_decorator,
+)
 
 # ─── Embeddings (shared) ──────────────────────────────────────────────────────
 
@@ -123,46 +124,18 @@ llm_circuit = CircuitBreaker("llm", failure_threshold=3, recovery_timeout=60.0)
 
 tools = [order_status_tool, policy_retriever_tool]
 
-system_prompt_template = """
-You are a helpful e-commerce support agent for an online store.
-You have access to the following tools:
-
-{tools}
-
-When you are not sure, answer honestly and do not hallucinate.
-Use the exact available tools for order or policy lookup when needed.
-
-Use the following format:
-Question: the input question you must answer
-Thought: you should always think about what to do
-Action: the action to take, should be one of [{tool_names}]
-Action Input: the input to the action
-Observation: the result of the action
-... (this Thought/Action/Action Input/Observation can repeat N times)
-Thought: I now know the final answer
-Final Answer: the final answer to the original input question
-
-Conversation history:
-{conversation_history}
-
-Question: {input}
-Thought:{agent_scratchpad}
-"""
-
-prompt = PromptTemplate.from_template(
-    system_prompt_template,
-    input_variables=["input", "conversation_history"],
-)
-
-agent = create_react_agent(llm, tools, prompt)
+# Create agent without system prompt - GLM-4 doesn't support system messages well
+agent = create_agent(llm, tools)
 
 _agent_call_count = 0
 _agent_call_reset_time = time.time()
 
 
 def extract_agent_response(result: object) -> str:
-    """Extract the final AI message content from agent result."""
+    """Extract the final AI message content from agent executor result."""
     if isinstance(result, dict):
+        if "output" in result:
+            return str(result["output"])
         if "messages" in result:
             messages = result["messages"]
             if isinstance(messages, list) and messages:
@@ -171,8 +144,6 @@ def extract_agent_response(result: object) -> str:
                     return str(last.content)
                 if isinstance(last, dict) and "content" in last:
                     return str(last["content"])
-        if "output" in result:
-            return str(result["output"])
     return str(result)
 
 
@@ -212,10 +183,32 @@ def run_agent_with_cache(user_input: str, max_agent_calls: int = 5):
     ) if memory_messages else "No prior conversation."
 
     def _invoke_agent():
+        # GLM-4 works with messages format, put instructions in the human message
+        full_content = f"""You are a helpful e-commerce support agent for an online store.
+
+You have access to the following tools:
+{chr(10).join([f"- {tool.name}: {tool.description}" for tool in tools])}
+
+When you are not sure, answer honestly and do not hallucinate.
+Use the exact available tools for order or policy lookup when needed.
+
+Use the following format for tool use:
+Thought: you should always think about what to do
+Action: the action to take, should be one of {', '.join([tool.name for tool in tools])}
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+Thought: I now know the final answer
+Final Answer: the final answer to the original input question
+
+Conversation history:
+{conversation_history}
+
+Question: {cleaned_input}"""
+
         return agent.invoke(
             {
-                "input": cleaned_input,
-                "conversation_history": conversation_history,
+                "messages": [HumanMessage(content=full_content)]
             }
         )
 

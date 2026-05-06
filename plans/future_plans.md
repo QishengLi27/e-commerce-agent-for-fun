@@ -1,7 +1,8 @@
-# Future Expansion Plan
+## 0. Recently Implemented
 
-This document captures the next phases for the Smart E-Commerce Support Agent prototype.
-It is intended to help the AI understand project goals and suggest implementation steps.
+- **ReAct Agent**: ✅ Switched to ReAct-style agent with tool calling and reasoning steps.
+- **Conversation Memory**: ✅ Added persistent memory module for multi-turn conversations.
+- **Project Roadmap**: ✅ Created this plans document for future development guidance.
 
 ## 1. High Priority Enhancements
 
