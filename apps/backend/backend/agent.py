@@ -24,26 +24,43 @@ from backend.resilience import (
     make_retry_decorator,
 )
 
-# -- Embeddings (shared) -------------------------------------------------------
+# -- Lazy-loaded resources -----------------------------------------------------
+# We defer DB-dependent initialization so the API server can start without
+# a live Postgres connection.
 
-cache_embeddings = OpenAIEmbeddings(
-    model="embedding-2",
-    openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
-    openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
-)
+_cache_vectorstore = None
+_policy_retriever = None
+memory_store = MemoryStore(filepath="data/memory_store.json", max_history=8)
+
+
+def _get_cache_vectorstore():
+    global _cache_vectorstore
+    if _cache_vectorstore is None:
+        _cache_vectorstore = PGVector(
+            connection_string=PG_CONNECTION,
+            embedding_function=OpenAIEmbeddings(
+                model="embedding-2",
+                openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
+                openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
+            ),
+            collection_name="semantic_cache",
+            distance_strategy="cosine",
+        )
+    return _cache_vectorstore
+
+
+def _get_policy_retriever():
+    global _policy_retriever
+    if _policy_retriever is None:
+        _policy_retriever = get_policy_retriever()
+    return _policy_retriever
+
 
 # -- Semantic Cache (pgvector) -------------------------------------------------
 
-cache_vectorstore = PGVector(
-    connection_string=PG_CONNECTION,
-    embedding_function=cache_embeddings,
-    collection_name="semantic_cache",
-    distance_strategy="cosine",
-)
-
 
 def get_cached_response(query: str):
-    docs_and_scores = cache_vectorstore.similarity_search_with_score(query, k=1)
+    docs_and_scores = _get_cache_vectorstore().similarity_search_with_score(query, k=1)
     # pgvector COSINE distance: lower = more similar
     if docs_and_scores and docs_and_scores[0][1] < 0.3:
         return docs_and_scores[0][0].metadata.get("response")
@@ -51,41 +68,7 @@ def get_cached_response(query: str):
 
 
 def cache_response(query: str, response: str):
-    cache_vectorstore.add_texts([query], metadatas=[{"response": response}])
-
-
-# -- Hybrid Retriever ----------------------------------------------------------
-
-_policy_retriever = get_policy_retriever()
-memory_store = MemoryStore(filepath="data/memory_store.json", max_history=8)
-
-
-# -- Typo Correction -----------------------------------------------------------
-
-@make_retry_decorator(max_attempts=2)
-def _clean_query_api_call(prompt: str):
-    return llm.invoke(prompt)
-
-
-def clean_query(query: str) -> str:
-    """Fix typos and normalize the user query before retrieval."""
-    prompt = (
-        "Fix any spelling mistakes in the user query. "
-        "Output ONLY the corrected query with no explanation, no quotes, and no extra text.\n\n"
-        f"User query: {query}\n"
-        "Corrected query:"
-    )
-    try:
-        response = llm_circuit.call(
-            _clean_query_api_call,
-            Fallbacks.clean_query_failed,
-            prompt,
-        )
-        cleaned = response.content.strip().strip('"').strip("'")
-        return cleaned if cleaned else query
-    except Exception as e:
-        logger.warning(f"[clean_query] Failed after retries: {e}")
-        return query
+    _get_cache_vectorstore().add_texts([query], metadatas=[{"response": response}])
 
 
 # -- Tools ---------------------------------------------------------------------
@@ -99,7 +82,7 @@ def order_status_tool(order_id: str) -> str:
 @tool
 def policy_retriever_tool(query: str) -> str:
     """Retrieve store policies related to the query using hybrid search."""
-    docs_and_scores = _policy_retriever.retrieve(query, k=3, rerank=True)
+    docs_and_scores = _get_policy_retriever().retrieve(query, k=3, rerank=True)
     # Only include highly relevant chunks to avoid flooding the LLM with noise
     filtered = [(doc, score) for doc, score in docs_and_scores if score >= 7]
     if not filtered:
@@ -133,18 +116,53 @@ _agent_call_reset_time = time.time()
 
 def extract_agent_response(result: object) -> str:
     """Extract the final AI message content from agent executor result."""
+    raw = ""
     if isinstance(result, dict):
         if "output" in result:
-            return str(result["output"])
-        if "messages" in result:
+            raw = str(result["output"])
+        elif "messages" in result:
             messages = result["messages"]
             if isinstance(messages, list) and messages:
                 last = messages[-1]
                 if hasattr(last, "content"):
-                    return str(last.content)
-                if isinstance(last, dict) and "content" in last:
-                    return str(last["content"])
-    return str(result)
+                    raw = str(last.content)
+                elif isinstance(last, dict) and "content" in last:
+                    raw = str(last["content"])
+    else:
+        raw = str(result)
+
+    # ReAct agents sometimes return the full reasoning chain.
+    # Extract only the Final Answer if present.
+    if "Final Answer:" in raw:
+        return raw.split("Final Answer:")[-1].strip()
+
+    return raw
+
+
+def clean_query(query: str) -> str:
+    """Fix typos and normalize the user query before retrieval."""
+    prompt = (
+        "Fix any spelling mistakes in the user query. "
+        "Output ONLY the corrected query with no explanation, no quotes, and no extra text.\n\n"
+        f"User query: {query}\n"
+        "Corrected query:"
+    )
+    try:
+        response = llm_circuit.call(
+            _clean_query_api_call,
+            Fallbacks.clean_query_failed,
+            prompt,
+        )
+        cleaned = response.content.strip().strip('"').strip("'")
+        return cleaned if cleaned else query
+    except Exception as e:
+        logger.warning(f"[clean_query] Failed after retries: {e}")
+        return query
+
+
+@make_retry_decorator(max_attempts=2)
+def _clean_query_api_call(prompt: str):
+    return llm.invoke(prompt)
 
 
 def run_agent_with_cache(user_input: str, max_agent_calls: int = 5):

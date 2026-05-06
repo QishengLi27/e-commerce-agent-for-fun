@@ -5,6 +5,14 @@ __pycache__/
 *.egg-info/
 .eggs/
 
+# Frontend build artifacts
+apps/frontend/dist/
+apps/frontend/build/
+apps/frontend/node_modules/
+apps/frontend/npm-debug.log
+apps/frontend/yarn-debug.log
+apps/frontend/yarn-error.log
+
 # Virtual environments
 venv/
 .env
