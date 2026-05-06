@@ -19,7 +19,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
 from langchain_core.documents import Document
 from rank_bm25 import BM25Okapi
-from resilience import (
+from backend.resilience import (
     CircuitBreaker,
     Fallbacks,
     make_retry_decorator,
@@ -37,8 +37,8 @@ class HybridPolicyRetriever:
 
     def __init__(
         self,
-        text_file: str = "store_policies.txt",
-        bm25_cache: str = "./bm25_index.pkl",
+        text_file: str = "data/store_policies.txt",
+        bm25_cache: str = "data/bm25_index.pkl",
         chunk_size: int = 500,
         chunk_overlap: int = 50,
     ):
@@ -213,7 +213,7 @@ class HybridPolicyRetriever:
         rerank: bool = True,
     ) -> List[Tuple[Document, float]]:
         """
-        Full pipeline: dense + sparse → RRF fusion → optional LLM re-rank.
+        Full pipeline: dense + sparse -> RRF fusion -> optional LLM re-rank.
         """
         dense = self._dense_retrieve(query, k=k)
         sparse = self._sparse_retrieve(query, k=k)

@@ -2,7 +2,7 @@
 Set up the vector database using PostgreSQL + pgvector.
 
 Run this to (re)build the policy embeddings:
-    python setup_vector_db.py
+    python -m backend.db.vector_setup
 
 Requires:
     - Docker container running: pgvector/pgvector
@@ -19,7 +19,7 @@ CONNECTION_STRING = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecom
 
 def setup_vector_db():
     # Load the text file
-    loader = TextLoader("store_policies.txt")
+    loader = TextLoader("data/store_policies.txt")
     documents = loader.load()
 
     # Split the text into chunks

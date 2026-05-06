@@ -5,7 +5,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ─── Shared Config ────────────────────────────────────────────────────────────
+# -- Shared Config -------------------------------------------------------------
 
 PG_CONNECTION = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecommerce"
 
@@ -15,16 +15,16 @@ from langchain_openai import OpenAIEmbeddings
 from langchain.tools import tool
 from langchain.agents import create_agent
 from langchain_core.messages import HumanMessage
-from setup_db import get_order_status
-from retrieval import get_policy_retriever
-from memory import MemoryStore
-from resilience import (
+from backend.db.setup import get_order_status
+from backend.retrieval import get_policy_retriever
+from backend.memory import MemoryStore
+from backend.resilience import (
     CircuitBreaker,
     Fallbacks,
     make_retry_decorator,
 )
 
-# ─── Embeddings (shared) ──────────────────────────────────────────────────────
+# -- Embeddings (shared) -------------------------------------------------------
 
 cache_embeddings = OpenAIEmbeddings(
     model="embedding-2",
@@ -32,7 +32,7 @@ cache_embeddings = OpenAIEmbeddings(
     openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
 )
 
-# ─── Semantic Cache (pgvector) ────────────────────────────────────────────────
+# -- Semantic Cache (pgvector) -------------------------------------------------
 
 cache_vectorstore = PGVector(
     connection_string=PG_CONNECTION,
@@ -54,13 +54,13 @@ def cache_response(query: str, response: str):
     cache_vectorstore.add_texts([query], metadatas=[{"response": response}])
 
 
-# ─── Hybrid Retriever ─────────────────────────────────────────────────────────
+# -- Hybrid Retriever ----------------------------------------------------------
 
 _policy_retriever = get_policy_retriever()
-memory_store = MemoryStore(filepath="memory_store.json", max_history=8)
+memory_store = MemoryStore(filepath="data/memory_store.json", max_history=8)
 
 
-# ─── Typo Correction ──────────────────────────────────────────────────────────
+# -- Typo Correction -----------------------------------------------------------
 
 @make_retry_decorator(max_attempts=2)
 def _clean_query_api_call(prompt: str):
@@ -88,7 +88,7 @@ def clean_query(query: str) -> str:
         return query
 
 
-# ─── Tools ────────────────────────────────────────────────────────────────────
+# -- Tools ---------------------------------------------------------------------
 
 @tool
 def order_status_tool(order_id: str) -> str:
@@ -107,7 +107,7 @@ def policy_retriever_tool(query: str) -> str:
     return "\n\n".join([doc.page_content for doc, _ in filtered])
 
 
-# ─── LLM ──────────────────────────────────────────────────────────────────────
+# -- LLM -----------------------------------------------------------------------
 
 llm = ChatOpenAI(
     model="glm-4-flash",
@@ -120,7 +120,7 @@ llm = ChatOpenAI(
 llm_circuit = CircuitBreaker("llm", failure_threshold=3, recovery_timeout=60.0)
 
 
-# ─── Agent ────────────────────────────────────────────────────────────────────
+# -- Agent ----------------------------------------------------------------------
 
 tools = [order_status_tool, policy_retriever_tool]
 
@@ -162,7 +162,7 @@ def run_agent_with_cache(user_input: str, max_agent_calls: int = 5):
 
     _agent_call_count += 1
     if _agent_call_count > max_agent_calls:
-        logger.error(f"[agent] Exceeded max calls ({max_agent_calls}) — possible loop")
+        logger.error(f"[agent] Exceeded max calls ({max_agent_calls}) -- possible loop")
         return (
             "I'm having trouble processing your request right now. "
             "Please try rephrasing your question or contact support."
@@ -225,7 +225,7 @@ Question: {cleaned_input}"""
 
     except Exception as e:
         logger.error(f"[agent] Invocation failed: {e}")
-        from resilience import is_transient_error
+        from backend.resilience import is_transient_error
         if is_transient_error(e):
             return (
                 "I'm experiencing a temporary issue. "

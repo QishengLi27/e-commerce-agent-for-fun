@@ -2,7 +2,7 @@
 Database setup for PostgreSQL (replaces SQLite).
 
 Run this to create/reset the orders table:
-    python setup_db.py
+    python -m backend.db.setup
 """
 
 import psycopg2

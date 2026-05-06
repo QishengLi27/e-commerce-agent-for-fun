@@ -6,7 +6,7 @@ from typing import List, Dict
 class MemoryStore:
     """Persistent conversation memory for the e-commerce support agent."""
 
-    def __init__(self, filepath: str = "memory_store.json", max_history: int = 10):
+    def __init__(self, filepath: str = "data/memory_store.json", max_history: int = 10):
         self.filepath = filepath
         self.max_history = max_history
         self.history = self._load_memory()

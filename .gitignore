@@ -1,49 +1,31 @@
 # Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
+*.pyc
+*.pyo
 *.egg-info/
-.installed.cfg
-*.egg
+.eggs/
 
 # Virtual environments
 venv/
-ENV/
-env/
+.env
 .venv/
 
-# IDE
+# Data & runtime (keep structure, ignore generated files)
+apps/backend/data/*.db
+apps/backend/data/*.sqlite3
+apps/backend/data/*.pkl
+apps/backend/data/*.json
+apps/backend/data/chroma_db/
+apps/backend/data/cache_db/
+
+# macOS
+.DS_Store
+
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Project-specific (generated data)
-cache_db/
-chroma_db/
-*.db
-*.sqlite3
-*.pkl
-
-# Environment variables
-.env
-.env.local
+# Logs
+*.log
