@@ -12,17 +12,15 @@ PG_CONNECTION = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecommerc
 from langchain_openai import ChatOpenAI
 from langchain_community.vectorstores import PGVector
 from langchain_openai import OpenAIEmbeddings
-from langchain.tools import tool
 from langchain.agents import create_agent
 from langchain_core.messages import HumanMessage
-from backend.db.setup import get_order_status
-from backend.retrieval import get_policy_retriever
 from backend.memory import MemoryStore
 from backend.resilience import (
     CircuitBreaker,
     Fallbacks,
     make_retry_decorator,
 )
+from backend.tools import order_status_tool, list_orders_tool, policy_retriever_tool, get_current_weather
 
 # -- Lazy-loaded resources -----------------------------------------------------
 # We defer DB-dependent initialization so the API server can start without
@@ -49,13 +47,6 @@ def _get_cache_vectorstore():
     return _cache_vectorstore
 
 
-def _get_policy_retriever():
-    global _policy_retriever
-    if _policy_retriever is None:
-        _policy_retriever = get_policy_retriever()
-    return _policy_retriever
-
-
 # -- Semantic Cache (pgvector) -------------------------------------------------
 
 
@@ -69,25 +60,6 @@ def get_cached_response(query: str):
 
 def cache_response(query: str, response: str):
     _get_cache_vectorstore().add_texts([query], metadatas=[{"response": response}])
-
-
-# -- Tools ---------------------------------------------------------------------
-
-@tool
-def order_status_tool(order_id: str) -> str:
-    """Get the status of an order by order ID."""
-    return get_order_status(order_id)
-
-
-@tool
-def policy_retriever_tool(query: str) -> str:
-    """Retrieve store policies related to the query using hybrid search."""
-    docs_and_scores = _get_policy_retriever().retrieve(query, k=3, rerank=True)
-    # Only include highly relevant chunks to avoid flooding the LLM with noise
-    filtered = [(doc, score) for doc, score in docs_and_scores if score >= 7]
-    if not filtered:
-        filtered = docs_and_scores[:1]  # fallback to top-1 if nothing scores high
-    return "\n\n".join([doc.page_content for doc, _ in filtered])
 
 
 # -- LLM -----------------------------------------------------------------------
@@ -105,7 +77,7 @@ llm_circuit = CircuitBreaker("llm", failure_threshold=3, recovery_timeout=60.0)
 
 # -- Agent ----------------------------------------------------------------------
 
-tools = [order_status_tool, policy_retriever_tool]
+tools = [order_status_tool, list_orders_tool, policy_retriever_tool, get_current_weather]
 
 # Create agent without system prompt - GLM-4 doesn't support system messages well
 agent = create_agent(llm, tools)
@@ -208,7 +180,11 @@ You have access to the following tools:
 {chr(10).join([f"- {tool.name}: {tool.description}" for tool in tools])}
 
 When you are not sure, answer honestly and do not hallucinate.
-Use the exact available tools for order or policy lookup when needed.
+Use the exact available tools for order, policy, or weather lookup when needed.
+- For questions about a specific order, use order_status_tool.
+- For questions about all orders, use list_orders_tool.
+- For questions about store policies, use policy_retriever_tool.
+- For questions about weather in a specific city, use get_current_weather.
 
 Use the following format for tool use:
 Thought: you should always think about what to do

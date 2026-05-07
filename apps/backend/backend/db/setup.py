@@ -62,5 +62,21 @@ def get_order_status(order_id: str) -> str:
         return f"Order {order_id} not found."
 
 
+def get_all_orders() -> str:
+    conn = get_pg_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT order_id, customer_name, status, estimated_delivery FROM orders ORDER BY order_id"
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    if not rows:
+        return "No orders found."
+    lines = ["Here are all orders:"]
+    for order_id, customer_name, status, estimated_delivery in rows:
+        lines.append(f"- Order {order_id} ({customer_name}): {status}, estimated delivery {estimated_delivery}")
+    return "\n".join(lines)
+
+
 if __name__ == "__main__":
     setup_database()
