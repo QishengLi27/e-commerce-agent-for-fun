@@ -6,10 +6,6 @@ import asyncio
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# -- Shared Config -------------------------------------------------------------
-
-PG_CONNECTION = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecommerce"
-
 from langchain.agents import create_agent
 from langchain_core.messages import HumanMessage
 from backend.memory import MemoryStore
@@ -20,162 +16,241 @@ from backend.resilience import (
 )
 from backend.tools import order_status_tool, list_orders_tool, policy_retriever_tool, get_current_weather
 
-# -- Lazy-loaded resources -----------------------------------------------------
-# We defer DB-dependent initialization so the API server can start without
-# a live Postgres connection.
 
-_cache_vectorstore = None
-memory_store = MemoryStore(filepath="data/memory_store.json", max_history=8)
+class AgentManager:
+    """Manages the e-commerce support agent with caching, resilience, and streaming."""
 
+    def __init__(self):
+        self.pg_connection = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecommerce"
+        self.memory_store = MemoryStore(filepath="data/memory_store.json", max_history=8)
+        self._cache_vectorstore = None
+        self._llm = None
+        self._llm_circuit = None
+        self._agent = None
+        self._agent_call_count = 0
+        self._agent_call_reset_time = time.time()
 
-def _get_cache_vectorstore():
-    global _cache_vectorstore
-    if _cache_vectorstore is None:
-        from langchain_community.vectorstores import PGVector
-        from langchain_openai import OpenAIEmbeddings
-        _cache_vectorstore = PGVector(
-            connection_string=PG_CONNECTION,
-            embedding_function=OpenAIEmbeddings(
-                model="embedding-2",
+    @property
+    def cache_vectorstore(self):
+        if self._cache_vectorstore is None:
+            from langchain_community.vectorstores import PGVector
+            from langchain_openai import OpenAIEmbeddings
+            self._cache_vectorstore = PGVector(
+                connection_string=self.pg_connection,
+                embedding_function=OpenAIEmbeddings(
+                    model="embedding-2",
+                    openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
+                    openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
+                ),
+                collection_name="semantic_cache",
+                distance_strategy="cosine",
+            )
+        return self._cache_vectorstore
+
+    @property
+    def llm(self):
+        if self._llm is None:
+            from langchain_openai import ChatOpenAI
+            self._llm = ChatOpenAI(
+                model="glm-4-flash",
                 openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
                 openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
-            ),
-            collection_name="semantic_cache",
-            distance_strategy="cosine",
+                max_retries=2,
+                timeout=30,
+                streaming=True,
+            )
+        return self._llm
+
+    @property
+    def llm_circuit(self):
+        if self._llm_circuit is None:
+            self._llm_circuit = CircuitBreaker("llm", failure_threshold=3, recovery_timeout=60.0)
+        return self._llm_circuit
+
+    @property
+    def agent(self):
+        if self._agent is None:
+            tools = [order_status_tool, list_orders_tool, policy_retriever_tool, get_current_weather]
+            self._agent = create_agent(self.llm, tools)
+        return self._agent
+
+    def get_cached_response(self, query: str):
+        docs_and_scores = self.cache_vectorstore.similarity_search_with_score(query, k=1)
+        if docs_and_scores and docs_and_scores[0][1] < 0.3:
+            return docs_and_scores[0][0].metadata.get("response")
+        return None
+
+    def cache_response(self, query: str, response: str):
+        self.cache_vectorstore.add_texts([query], metadatas=[{"response": response}])
+
+    def extract_agent_response(self, result: object) -> str:
+        """Extract the final AI message content from agent executor result."""
+        raw = ""
+        if isinstance(result, dict):
+            if "output" in result:
+                raw = str(result["output"])
+            elif "messages" in result:
+                messages = result["messages"]
+                if isinstance(messages, list) and messages:
+                    last = messages[-1]
+                    if hasattr(last, "content"):
+                        raw = str(last.content)
+                    elif isinstance(last, dict) and "content" in last:
+                        raw = str(last["content"])
+        else:
+            raw = str(result)
+
+        if "Final Answer:" in raw:
+            return raw.split("Final Answer:")[-1].strip()
+        return raw
+
+    def clean_query(self, query: str) -> str:
+        """Fix typos and normalize the user query before retrieval."""
+        prompt = (
+            "Fix any spelling mistakes in the user query. "
+            "Output ONLY the corrected query with no explanation, no quotes, and no extra text.\n\n"
+            f"User query: {query}\n"
+            "Corrected query:"
         )
-    return _cache_vectorstore
+        try:
+            response = self.llm_circuit.call(
+                self._clean_query_api_call,
+                Fallbacks.clean_query_failed,
+                prompt,
+            )
+            cleaned = response.content.strip().strip('"').strip("'")
+            return cleaned if cleaned else query
+        except Exception as e:
+            logger.warning(f"[clean_query] Failed after retries: {e}")
+            return query
 
+    @make_retry_decorator(max_attempts=2)
+    def _clean_query_api_call(self, prompt: str):
+        return self.llm.invoke(prompt)
 
-# -- Semantic Cache (pgvector) -------------------------------------------------
+    def run_agent_with_cache(self, user_input: str, max_agent_calls: int = 5):
+        """
+        Run the agent with resilience patterns:
+        - Typo correction with retry + circuit breaker
+        - Agent invocation with retry + circuit breaker
+        - Max call limit to prevent infinite loops
+        """
+        if time.time() - self._agent_call_reset_time > 60:
+            self._agent_call_count = 0
+            self._agent_call_reset_time = time.time()
 
+        self._agent_call_count += 1
+        if self._agent_call_count > max_agent_calls:
+            logger.error(f"[agent] Exceeded max calls ({max_agent_calls}) -- possible loop")
+            return (
+                "I'm having trouble processing your request right now. "
+                "Please try rephrasing your question or contact support."
+            )
 
-def get_cached_response(query: str):
-    docs_and_scores = _get_cache_vectorstore().similarity_search_with_score(query, k=1)
-    # pgvector COSINE distance: lower = more similar
-    if docs_and_scores and docs_and_scores[0][1] < 0.3:
-        return docs_and_scores[0][0].metadata.get("response")
-    return None
+        cleaned_input = self.clean_query(user_input)
+        self.memory_store.add_user(cleaned_input)
 
+        cached = self.get_cached_response(cleaned_input)
+        if cached:
+            print("Cache hit!")
+            self.memory_store.add_agent(cached)
+            return cached
 
-def cache_response(query: str, response: str):
-    _get_cache_vectorstore().add_texts([query], metadatas=[{"response": response}])
+        memory_messages = self.memory_store.get_recent_messages()
+        conversation_history = "\n".join(
+            [f"{m['role'].capitalize()}: {m['content']}" for m in memory_messages]
+        ) if memory_messages else "No prior conversation."
 
+        def _invoke_agent():
+            full_content = f"""You are a helpful e-commerce support agent for an online store.
 
-# -- LLM -----------------------------------------------------------------------
+You have access to the following tools:
+{chr(10).join([f"- {tool.name}: {tool.description}" for tool in tools])}
 
-from langchain_openai import ChatOpenAI
+When you are not sure, answer honestly and do not hallucinate.
+Use the exact available tools for order, policy, or weather lookup when needed.
+- For questions about a specific order, use order_status_tool.
+- For questions about all orders, use list_orders_tool.
+- For questions about store policies, use policy_retriever_tool.
+- For questions about weather in a specific city, use get_current_weather.
 
-llm = ChatOpenAI(
-    model="glm-4-flash",
-    openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
-    openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
-    max_retries=2,
-    timeout=30,
-    streaming=True,
-)
+Use the following format for tool use:
+Thought: you should always think about what to do
+Action: the action to take, should be one of {', '.join([tool.name for tool in tools])}
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+Thought: I now know the final answer
+Final Answer: the final answer to the original input question
 
-llm_circuit = CircuitBreaker("llm", failure_threshold=3, recovery_timeout=60.0)
+Conversation history:
+{conversation_history}
 
+Question: {cleaned_input}"""
 
-# -- Agent ----------------------------------------------------------------------
+            return self.agent.invoke(
+                {
+                    "messages": [HumanMessage(content=full_content)]
+                }
+            )
 
-tools = [order_status_tool, list_orders_tool, policy_retriever_tool, get_current_weather]
+        try:
+            result = self.llm_circuit.call(_invoke_agent, Fallbacks.llm_unavailable)
+            response = self.extract_agent_response(result)
 
-# Create agent without system prompt - GLM-4 doesn't support system messages well
-agent = create_agent(llm, tools)
+            if response == Fallbacks.llm_unavailable():
+                return response
 
-_agent_call_count = 0
-_agent_call_reset_time = time.time()
+            self.cache_response(cleaned_input, response)
+            self.memory_store.add_agent(response)
+            return response
 
+        except Exception as e:
+            logger.error(f"[agent] Invocation failed: {e}")
+            from backend.resilience import is_transient_error
+            if is_transient_error(e):
+                return (
+                    "I'm experiencing a temporary issue. "
+                    "Please try again in a moment."
+                )
+            return (
+                "I couldn't process your request. "
+                "Please check your question and try again."
+            )
 
-def extract_agent_response(result: object) -> str:
-    """Extract the final AI message content from agent executor result."""
-    raw = ""
-    if isinstance(result, dict):
-        if "output" in result:
-            raw = str(result["output"])
-        elif "messages" in result:
-            messages = result["messages"]
-            if isinstance(messages, list) and messages:
-                last = messages[-1]
-                if hasattr(last, "content"):
-                    raw = str(last.content)
-                elif isinstance(last, dict) and "content" in last:
-                    raw = str(last["content"])
-    else:
-        raw = str(result)
+    async def stream_agent_response(self, user_input: str, max_agent_calls: int = 5):
+        """
+        Async generator that yields the agent's final answer with a smooth
+        streaming effect. Tokens are collected and replayed in small chunks
+        so the frontend shows a visible typing animation.
+        """
+        if time.time() - self._agent_call_reset_time > 60:
+            self._agent_call_count = 0
+            self._agent_call_reset_time = time.time()
 
-    # ReAct agents sometimes return the full reasoning chain.
-    # Extract only the Final Answer if present.
-    if "Final Answer:" in raw:
-        return raw.split("Final Answer:")[-1].strip()
+        self._agent_call_count += 1
+        if self._agent_call_count > max_agent_calls:
+            logger.error(f"[agent] Exceeded max calls ({max_agent_calls}) -- possible loop")
+            yield "I'm having trouble processing your request right now. Please try rephrasing your question or contact support."
+            return
 
-    return raw
+        cleaned_input = self.clean_query(user_input)
+        self.memory_store.add_user(cleaned_input)
 
+        cached = self.get_cached_response(cleaned_input)
+        if cached:
+            print("Cache hit!")
+            self.memory_store.add_agent(cached)
+            for word in cached.split(" "):
+                yield word + (" " if word != cached.split(" ")[-1] else "")
+                await asyncio.sleep(0.03)
+            return
 
-def clean_query(query: str) -> str:
-    """Fix typos and normalize the user query before retrieval."""
-    prompt = (
-        "Fix any spelling mistakes in the user query. "
-        "Output ONLY the corrected query with no explanation, no quotes, and no extra text.\n\n"
-        f"User query: {query}\n"
-        "Corrected query:"
-    )
-    try:
-        response = llm_circuit.call(
-            _clean_query_api_call,
-            Fallbacks.clean_query_failed,
-            prompt,
-        )
-        cleaned = response.content.strip().strip('"').strip("'")
-        return cleaned if cleaned else query
-    except Exception as e:
-        logger.warning(f"[clean_query] Failed after retries: {e}")
-        return query
+        memory_messages = self.memory_store.get_recent_messages()
+        conversation_history = "\n".join(
+            [f"{m['role'].capitalize()}: {m['content']}" for m in memory_messages]
+        ) if memory_messages else "No prior conversation."
 
-
-@make_retry_decorator(max_attempts=2)
-def _clean_query_api_call(prompt: str):
-    return llm.invoke(prompt)
-
-
-def run_agent_with_cache(user_input: str, max_agent_calls: int = 5):
-    """
-    Run the agent with resilience patterns:
-    - Typo correction with retry + circuit breaker
-    - Agent invocation with retry + circuit breaker
-    - Max call limit to prevent infinite loops
-    """
-    global _agent_call_count, _agent_call_reset_time
-
-    if time.time() - _agent_call_reset_time > 60:
-        _agent_call_count = 0
-        _agent_call_reset_time = time.time()
-
-    _agent_call_count += 1
-    if _agent_call_count > max_agent_calls:
-        logger.error(f"[agent] Exceeded max calls ({max_agent_calls}) -- possible loop")
-        return (
-            "I'm having trouble processing your request right now. "
-            "Please try rephrasing your question or contact support."
-        )
-
-    cleaned_input = clean_query(user_input)
-    memory_store.add_user(cleaned_input)
-
-    cached = get_cached_response(cleaned_input)
-    if cached:
-        print("Cache hit!")
-        memory_store.add_agent(cached)
-        return cached
-
-    memory_messages = memory_store.get_recent_messages()
-    conversation_history = "\n".join(
-        [f"{m['role'].capitalize()}: {m['content']}" for m in memory_messages]
-    ) if memory_messages else "No prior conversation."
-
-    def _invoke_agent():
-        # GLM-4 works with messages format, put instructions in the human message
         full_content = f"""You are a helpful e-commerce support agent for an online store.
 
 You have access to the following tools:
@@ -202,151 +277,71 @@ Conversation history:
 
 Question: {cleaned_input}"""
 
-        return agent.invoke(
-            {
-                "messages": [HumanMessage(content=full_content)]
-            }
-        )
+        def _chunk_to_text(chunk: object) -> str:
+            if chunk is None:
+                return ''
+            if isinstance(chunk, str):
+                return chunk
+            if isinstance(chunk, dict):
+                return str(chunk.get('content') or chunk.get('text') or '')
+            return str(getattr(chunk, 'content', None) or getattr(chunk, 'text', None) or '')
 
-    try:
-        result = llm_circuit.call(_invoke_agent, Fallbacks.llm_unavailable)
-        response = extract_agent_response(result)
+        try:
+            full_response = ""
+            got_stream = False
 
-        if response == Fallbacks.llm_unavailable():
-            return response
+            async for event in self.agent.astream_events(
+                {"messages": [HumanMessage(content=full_content)]},
+                version="v2",
+            ):
+                event_name = event.get("event")
+                data = event.get("data", {})
 
-        cache_response(cleaned_input, response)
-        memory_store.add_agent(response)
-        return response
+                if event_name == "on_chat_model_stream":
+                    chunk = data.get("chunk")
+                    chunk_text = _chunk_to_text(chunk)
+                    if not chunk_text:
+                        continue
 
-    except Exception as e:
-        logger.error(f"[agent] Invocation failed: {e}")
-        from backend.resilience import is_transient_error
-        if is_transient_error(e):
-            return (
-                "I'm experiencing a temporary issue. "
-                "Please try again in a moment."
-            )
-        return (
-            "I couldn't process your request. "
-            "Please check your question and try again."
-        )
+                    got_stream = True
+                    full_response += chunk_text
+                    yield chunk_text
+                    continue
+
+                if event_name == "on_chat_model_end" and not got_stream:
+                    output = _chunk_to_text(data.get("output"))
+                    if not output:
+                        continue
+
+                    full_response += output
+                    yield output
+
+            if full_response:
+                self.cache_response(cleaned_input, full_response)
+                self.memory_store.add_agent(full_response)
+
+        except Exception as e:
+            logger.error(f"[agent] Streaming failed: {e}")
+            from backend.resilience import is_transient_error
+            if is_transient_error(e):
+                yield "I'm experiencing a temporary issue. Please try again in a moment."
+            else:
+                yield "I couldn't process your request. Please check your question and try again."
 
 
-# -- True Token Streaming ------------------------------------------------------
+# -- Global Instance ------------------------------------------------------------
+
+agent_manager = AgentManager()
+
+# -- Convenience Functions -----------------------------------------------------
+
+def run_agent_with_cache(user_input: str, max_agent_calls: int = 5):
+    return agent_manager.run_agent_with_cache(user_input, max_agent_calls)
+
 
 async def stream_agent_response(user_input: str, max_agent_calls: int = 5):
-    """
-    Async generator that yields the agent's final answer with a smooth
-    streaming effect. Tokens are collected and replayed in small chunks
-    so the frontend shows a visible typing animation.
-    """
-    global _agent_call_count, _agent_call_reset_time
-
-    if time.time() - _agent_call_reset_time > 60:
-        _agent_call_count = 0
-        _agent_call_reset_time = time.time()
-
-    _agent_call_count += 1
-    if _agent_call_count > max_agent_calls:
-        logger.error(f"[agent] Exceeded max calls ({max_agent_calls}) -- possible loop")
-        yield "I'm having trouble processing your request right now. Please try rephrasing your question or contact support."
-        return
-
-    cleaned_input = clean_query(user_input)
-    memory_store.add_user(cleaned_input)
-
-    cached = get_cached_response(cleaned_input)
-    if cached:
-        print("Cache hit!")
-        memory_store.add_agent(cached)
-        # Even cached responses are streamed word-by-word for consistent UX
-        for word in cached.split(" "):
-            yield word + (" " if word != cached.split(" ")[-1] else "")
-            await asyncio.sleep(0.03)
-        return
-
-    memory_messages = memory_store.get_recent_messages()
-    conversation_history = "\n".join(
-        [f"{m['role'].capitalize()}: {m['content']}" for m in memory_messages]
-    ) if memory_messages else "No prior conversation."
-
-    full_content = f"""You are a helpful e-commerce support agent for an online store.
-
-You have access to the following tools:
-{chr(10).join([f"- {tool.name}: {tool.description}" for tool in tools])}
-
-When you are not sure, answer honestly and do not hallucinate.
-Use the exact available tools for order, policy, or weather lookup when needed.
-- For questions about a specific order, use order_status_tool.
-- For questions about all orders, use list_orders_tool.
-- For questions about store policies, use policy_retriever_tool.
-- For questions about weather in a specific city, use get_current_weather.
-
-Use the following format for tool use:
-Thought: you should always think about what to do
-Action: the action to take, should be one of {', '.join([tool.name for tool in tools])}
-Action Input: the input to the action
-Observation: the result of the action
-... (this Thought/Action/Action Input/Observation can repeat N times)
-Thought: I now know the final answer
-Final Answer: the final answer to the original input question
-
-Conversation history:
-{conversation_history}
-
-Question: {cleaned_input}"""
-
-    def _chunk_to_text(chunk: object) -> str:
-        if chunk is None:
-            return ''
-        if isinstance(chunk, str):
-            return chunk
-        if isinstance(chunk, dict):
-            return str(chunk.get('content') or chunk.get('text') or '')
-        return str(getattr(chunk, 'content', None) or getattr(chunk, 'text', None) or '')
-
-    try:
-        full_response = ""
-        got_stream = False
-
-        async for event in agent.astream_events(
-            {"messages": [HumanMessage(content=full_content)]},
-            version="v2",
-        ):
-            event_name = event.get("event")
-            data = event.get("data", {})
-
-            if event_name == "on_chat_model_stream":
-                chunk = data.get("chunk")
-                chunk_text = _chunk_to_text(chunk)
-                if not chunk_text:
-                    continue
-
-                got_stream = True
-                full_response += chunk_text
-                yield chunk_text
-                continue
-
-            if event_name == "on_chat_model_end" and not got_stream:
-                output = _chunk_to_text(data.get("output"))
-                if not output:
-                    continue
-
-                full_response += output
-                yield output
-
-        if full_response:
-            cache_response(cleaned_input, full_response)
-            memory_store.add_agent(full_response)
-
-    except Exception as e:
-        logger.error(f"[agent] Streaming failed: {e}")
-        from backend.resilience import is_transient_error
-        if is_transient_error(e):
-            yield "I'm experiencing a temporary issue. Please try again in a moment."
-        else:
-            yield "I couldn't process your request. Please check your question and try again."
+    async for chunk in agent_manager.stream_agent_response(user_input, max_agent_calls):
+        yield chunk
 
 
 if __name__ == "__main__":
