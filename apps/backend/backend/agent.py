@@ -1,6 +1,7 @@
 import os
 import time
 import logging
+import asyncio
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -9,9 +10,6 @@ logger = logging.getLogger(__name__)
 
 PG_CONNECTION = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecommerce"
 
-from langchain_openai import ChatOpenAI
-from langchain_community.vectorstores import PGVector
-from langchain_openai import OpenAIEmbeddings
 from langchain.agents import create_agent
 from langchain_core.messages import HumanMessage
 from backend.memory import MemoryStore
@@ -27,13 +25,14 @@ from backend.tools import order_status_tool, list_orders_tool, policy_retriever_
 # a live Postgres connection.
 
 _cache_vectorstore = None
-_policy_retriever = None
 memory_store = MemoryStore(filepath="data/memory_store.json", max_history=8)
 
 
 def _get_cache_vectorstore():
     global _cache_vectorstore
     if _cache_vectorstore is None:
+        from langchain_community.vectorstores import PGVector
+        from langchain_openai import OpenAIEmbeddings
         _cache_vectorstore = PGVector(
             connection_string=PG_CONNECTION,
             embedding_function=OpenAIEmbeddings(
@@ -64,12 +63,15 @@ def cache_response(query: str, response: str):
 
 # -- LLM -----------------------------------------------------------------------
 
+from langchain_openai import ChatOpenAI
+
 llm = ChatOpenAI(
     model="glm-4-flash",
     openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
     openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
     max_retries=2,
     timeout=30,
+    streaming=True,
 )
 
 llm_circuit = CircuitBreaker("llm", failure_threshold=3, recovery_timeout=60.0)
@@ -229,6 +231,122 @@ Question: {cleaned_input}"""
             "I couldn't process your request. "
             "Please check your question and try again."
         )
+
+
+# -- True Token Streaming ------------------------------------------------------
+
+async def stream_agent_response(user_input: str, max_agent_calls: int = 5):
+    """
+    Async generator that yields the agent's final answer with a smooth
+    streaming effect. Tokens are collected and replayed in small chunks
+    so the frontend shows a visible typing animation.
+    """
+    global _agent_call_count, _agent_call_reset_time
+
+    if time.time() - _agent_call_reset_time > 60:
+        _agent_call_count = 0
+        _agent_call_reset_time = time.time()
+
+    _agent_call_count += 1
+    if _agent_call_count > max_agent_calls:
+        logger.error(f"[agent] Exceeded max calls ({max_agent_calls}) -- possible loop")
+        yield "I'm having trouble processing your request right now. Please try rephrasing your question or contact support."
+        return
+
+    cleaned_input = clean_query(user_input)
+    memory_store.add_user(cleaned_input)
+
+    cached = get_cached_response(cleaned_input)
+    if cached:
+        print("Cache hit!")
+        memory_store.add_agent(cached)
+        # Even cached responses are streamed word-by-word for consistent UX
+        for word in cached.split(" "):
+            yield word + (" " if word != cached.split(" ")[-1] else "")
+            await asyncio.sleep(0.03)
+        return
+
+    memory_messages = memory_store.get_recent_messages()
+    conversation_history = "\n".join(
+        [f"{m['role'].capitalize()}: {m['content']}" for m in memory_messages]
+    ) if memory_messages else "No prior conversation."
+
+    full_content = f"""You are a helpful e-commerce support agent for an online store.
+
+You have access to the following tools:
+{chr(10).join([f"- {tool.name}: {tool.description}" for tool in tools])}
+
+When you are not sure, answer honestly and do not hallucinate.
+Use the exact available tools for order, policy, or weather lookup when needed.
+- For questions about a specific order, use order_status_tool.
+- For questions about all orders, use list_orders_tool.
+- For questions about store policies, use policy_retriever_tool.
+- For questions about weather in a specific city, use get_current_weather.
+
+Use the following format for tool use:
+Thought: you should always think about what to do
+Action: the action to take, should be one of {', '.join([tool.name for tool in tools])}
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+Thought: I now know the final answer
+Final Answer: the final answer to the original input question
+
+Conversation history:
+{conversation_history}
+
+Question: {cleaned_input}"""
+
+    def _chunk_to_text(chunk: object) -> str:
+        if chunk is None:
+            return ''
+        if isinstance(chunk, str):
+            return chunk
+        if isinstance(chunk, dict):
+            return str(chunk.get('content') or chunk.get('text') or '')
+        return str(getattr(chunk, 'content', None) or getattr(chunk, 'text', None) or '')
+
+    try:
+        full_response = ""
+        got_stream = False
+
+        async for event in agent.astream_events(
+            {"messages": [HumanMessage(content=full_content)]},
+            version="v2",
+        ):
+            event_name = event.get("event")
+            data = event.get("data", {})
+
+            if event_name == "on_chat_model_stream":
+                chunk = data.get("chunk")
+                chunk_text = _chunk_to_text(chunk)
+                if not chunk_text:
+                    continue
+
+                got_stream = True
+                full_response += chunk_text
+                yield chunk_text
+                continue
+
+            if event_name == "on_chat_model_end" and not got_stream:
+                output = _chunk_to_text(data.get("output"))
+                if not output:
+                    continue
+
+                full_response += output
+                yield output
+
+        if full_response:
+            cache_response(cleaned_input, full_response)
+            memory_store.add_agent(full_response)
+
+    except Exception as e:
+        logger.error(f"[agent] Streaming failed: {e}")
+        from backend.resilience import is_transient_error
+        if is_transient_error(e):
+            yield "I'm experiencing a temporary issue. Please try again in a moment."
+        else:
+            yield "I couldn't process your request. Please check your question and try again."
 
 
 if __name__ == "__main__":

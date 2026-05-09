@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ChatMessage } from '../types'
@@ -39,12 +38,7 @@ export default function MessageBubble({ message }: Props) {
   return (
     <div className="flex justify-start">
       <div className="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed bg-gray-100 text-gray-800 rounded-bl-md">
-        {message.isStreaming ? (
-          <p className="whitespace-pre-wrap">
-            {message.content}
-            <span className="inline-block w-1.5 h-4 ml-0.5 bg-blue-500 animate-pulse align-middle" />
-          </p>
-        ) : sections.length > 0 ? (
+        {sections.length > 0 ? (
           <div className="space-y-2">
             {sections.map((section, idx) => (
               <div key={idx} className="border-l-2 border-blue-300 pl-3">
@@ -58,7 +52,17 @@ export default function MessageBubble({ message }: Props) {
                 </div>
               </div>
             ))}
+            {message.isStreaming && (
+              <div className="mt-2">
+                <span className="inline-block w-1.5 h-4 bg-blue-500 animate-pulse align-middle" />
+              </div>
+            )}
           </div>
+        ) : message.isStreaming ? (
+          <p className="whitespace-pre-wrap">
+            {message.content}
+            <span className="inline-block w-1.5 h-4 ml-0.5 bg-blue-500 animate-pulse align-middle" />
+          </p>
         ) : (
           <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>

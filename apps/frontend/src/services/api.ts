@@ -44,17 +44,20 @@ export async function* streamMessage(request: ChatRequest): AsyncGenerator<strin
 
     for (const line of lines) {
       // SSE lines may end with \r (CRLF). Remove only the trailing \r,
-      // preserve spaces inside the data field.
+      // preserve spaces inside the data field so LLM token boundaries
+      // (e.g. leading/trailing spaces) are kept intact.
       const cleanLine = line.endsWith('\r') ? line.slice(0, -1) : line
 
       if (!cleanLine.startsWith('data:')) continue
 
-      // Everything after "data:" — keep trailing spaces so word
-      // separators sent by the backend are preserved.
-      const data = cleanLine.slice(5).trimStart()
+      // Everything after "data:" — keep the raw value including spaces.
+      // SSE convention: "data: value" → value starts after optional space.
+      const raw = cleanLine.slice(5)
+      const data = raw.startsWith(' ') ? raw.slice(1) : raw
 
       if (data.trim() === '[DONE]') return
-      yield data
+      const unescaped = data.replace(/\\n/g, '\n').replace(/\\r/g, '\r')
+      yield unescaped
     }
   }
 }

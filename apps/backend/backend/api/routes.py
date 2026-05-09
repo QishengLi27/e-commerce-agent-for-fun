@@ -3,10 +3,10 @@ import asyncio
 from typing import AsyncGenerator
 
 from fastapi import APIRouter
-from sse_starlette.sse import EventSourceResponse
+from fastapi.responses import StreamingResponse
 
 from backend.api.schemas import ChatRequest, ChatResponse, HealthResponse
-from backend.agent import run_agent_with_cache
+from backend.agent import run_agent_with_cache, stream_agent_response
 
 router = APIRouter()
 
@@ -29,20 +29,21 @@ def chat(request: ChatRequest):
     )
 
 
-async def _stream_response(message: str) -> AsyncGenerator[dict, None]:
-    """Run the agent and yield SSE events word-by-word."""
-    response_text = run_agent_with_cache(message)
+async def _stream_response(message: str) -> AsyncGenerator[str, None]:
+    """Yield raw SSE frames with real LLM tokens as they arrive."""
+    async for token in stream_agent_response(message):
+        # Escape newlines in token so SSE format stays valid
+        safe_token = token.replace("\n", "\\n").replace("\r", "")
+        yield f"data: {safe_token}\n\n"
+        # Small delay to force HTTP flush and create visible typing effect
+        await asyncio.sleep(0.03)
 
-    # Stream word by word for a nice typing effect
-    words = response_text.split(" ")
-    for i, word in enumerate(words):
-        chunk = word + (" " if i < len(words) - 1 else "")
-        yield {"event": "message", "data": chunk}
-        await asyncio.sleep(0.03)  # Small delay for visual effect
-
-    yield {"event": "done", "data": "[DONE]"}
+    yield f"data: [DONE]\n\n"
 
 
 @router.post("/chat/stream")
 async def chat_stream(request: ChatRequest):
-    return EventSourceResponse(_stream_response(request.message))
+    return StreamingResponse(
+        _stream_response(request.message),
+        media_type="text/event-stream",
+    )
