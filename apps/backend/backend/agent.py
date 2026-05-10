@@ -77,7 +77,13 @@ class AgentManager:
     def get_cached_response(self, query: str):
         docs_and_scores = self.cache_vectorstore.similarity_search_with_score(query, k=1)
         if docs_and_scores and docs_and_scores[0][1] < 0.3:
-            return docs_and_scores[0][0].metadata.get("response")
+            response = docs_and_scores[0][0].metadata.get("response")
+            # Belt-and-suspenders: never return cached weather responses.
+            # Weather data is real-time and should always be fetched fresh.
+            if response and any(k in response.lower() for k in ("°c", "temperature", "wind speed", "weather in")):
+                logger.info("[cache] Rejecting weather-related cached response")
+                return None
+            return response
         return None
 
     def cache_response(self, query: str, response: str):
@@ -252,30 +258,30 @@ Question: {cleaned_input}"""
         ) if memory_messages else "No prior conversation."
 
         full_content = f"""You are a helpful e-commerce support agent for an online store.
+            You have access to the following tools:
+            {chr(10).join([f"- {tool.name}: {tool.description}" for tool in tools])}
 
-You have access to the following tools:
-{chr(10).join([f"- {tool.name}: {tool.description}" for tool in tools])}
+            When you are not sure, answer honestly and do not hallucinate.
+            Use the exact available tools for order, policy, or weather lookup when needed.
+            - For questions about a specific order, use order_status_tool.
+            - For questions about all orders, use list_orders_tool.
+            - For questions about store policies, use policy_retriever_tool.
+            - For questions about weather in a specific city, use get_current_weather.
 
-When you are not sure, answer honestly and do not hallucinate.
-Use the exact available tools for order, policy, or weather lookup when needed.
-- For questions about a specific order, use order_status_tool.
-- For questions about all orders, use list_orders_tool.
-- For questions about store policies, use policy_retriever_tool.
-- For questions about weather in a specific city, use get_current_weather.
+            Use the following format for tool use:
+            Thought: you should always think about what to do
+            Action: the action to take, should be one of {', '.join([tool.name for tool in tools])}
+            Action Input: the input to the action
+            Observation: the result of the action
+            ... (this Thought/Action/Action Input/Observation can repeat N times)
+            Thought: I now know the final answer
+            Final Answer: the final answer to the original input question
 
-Use the following format for tool use:
-Thought: you should always think about what to do
-Action: the action to take, should be one of {', '.join([tool.name for tool in tools])}
-Action Input: the input to the action
-Observation: the result of the action
-... (this Thought/Action/Action Input/Observation can repeat N times)
-Thought: I now know the final answer
-Final Answer: the final answer to the original input question
+            Conversation history:
+            {conversation_history}
 
-Conversation history:
-{conversation_history}
-
-Question: {cleaned_input}"""
+            Question: {cleaned_input}
+"""
 
         def _chunk_to_text(chunk: object) -> str:
             if chunk is None:
@@ -332,6 +338,14 @@ Question: {cleaned_input}"""
 # -- Global Instance ------------------------------------------------------------
 
 agent_manager = AgentManager()
+
+# -- Module-level aliases for other modules to import --------------------------
+
+clean_query = agent_manager.clean_query
+get_cached_response = agent_manager.get_cached_response
+cache_response = agent_manager.cache_response
+llm = agent_manager.llm
+memory_store = agent_manager.memory_store
 
 # -- Convenience Functions -----------------------------------------------------
 

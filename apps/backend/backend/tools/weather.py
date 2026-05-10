@@ -4,11 +4,34 @@ Weather tool using Open-Meteo API (free, no API key required).
 Provides current weather lookup by city name.
 """
 
+import re
 import requests
 from langchain.tools import tool
 
 GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search"
 WEATHER_URL = "https://api.open-meteo.com/v1/forecast"
+
+
+def _extract_city(text: str) -> str:
+    """Extract city name from a natural-language query."""
+    text = text.strip()
+    # Remove common punctuation
+    text = text.strip('?').strip('!').strip('.')
+
+    # Pattern: "weather in/for/at <city>"
+    m = re.search(r"weather\s+(?:in|for|at)\s+([A-Za-z\s'-]+)", text, re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+
+    # Pattern: "<city> weather"
+    m = re.search(r"([A-Za-z\s'-]+?)\s+weather", text, re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+
+    # Fallback: remove common words and return remainder
+    cleaned = re.sub(r"\b(what|is|the|weather|in|for|at|like|today|now|current|get|show|me|tell)\b", "", text, flags=re.IGNORECASE)
+    cleaned = cleaned.strip()
+    return cleaned if cleaned else text
 
 
 def _get_coordinates(city: str) -> tuple[float, float] | None:
@@ -62,9 +85,10 @@ def get_current_weather(city: str) -> str:
     Returns:
         A short description of the current weather and temperature.
     """
-    coords = _get_coordinates(city)
+    city_name = _extract_city(city)
+    coords = _get_coordinates(city_name)
     if coords is None:
-        return f"Sorry, I couldn't find the location '{city}'. Please check the city name and try again."
+        return f"Sorry, I couldn't find the location '{city_name}'. Please check the city name and try again."
 
     lat, lon = coords
     weather = _fetch_weather(lat, lon)
@@ -77,7 +101,7 @@ def get_current_weather(city: str) -> str:
     description = _weather_code_to_description(code)
 
     return (
-        f"Current weather in {city}: {description}, "
+        f"Current weather in {city_name}: {description}, "
         f"temperature {temp}°C, wind speed {wind} km/h."
     )
 
