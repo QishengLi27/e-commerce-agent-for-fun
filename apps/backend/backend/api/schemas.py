@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 
 class Source(BaseModel):
@@ -24,3 +24,4 @@ class ChatResponse(BaseModel):
 class HealthResponse(BaseModel):
     status: str
     version: str = "0.1.0"
+    checks: Optional[Dict[str, str]] = None

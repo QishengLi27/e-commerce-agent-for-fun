@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api.routes import router
+from backend.config import settings
 
 app = FastAPI(
     title="E-Commerce Support Agent API",
@@ -12,7 +13,7 @@ app = FastAPI(
 # Allow frontend to call the API during development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=settings.cors_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

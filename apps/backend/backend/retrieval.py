@@ -25,8 +25,9 @@ from backend.resilience import (
     make_retry_decorator,
     logger as resilience_logger,
 )
+from backend.config import settings
 
-PG_CONNECTION = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecommerce"
+PG_CONNECTION = settings.database_url
 
 
 class HybridPolicyRetriever:
@@ -49,16 +50,16 @@ class HybridPolicyRetriever:
 
         # Embeddings
         self.embeddings = OpenAIEmbeddings(
-            model="embedding-2",
-            openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
-            openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
+            model=settings.embedding_model,
+            openai_api_key=settings.openai_api_key,
+            openai_api_base=settings.openai_api_base,
         )
 
         # LLM for re-ranking
         self.llm = ChatOpenAI(
-            model="glm-4-flash",
-            openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
-            openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
+            model=settings.openai_model,
+            openai_api_key=settings.openai_api_key,
+            openai_api_base=settings.openai_api_base,
             temperature=0.0,
             max_retries=2,
             timeout=15,

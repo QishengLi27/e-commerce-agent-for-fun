@@ -13,8 +13,9 @@ from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import PGVector
+from backend.config import settings
 
-CONNECTION_STRING = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecommerce"
+CONNECTION_STRING = settings.database_url
 
 
 def setup_vector_db():
@@ -28,9 +29,9 @@ def setup_vector_db():
 
     # Create embeddings
     embeddings = OpenAIEmbeddings(
-        model="embedding-2",
-        openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
-        openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
+        model=settings.embedding_model,
+        openai_api_key=settings.openai_api_key,
+        openai_api_base=settings.openai_api_base,
     )
 
     # Create pgvector collection (replaces Chroma)

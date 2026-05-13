@@ -20,7 +20,13 @@
 - **Feedback Loop**: Allow thumbs-up/down feedback and use it to improve prompts or reranking.
 - **Authentication**: Add a user login/session layer for personalized support.
 
-## 3. Advanced Capabilities
+## 3. Agent Architecture & Quality Assurance
+
+- **Validation Agent (LLM-as-a-Judge)**: Add a post-generation validation node that checks answers for factual accuracy, hallucination, tone compliance, and question relevance before delivery. Failed validations trigger a regeneration loop.
+- **Sub-Agent / Expert Graphs**: Replace monolithic tool nodes with specialized sub-graphs (e.g., a `PolicyExpert` that performs multi-hop reasoning across multiple policy documents before concluding).
+- **Multi-Agent Team (Supervisor Pattern)**: Scale to a supervisor graph that delegates to domain-specific sub-agents (order expert, policy expert, weather expert) each with independent tool sets and prompts.
+
+## 4. Advanced Capabilities
 
 - **Cloud Deployment**: Move to managed vector databases or cloud-hosted PostgreSQL with pgvector.
 - **Fine-tuning**: Fine-tune the model with domain-specific e-commerce and policy data.
@@ -28,7 +34,7 @@
 - **Human Escalation**: Add a fallback path to human support when the agent is unsure.
 - **Compliance**: Add GDPR-style data handling and deletion of conversation memory.
 
-## 4. Quick Wins for Prototype Development
+## 5. Quick Wins for Prototype Development
 
 - Add a simple CLI wrapper for interactive testing.
 - Persist user-agent memory to a local JSON file.
@@ -36,7 +42,7 @@
 - Create a reusable `memory.py` module for conversation history.
 - Update `README.md` to point to the plans file and memory module.
 
-## 5. Notes for AI Assistance
+## 6. Notes for AI Assistance
 
 - Use this roadmap to suggest incremental implementation steps.
 - Prefer building features in small, testable pieces.

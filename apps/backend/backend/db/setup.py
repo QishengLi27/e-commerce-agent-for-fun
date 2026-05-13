@@ -6,8 +6,9 @@ Run this to create/reset the orders table:
 """
 
 import psycopg2
+from backend.config import settings
 
-CONNECTION_STRING = "postgresql://postgres:postgres@localhost:5432/ecommerce"
+CONNECTION_STRING = settings.pg_connection_raw
 
 
 def get_pg_connection():

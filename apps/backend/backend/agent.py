@@ -15,14 +15,15 @@ from backend.resilience import (
     make_retry_decorator,
 )
 from backend.tools import order_status_tool, list_orders_tool, policy_retriever_tool, get_current_weather
+from backend.config import settings
 
 
 class AgentManager:
     """Manages the e-commerce support agent with caching, resilience, and streaming."""
 
     def __init__(self):
-        self.pg_connection = "postgresql+psycopg2://postgres:postgres@localhost:5432/ecommerce"
-        self.memory_store = MemoryStore(filepath="data/memory_store.json", max_history=8)
+        self.pg_connection = settings.database_url
+        self.memory_store = MemoryStore(filepath=settings.memory_filepath, max_history=8)
         self._cache_vectorstore = None
         self._llm = None
         self._llm_circuit = None
@@ -38,9 +39,9 @@ class AgentManager:
             self._cache_vectorstore = PGVector(
                 connection_string=self.pg_connection,
                 embedding_function=OpenAIEmbeddings(
-                    model="embedding-2",
-                    openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
-                    openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
+                    model=settings.embedding_model,
+                    openai_api_key=settings.openai_api_key,
+                    openai_api_base=settings.openai_api_base,
                 ),
                 collection_name="semantic_cache",
                 distance_strategy="cosine",
@@ -52,9 +53,9 @@ class AgentManager:
         if self._llm is None:
             from langchain_openai import ChatOpenAI
             self._llm = ChatOpenAI(
-                model="glm-4-flash",
-                openai_api_key="51bfecd9b55a448c927dd69288bfaeee.a2u6YiMOoo8S7WbU",
-                openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
+                model=settings.openai_model,
+                openai_api_key=settings.openai_api_key,
+                openai_api_base=settings.openai_api_base,
                 max_retries=2,
                 timeout=30,
                 streaming=True,
