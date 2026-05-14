@@ -24,6 +24,7 @@ class AgentManager:
     def __init__(self):
         self.pg_connection = settings.database_url
         self.memory_store = MemoryStore(filepath=settings.memory_filepath, max_history=8)
+        self.tools = [order_status_tool, list_orders_tool, policy_retriever_tool, get_current_weather]
         self._cache_vectorstore = None
         self._llm = None
         self._llm_circuit = None
@@ -71,8 +72,7 @@ class AgentManager:
     @property
     def agent(self):
         if self._agent is None:
-            tools = [order_status_tool, list_orders_tool, policy_retriever_tool, get_current_weather]
-            self._agent = create_agent(self.llm, tools)
+            self._agent = create_agent(self.llm, self.tools)
         return self._agent
 
     def get_cached_response(self, query: str):
@@ -172,7 +172,7 @@ class AgentManager:
             full_content = f"""You are a helpful e-commerce support agent for an online store.
 
 You have access to the following tools:
-{chr(10).join([f"- {tool.name}: {tool.description}" for tool in tools])}
+{chr(10).join([f"- {tool.name}: {tool.description}" for tool in self.tools])}
 
 When you are not sure, answer honestly and do not hallucinate.
 Use the exact available tools for order, policy, or weather lookup when needed.
@@ -183,7 +183,7 @@ Use the exact available tools for order, policy, or weather lookup when needed.
 
 Use the following format for tool use:
 Thought: you should always think about what to do
-Action: the action to take, should be one of {', '.join([tool.name for tool in tools])}
+Action: the action to take, should be one of {', '.join([tool.name for tool in self.tools])}
 Action Input: the input to the action
 Observation: the result of the action
 ... (this Thought/Action/Action Input/Observation can repeat N times)
@@ -260,7 +260,7 @@ Question: {cleaned_input}"""
 
         full_content = f"""You are a helpful e-commerce support agent for an online store.
             You have access to the following tools:
-            {chr(10).join([f"- {tool.name}: {tool.description}" for tool in tools])}
+            {chr(10).join([f"- {tool.name}: {tool.description}" for tool in self.tools])}
 
             When you are not sure, answer honestly and do not hallucinate.
             Use the exact available tools for order, policy, or weather lookup when needed.
@@ -271,7 +271,7 @@ Question: {cleaned_input}"""
 
             Use the following format for tool use:
             Thought: you should always think about what to do
-            Action: the action to take, should be one of {', '.join([tool.name for tool in tools])}
+            Action: the action to take, should be one of {', '.join([tool.name for tool in self.tools])}
             Action Input: the input to the action
             Observation: the result of the action
             ... (this Thought/Action/Action Input/Observation can repeat N times)
