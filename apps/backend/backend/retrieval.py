@@ -166,12 +166,10 @@ class HybridPolicyRetriever:
         return [(doc_map[key], score) for key, score in sorted_docs]
 
     @make_retry_decorator(max_attempts=2)
-    def _score_single_doc(self, prompt: str) -> int:
-        """Score one document with retry logic."""
+    def _batch_rerank_call(self, prompt: str) -> str:
+        """Single LLM call to score all documents at once."""
         response = self.llm.invoke(prompt)
-        content = response.content.strip()
-        match = re.search(r"\b(\d+)\b", content)
-        return int(match.group(1)) if match else 5
+        return response.content.strip()
 
     def _llm_rerank(
         self,
@@ -180,32 +178,55 @@ class HybridPolicyRetriever:
         top_n: int = 3,
     ) -> List[Tuple[Document, float]]:
         """
-        Use the LLM to score each document's relevance to the query.
+        Batch LLM re-rank: scores all documents in a single LLM call.
         Returns re-ranked (doc, score) list.
         """
-        scored = []
-        for doc, _ in docs:
-            prompt = (
-                "Rate how relevant the following document is to answering the user's question. "
-                "Respond with only a number from 1 to 10, where 10 means perfectly relevant.\n\n"
-                f"User question: {query}\n\n"
-                f"Document: {doc.page_content[:400]}\n\n"
-                "Relevance score (1-10):"
+        if not docs:
+            return []
+
+        doc_blocks = []
+        for i, (doc, _) in enumerate(docs, start=1):
+            doc_blocks.append(f"[{i}] {doc.page_content[:400]}")
+
+        prompt = (
+            "Rate how relevant each document is to answering the user's question. "
+            "For each document, respond with its number and a score from 1 to 10 "
+            "(10 = perfectly relevant).\n\n"
+            f"User question: {query}\n\n"
+            + "\n\n".join(doc_blocks)
+            + "\n\nScores (format: [N] score):"
+        )
+
+        try:
+            raw = self.llm_circuit.call(
+                self._batch_rerank_call,
+                lambda *a, **kw: "",
+                prompt,
             )
-            try:
-                score = self.llm_circuit.call(
-                    self._score_single_doc,
-                    lambda *a, **kw: 5,
-                    prompt,
-                )
-                score = max(1, min(10, score))
-            except Exception as e:
-                resilience_logger.warning(f"[llm_rerank] Failed for doc: {e}")
-                score = 5
-            scored.append((doc, float(score)))
+            scores = self._parse_batch_scores(raw, len(docs))
+        except Exception as e:
+            resilience_logger.warning(f"[llm_rerank] Batch rerank failed: {e}")
+            scores = {}
+
+        scored = []
+        for i, (doc, _) in enumerate(docs, start=1):
+            score = float(scores.get(i, 5))
+            score = max(1.0, min(10.0, score))
+            scored.append((doc, score))
 
         scored.sort(key=lambda x: x[1], reverse=True)
         return scored[:top_n]
+
+    @staticmethod
+    def _parse_batch_scores(raw: str, num_docs: int) -> dict:
+        """Parse scores from batch rerank response like '[1] 8 [2] 5 [3] 9'."""
+        scores = {}
+        for match in re.finditer(r"\[(\d+)\]\s*(\d+)", raw):
+            idx = int(match.group(1))
+            score = int(match.group(2))
+            if 1 <= idx <= num_docs:
+                scores[idx] = score
+        return scores
 
     def retrieve(
         self,
