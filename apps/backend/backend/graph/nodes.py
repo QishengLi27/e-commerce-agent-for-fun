@@ -23,7 +23,10 @@ from backend.tools import (
     list_orders_tool,
     policy_retriever_tool,
     get_current_weather,
+    product_info_tool,
+    category_info_tool,
 )
+from backend.knowledge.graph_store import get_knowledge_store as _get_kg_store
 
 logger = logging.getLogger(__name__)
 
@@ -107,13 +110,21 @@ def classify_intent(state: AgentState) -> AgentState:
             logger.info("[graph] Intent: order, id=%s", match.group(1))
             return state
 
-    # 4. Policy / returns
+    # 4. Product / category queries (more specific than generic policy)
+    if any(w in text for w in ["product", "category", "item info", "headphone",
+        "laptop", "mouse", "keyboard", "phone case", "t-shirt", "speaker",
+        "what is", "tell me about", "which policy applies to"]):
+        state["intent"] = "knowledge"
+        logger.info("[graph] Intent: knowledge")
+        return state
+
+    # 5. Policy / returns
     if any(w in text for w in ["policy", "return", "refund", "shipping", "warranty", "退货", "退款", "政策", "运费"]):
         state["intent"] = "policy"
         logger.info("[graph] Intent: policy")
         return state
 
-    # 5. Fallback
+    # 6. Fallback
     state["intent"] = "unknown"
     logger.info("[graph] Intent: unknown")
     return state
@@ -122,7 +133,7 @@ def classify_intent(state: AgentState) -> AgentState:
 # ─── Router ──────────────────────────────────────────────────────────────────
 
 def route_by_intent(state: AgentState) -> Literal[
-    "order", "list_orders", "policy", "weather", "generate_reply"
+    "order", "list_orders", "policy", "weather", "knowledge", "generate_reply"
 ]:
     """Conditional edge: decide next node based on intent."""
     if state.get("cached"):
@@ -130,7 +141,7 @@ def route_by_intent(state: AgentState) -> Literal[
         return "generate_reply"
 
     intent = state.get("intent", "unknown")
-    if intent in ("order", "list_orders", "policy", "weather"):
+    if intent in ("order", "list_orders", "policy", "weather", "knowledge"):
         logger.info("[graph] Route: %s", intent)
         return intent
 
@@ -194,6 +205,46 @@ def weather_node(state: AgentState) -> AgentState:
     result = get_current_weather.invoke({"city": city})
     state["tool_result"] = result
     logger.info("[graph] Weather result: %s", result[:60])
+    return state
+
+
+# ─── Node: knowledge ──────────────────────────────────────────────────────────
+
+def knowledge_node(state: AgentState) -> AgentState:
+    """Query knowledge graph for product/category/policy relationships."""
+    query = state.get("user_input", "")
+    kg = _get_kg_store()
+
+    # Try product info first
+    product_info = kg.get_product_info(query)
+    if product_info:
+        lines = [
+            f"Product: {product_info['name']}",
+            f"Category: {product_info['category_name']}",
+        ]
+        if product_info.get("price"):
+            lines.append(f"Price: ${product_info['price']:.2f}")
+        if product_info.get("policies"):
+            lines.append("Applicable Policies:")
+            for p in product_info["policies"]:
+                lines.append(f"  - [{p['type'].upper()}] {p['summary']}")
+        state["tool_result"] = "\n".join(lines)
+        logger.info("[graph] Knowledge product: %s", product_info['name'])
+        return state
+
+    # Fall back to product search
+    products = kg.search_products(query)
+    if products:
+        lines = [f"Products matching '{query}':"]
+        for p in products:
+            lines.append(
+                f"  - {p['name']} ({p['category_name']}, ${p['price']:.2f})"
+            )
+        state["tool_result"] = "\n".join(lines)
+        logger.info("[graph] Knowledge search: %d results", len(products))
+        return state
+
+    state["tool_result"] = f"No products or categories found matching '{query}'."
     return state
 
 

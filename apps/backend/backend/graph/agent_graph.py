@@ -13,6 +13,7 @@ from backend.graph.nodes import (
     list_orders_node,
     policy_node,
     weather_node,
+    knowledge_node,
     generate_reply,
     validate_reply,
     update_memory,
@@ -29,6 +30,7 @@ builder.add_node("order_node", order_node)
 builder.add_node("list_orders_node", list_orders_node)
 builder.add_node("policy_node", policy_node)
 builder.add_node("weather_node", weather_node)
+builder.add_node("knowledge_node", knowledge_node)
 builder.add_node("generate_reply", generate_reply)
 builder.add_node("validate_reply", validate_reply)
 builder.add_node("update_memory", update_memory)
@@ -48,6 +50,7 @@ builder.add_conditional_edges(
         "list_orders": "list_orders_node",
         "policy": "policy_node",
         "weather": "weather_node",
+        "knowledge": "knowledge_node",
         "generate_reply": "generate_reply",
     },
 )
@@ -57,9 +60,9 @@ builder.add_edge("order_node", "generate_reply")
 builder.add_edge("list_orders_node", "generate_reply")
 builder.add_edge("policy_node", "generate_reply")
 builder.add_edge("weather_node", "generate_reply")
+builder.add_edge("knowledge_node", "generate_reply")
 
 # Final steps
-# Validate before persisting
 builder.add_edge("generate_reply", "validate_reply")
 builder.add_edge("validate_reply", "update_memory")
 builder.add_edge("update_memory", END)

@@ -65,9 +65,22 @@ Make sure your virtual environment is activated, then:
 ```bash
 python -m backend.db.setup
 python -m backend.db.vector_setup
+python -m backend.knowledge.schema
 ```
 
-### 6. Run the agent
+### 6. Run the API server (FastAPI)
+
+```bash
+uvicorn backend.api.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Or with gunicorn + uvicorn workers (production):
+
+```bash
+gunicorn backend.api.main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --workers 4
+```
+
+### 7. Run the CLI agent (alternative)
 
 ```bash
 python main.py
@@ -88,7 +101,12 @@ python main.py
 
 ## Environment Variables
 
-- `OPENAI_API_KEY` / `OPENAI_API_BASE` — currently hardcoded; should be moved to env vars
+See `.env.example` for the full configuration. Key settings:
+
+- `OPENAI_API_KEY` / `OPENAI_API_BASE` — LLM provider credentials
+- `DATABASE_URL` — PostgreSQL connection string
+- `RETRIEVAL_MODE` — `vector` | `graph` | `hybrid` (see `.env.example` for details)
+- `CORS_ORIGINS` — allowed frontend origins for the API
 
 ## Running individual modules
 
@@ -97,6 +115,7 @@ Always run modules with the `-m` flag so Python resolves the `backend` package c
 ```bash
 python -m backend.db.setup
 python -m backend.db.vector_setup
+python -m backend.knowledge.schema
 python -m backend.db.migrate_pgvector
 python -m backend.agent
 ```

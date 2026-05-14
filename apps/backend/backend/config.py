@@ -5,8 +5,16 @@ Use pydantic-settings to validate and type-check all config.
 Create a .env file in apps/backend/ based on .env.example
 """
 
+from enum import Enum
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
+
+
+class RetrievalMode(str, Enum):
+    VECTOR = "vector"
+    GRAPH = "graph"
+    HYBRID = "hybrid"
 
 
 class Settings(BaseSettings):
@@ -55,6 +63,12 @@ class Settings(BaseSettings):
     )
     api_host: str = Field(default="0.0.0.0", description="FastAPI bind host")
     api_port: int = Field(default=8000, description="FastAPI bind port")
+
+    # ─── Retrieval ────────────────────────────────────────────────────────────
+    retrieval_mode: RetrievalMode = Field(
+        default=RetrievalMode.HYBRID,
+        description="Policy retrieval mode: vector | graph | hybrid",
+    )
 
     # ─── App Paths ────────────────────────────────────────────────────────────
     data_dir: str = Field(default="data", description="Directory for local data files")
