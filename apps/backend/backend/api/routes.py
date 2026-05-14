@@ -72,6 +72,7 @@ async def chat(request: ChatRequest):
         response=result.get("final_answer", ""),
         cached=result.get("cached", False),
         latency_ms=latency,
+        validation_flag=result.get("validation_flag"),
     )
 
 
@@ -87,6 +88,7 @@ async def _stream_response(message: str) -> AsyncGenerator[str, None]:
         }),
     )
     answer = result.get("final_answer", "")
+    validation_flag = result.get("validation_flag")
 
     # Stream word-by-word for visible typing effect
     words = answer.split(" ")
@@ -95,6 +97,9 @@ async def _stream_response(message: str) -> AsyncGenerator[str, None]:
         safe = chunk.replace("\n", "\\n").replace("\r", "")
         yield f"data: {safe}\n\n"
         await asyncio.sleep(0.03)
+
+    if validation_flag:
+        yield f"data: [FLAG:{validation_flag}]\n\n"
 
     yield "data: [DONE]\n\n"
 

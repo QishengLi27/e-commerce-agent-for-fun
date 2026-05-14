@@ -39,6 +39,8 @@ class AgentState(TypedDict, total=False):
     tool_result: str
     final_answer: str
     cached: bool
+    validation_flag: str
+    validation_notes: str
 
 
 # ─── Node: sanitize_input ────────────────────────────────────────────────────
@@ -220,6 +222,90 @@ def generate_reply(state: AgentState) -> AgentState:
     response = llm.invoke([HumanMessage(content=prompt)])
     state["final_answer"] = response.content.strip()
     logger.info("[graph] Generated answer: %s", state["final_answer"][:60])
+    return state
+
+
+# ─── Validation Prompt ─────────────────────────────────────────────────────────
+
+_VALIDATION_PROMPT = """You are an accuracy auditor for an e-commerce support agent.
+
+Your job is to check whether the agent's answer is fully grounded in the provided tool results.
+Do NOT answer the user's question. Only assess accuracy.
+
+User question: {question}
+Tool results: {tool_result}
+Agent answer: {answer}
+
+Check for:
+1. Fabricated data — order IDs, dates, amounts, or statuses not in the tool results
+2. Contradictions — claims that conflict with the tool results
+3. Unsupported claims — factual assertions with no basis in the tool results
+
+Return ONLY one of these exact labels followed by an optional one-line note:
+
+- valid — answer is fully grounded in the tool results
+- unverified_claims — answer contains claims not supported by the tool results
+- not_applicable — no tool results to validate against
+
+Format: LABEL | note
+
+Example: "valid | All order details match the tool output"
+Example: "unverified_claims | Answer mentions order #1005 but tool result only shows #1003"
+"""
+
+
+def _parse_validation(raw: str) -> tuple[str, str]:
+    """Parse LLM validation output into (flag, note). Defaults to unverified_claims on malformed input."""
+    if not raw:
+        return ("unverified_claims", "empty validation response")
+    try:
+        parts = raw.split("|", 1)
+        flag = parts[0].strip()
+        note = parts[1].strip() if len(parts) > 1 else ""
+        if flag not in ("valid", "unverified_claims", "not_applicable"):
+            return ("unverified_claims", f"unrecognized flag: {flag}")
+        return (flag, note)
+    except Exception:
+        return ("unverified_claims", f"parse error: {raw[:100]}")
+
+
+def validate_reply(state: AgentState) -> AgentState:
+    """Validate that the generated answer is grounded in tool results."""
+    # Skip if answer came from cache (already validated before caching)
+    if state.get("cached"):
+        state["validation_flag"] = "valid"
+        state["validation_notes"] = "cache hit — previously validated"
+        logger.info("[graph] Validation skipped: cache hit")
+        return state
+
+    question = state.get("user_input", "")
+    tool_result = state.get("tool_result", "")
+    answer = state.get("final_answer", "")
+
+    # No tool result to validate against (unknown intent path)
+    if not tool_result:
+        state["validation_flag"] = "not_applicable"
+        state["validation_notes"] = "no tool result to validate against"
+        logger.info("[graph] Validation: not_applicable (no tool result)")
+        return state
+
+    try:
+        prompt = _VALIDATION_PROMPT.format(
+            question=question,
+            tool_result=tool_result,
+            answer=answer,
+        )
+        response = llm.invoke([HumanMessage(content=prompt)])
+        raw = response.content.strip()
+        flag, note = _parse_validation(raw)
+        state["validation_flag"] = flag
+        state["validation_notes"] = note
+        logger.info("[graph] Validation: %s — %s", flag, note[:80])
+    except Exception as e:
+        state["validation_flag"] = "unverified_claims"
+        state["validation_notes"] = f"validation call failed: {e}"
+        logger.warning("[graph] Validation error: %s", e)
+
     return state
 
 

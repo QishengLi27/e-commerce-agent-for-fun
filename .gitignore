@@ -37,3 +37,6 @@ apps/backend/data/cache_db/
 
 # Logs
 *.log
+
+# ai
+.claude/

@@ -19,6 +19,7 @@ class ChatResponse(BaseModel):
     sources: List[Source] = []
     cached: bool = False
     latency_ms: Optional[int] = None
+    validation_flag: Optional[str] = None
 
 
 class HealthResponse(BaseModel):

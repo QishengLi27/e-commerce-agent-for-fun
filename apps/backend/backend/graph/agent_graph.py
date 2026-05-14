@@ -14,6 +14,7 @@ from backend.graph.nodes import (
     policy_node,
     weather_node,
     generate_reply,
+    validate_reply,
     update_memory,
 )
 
@@ -29,6 +30,7 @@ builder.add_node("list_orders_node", list_orders_node)
 builder.add_node("policy_node", policy_node)
 builder.add_node("weather_node", weather_node)
 builder.add_node("generate_reply", generate_reply)
+builder.add_node("validate_reply", validate_reply)
 builder.add_node("update_memory", update_memory)
 
 # Entry point
@@ -57,7 +59,9 @@ builder.add_edge("policy_node", "generate_reply")
 builder.add_edge("weather_node", "generate_reply")
 
 # Final steps
-builder.add_edge("generate_reply", "update_memory")
+# Validate before persisting
+builder.add_edge("generate_reply", "validate_reply")
+builder.add_edge("validate_reply", "update_memory")
 builder.add_edge("update_memory", END)
 
 # Compile
