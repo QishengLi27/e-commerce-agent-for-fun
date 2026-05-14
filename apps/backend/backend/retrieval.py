@@ -219,13 +219,29 @@ class HybridPolicyRetriever:
 
     @staticmethod
     def _parse_batch_scores(raw: str, num_docs: int) -> dict:
-        """Parse scores from batch rerank response like '[1] 8 [2] 5 [3] 9'."""
+        """Parse scores from batch rerank response.
+
+        Handles multiple formats the LLM might produce:
+          - Strict:    [1] 8  [2] 5  [3] 9
+          - With text: [1] Shipping and Delivery: 3  [2] Return Policy: 9
+          - Multi-line with colons anywhere.
+        """
         scores = {}
-        for match in re.finditer(r"\[(\d+)\]\s*(\d+)", raw):
+        # Match [N] followed by any text, then a colon + score: "[1] Shipping: 3"
+        for match in re.finditer(r"\[(\d+)\].*?:\s*(\d+)", raw):
             idx = int(match.group(1))
             score = int(match.group(2))
             if 1 <= idx <= num_docs:
                 scores[idx] = score
+
+        # Fallback: match [N] immediately followed by score: "[1] 8"
+        if not scores:
+            for match in re.finditer(r"\[(\d+)\]\s*(\d+)", raw):
+                idx = int(match.group(1))
+                score = int(match.group(2))
+                if 1 <= idx <= num_docs:
+                    scores[idx] = score
+
         return scores
 
     def retrieve(

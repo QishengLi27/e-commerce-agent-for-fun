@@ -21,3 +21,8 @@ pydantic-settings>=2.0.0
 
 # Production WSGI server
 gunicorn>=21.0.0
+
+# Evaluation
+ragas>=0.3.0
+pandas>=2.0.0
+datasets>=3.0.0
