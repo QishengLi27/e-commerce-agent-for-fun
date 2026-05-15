@@ -9,6 +9,7 @@ from backend.graph.nodes import (
     sanitize_input,
     classify_intent,
     route_by_intent,
+    route_after_validation,
     order_node,
     list_orders_node,
     policy_node,
@@ -18,6 +19,7 @@ from backend.graph.nodes import (
     validate_reply,
     update_memory,
 )
+from backend.checkpoint import get_checkpointer
 
 # ─── Build Graph ─────────────────────────────────────────────────────────────
 
@@ -62,10 +64,17 @@ builder.add_edge("policy_node", "generate_reply")
 builder.add_edge("weather_node", "generate_reply")
 builder.add_edge("knowledge_node", "generate_reply")
 
-# Final steps
+# Final steps with self-correction loop
 builder.add_edge("generate_reply", "validate_reply")
-builder.add_edge("validate_reply", "update_memory")
+builder.add_conditional_edges(
+    "validate_reply",
+    route_after_validation,
+    {
+        "generate_reply": "generate_reply",
+        "update_memory": "update_memory",
+    },
+)
 builder.add_edge("update_memory", END)
 
-# Compile
-agent_graph = builder.compile()
+# Compile with checkpointer for per-session state persistence
+agent_graph = builder.compile(checkpointer=get_checkpointer())

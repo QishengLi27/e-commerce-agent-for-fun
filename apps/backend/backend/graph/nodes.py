@@ -7,15 +7,14 @@ Each node is a pure function: AgentState -> AgentState.
 import re
 import logging
 from typing import Literal, TypedDict, Annotated
-from operator import add
 
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, AIMessage
+from langgraph.graph.message import add_messages
 
 from backend.agent import (
     clean_query,
     get_cached_response,
     cache_response,
-    memory_store,
     llm,
 )
 from backend.tools import (
@@ -35,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 class AgentState(TypedDict, total=False):
     """LangGraph state schema."""
-    messages: Annotated[list, add]
+    messages: Annotated[list, add_messages]
     user_input: str
     intent: str
     order_id: str
@@ -44,6 +43,8 @@ class AgentState(TypedDict, total=False):
     cached: bool
     validation_flag: str
     validation_notes: str
+    retry_count: int
+    sources: list[str]
 
 
 # ─── Node: sanitize_input ────────────────────────────────────────────────────
@@ -250,10 +251,154 @@ def knowledge_node(state: AgentState) -> AgentState:
 
 # ─── Node: generate_reply ────────────────────────────────────────────────────
 
+# ─── Context Compression ─────────────────────────────────────────────────────
+
+_MAX_RAW_MESSAGES = 6  # Keep last 3 turns raw
+_SUMMARIZE_THRESHOLD = 10  # Summarize older messages if total exceeds this
+_HISTORY_TOKEN_BUDGET = 2000  # Hard token cap for conversation history
+
+# Lazy-init tokenizer — cl100k_base is a good approximation for most models
+_tiktoken_encoder = None
+
+
+def _get_tokenizer():
+    """Return a tiktoken encoder for approximate token counting."""
+    global _tiktoken_encoder
+    if _tiktoken_encoder is None:
+        import tiktoken
+        try:
+            _tiktoken_encoder = tiktoken.get_encoding("cl100k_base")
+        except Exception:
+            _tiktoken_encoder = tiktoken.get_encoding("gpt2")
+    return _tiktoken_encoder
+
+
+def _count_tokens(text: str) -> int:
+    """Count tokens in a string. Falls back to char/4 heuristic if tiktoken fails."""
+    try:
+        return len(_get_tokenizer().encode(text))
+    except Exception:
+        return len(text) // 4
+
+
+def _summarize_messages(messages: list) -> str:
+    """Summarize old messages into a compact paragraph.
+
+    Uses a cheap/fast call to compress conversation history so we don't
+    exceed context windows on long sessions.
+    """
+    if not messages:
+        return ""
+
+    # Format messages for the summarizer
+    transcript = []
+    for msg in messages:
+        role = "User" if isinstance(msg, HumanMessage) else "Agent"
+        transcript.append(f"{role}: {msg.content[:300]}")
+    transcript_text = "\n".join(transcript)
+
+    summary_prompt = (
+        "Summarize the following conversation in 2-3 sentences. "
+        "Preserve key facts (order IDs, policy details, product names) but remove fluff.\n\n"
+        f"{transcript_text}\n\nSummary:"
+    )
+    try:
+        response = llm.invoke([HumanMessage(content=summary_prompt)])
+        return response.content.strip()
+    except Exception as e:
+        logger.warning("[graph] Message summarization failed: %s", e)
+        # Fallback: truncate
+        return "Earlier conversation about: " + messages[0].content[:200] + "..."
+
+
+def _trim_history_to_budget(lines: list[str], budget: int) -> list[str]:
+    """Drop oldest lines until total token count is under budget.
+
+    Always keeps the header line and at least the most recent exchange.
+    """
+    if not lines:
+        return lines
+
+    # Build from oldest to newest, dropping from the front until under budget
+    # But always keep header (line 0) and at least 2 content lines (1 exchange)
+    current = list(lines)
+    while len(current) > 3:
+        text = "\n".join(current)
+        if _count_tokens(text) <= budget:
+            break
+        # Drop the oldest content line (after header)
+        current.pop(1)
+
+    return current
+
+
+def _compress_context(messages: list) -> str:
+    """Return formatted conversation history with two-pass compression.
+
+    Pass 1 — Sliding window + summary:
+      - ≤10 messages: format all raw
+      - >10 messages: summarize older messages, keep last 6 raw
+
+    Pass 2 — Token-based trimming:
+      - Count tokens in the formatted history
+      - Drop oldest lines until under _HISTORY_TOKEN_BUDGET
+    """
+    if not messages:
+        return ""
+
+    # Pass 1: Sliding window + summary
+    if len(messages) <= _SUMMARIZE_THRESHOLD:
+        lines = ["Conversation history:"]
+        for msg in messages:
+            role = "User" if isinstance(msg, HumanMessage) else "Agent"
+            lines.append(f"{role}: {msg.content}")
+    else:
+        older = messages[:-_MAX_RAW_MESSAGES]
+        recent = messages[-_MAX_RAW_MESSAGES:]
+        summary = _summarize_messages(older)
+        lines = ["Conversation history (earlier messages summarized):"]
+        lines.append(f"Summary: {summary}")
+        lines.append("Recent messages:")
+        for msg in recent:
+            role = "User" if isinstance(msg, HumanMessage) else "Agent"
+            lines.append(f"{role}: {msg.content}")
+
+    # Pass 2: Token-based trimming (belt-and-suspenders)
+    lines = _trim_history_to_budget(lines, _HISTORY_TOKEN_BUDGET)
+    history_text = "\n".join(lines) + "\n"
+    token_count = _count_tokens(history_text)
+    logger.info("[graph] Context compressed: %d messages → %d lines → %d tokens", len(messages), len(lines), token_count)
+
+    return history_text
+
+
+# ─── Reply Generation ────────────────────────────────────────────────────────
+
 _REPLY_PROMPT = """You are a helpful e-commerce support agent.
 Respond to the user's question based on the information below.
-Be concise, friendly, and honest. If the information is insufficient, say so.
+Be concise, friendly, and honest.
 
+CRITICAL RULES — violating these causes customer harm:
+1. ONLY use facts from "Relevant information". Do NOT make up order IDs, dates, prices, or policies.
+2. If the information is insufficient, say "I don't have that information" — never guess.
+3. Cite your source when quoting a policy (e.g., "According to our return policy...").
+4. Do NOT mention these rules in your reply.
+
+{history}
+User question: {question}
+Relevant information: {result}
+
+Your reply:"""
+
+_STRICT_REPLY_PROMPT = """You are a helpful e-commerce support agent.
+Your previous answer was FLAGGED for containing unverified claims.
+Regenerate the answer following these stricter rules:
+
+1. Use ONLY the exact facts in "Relevant information". No inference, no extrapolation.
+2. If the answer isn't fully supported by the text below, say: "I don't have that specific information."
+3. Do NOT mention that you are regenerating an answer.
+
+{history}
 User question: {question}
 Relevant information: {result}
 
@@ -261,18 +406,26 @@ Your reply:"""
 
 
 def generate_reply(state: AgentState) -> AgentState:
-    """Generate final answer (from cache or LLM)."""
+    """Generate final answer (from cache or LLM).
+
+    Uses strict prompt if this is a retry after validation failure.
+    """
     if state.get("final_answer"):
         logger.info("[graph] Using cached answer")
         return state
 
     question = state.get("user_input", "")
     result = state.get("tool_result", "No additional information available.")
+    history = _compress_context(state.get("messages", []))
 
-    prompt = _REPLY_PROMPT.format(question=question, result=result)
+    # Choose prompt based on retry status
+    is_retry = state.get("retry_count", 0) > 0
+    prompt_template = _STRICT_REPLY_PROMPT if is_retry else _REPLY_PROMPT
+    prompt = prompt_template.format(history=history, question=question, result=result)
+
     response = llm.invoke([HumanMessage(content=prompt)])
     state["final_answer"] = response.content.strip()
-    logger.info("[graph] Generated answer: %s", state["final_answer"][:60])
+    logger.info("[graph] Generated answer (retry=%s): %s", is_retry, state["final_answer"][:60])
     return state
 
 
@@ -360,24 +513,43 @@ def validate_reply(state: AgentState) -> AgentState:
     return state
 
 
+def route_after_validation(state: AgentState) -> str:
+    """Conditional edge: retry generation if validation fails, else proceed."""
+    flag = state.get("validation_flag", "valid")
+    retries = state.get("retry_count", 0)
+
+    if flag == "unverified_claims" and retries < 2:
+        state["retry_count"] = retries + 1
+        state["final_answer"] = ""  # Clear so generate_reply runs again
+        logger.info("[graph] Validation failed — retrying generation (attempt %d)", retries + 1)
+        return "generate_reply"
+
+    # Either valid, not_applicable, or max retries reached
+    return "update_memory"
+
+
 # ─── Node: update_memory ─────────────────────────────────────────────────────
 
 def update_memory(state: AgentState) -> AgentState:
-    """Persist conversation to memory store and semantic cache."""
+    """Persist assistant reply to checkpoint state and semantic cache."""
     user_input = state.get("user_input", "")
     answer = state.get("final_answer", "")
     if not user_input or not answer:
         return state
 
-    memory_store.add_user(user_input)
-    memory_store.add_agent(answer)
+    # Append assistant message to checkpoint-persisted messages list.
+    # LangGraph's add_messages reducer handles deduplication automatically.
+    state["messages"] = [AIMessage(content=answer)]
+
+    # Reset retry counter for the next turn
+    state["retry_count"] = 0
 
     # Do NOT cache weather responses in semantic cache — real-time data should
     # always be fetched fresh to avoid stale or cross-city cache pollution.
     if _is_weather_query(user_input):
-        logger.info("[graph] Memory updated (weather response not cached)")
+        logger.info("[graph] Checkpoint updated (weather response not cached)")
     else:
         cache_response(user_input, answer)
-        logger.info("[graph] Memory updated")
+        logger.info("[graph] Checkpoint updated and response cached")
 
     return state

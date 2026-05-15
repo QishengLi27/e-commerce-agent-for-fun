@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { ChatMessage } from '../types'
 import { sendMessage, streamMessage } from '../services/api'
 
@@ -7,11 +7,27 @@ function nextId() {
   return `msg-${++idCounter}`
 }
 
+const SESSION_KEY = 'chat_session_id'
+
+function getOrCreateSessionId(): string {
+  let id = localStorage.getItem(SESSION_KEY)
+  if (!id) {
+    id = crypto.randomUUID()
+    localStorage.setItem(SESSION_KEY, id)
+  }
+  return id
+}
+
 export function useAgentChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const abortRef = useRef(false)
+  const sessionIdRef = useRef<string>('')
+
+  useEffect(() => {
+    sessionIdRef.current = getOrCreateSessionId()
+  }, [])
 
   const send = useCallback(
     async (useStream = true) => {
@@ -37,9 +53,11 @@ export function useAgentChat() {
 
       setMessages((prev) => [...prev, userMsg, assistantMsg])
 
+      const sessionId = sessionIdRef.current
+
       try {
         if (useStream) {
-          for await (const chunk of streamMessage({ message: text })) {
+          for await (const chunk of streamMessage({ message: text, session_id: sessionId })) {
             if (abortRef.current) break
             setMessages((prev) => {
               const last = prev[prev.length - 1]
@@ -49,7 +67,7 @@ export function useAgentChat() {
             })
           }
         } else {
-          const response = await sendMessage({ message: text })
+          const response = await sendMessage({ message: text, session_id: sessionId })
           setMessages((prev) => {
             const last = prev[prev.length - 1]
             if (last.role !== 'assistant') return prev
