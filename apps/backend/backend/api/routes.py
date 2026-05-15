@@ -1,9 +1,11 @@
 import time
 import asyncio
+import uuid
 from typing import AsyncGenerator
 
 from fastapi import APIRouter, Request
 from fastapi.responses import StreamingResponse
+from langchain_core.messages import HumanMessage
 
 from backend.api.schemas import ChatRequest, ChatResponse, HealthResponse
 from backend.graph.agent_graph import agent_graph
@@ -54,21 +56,25 @@ async def health_check():
 async def chat(request: ChatRequest):
     """Process a chat message asynchronously via the LangGraph agent."""
     start = time.time()
+    session_id = request.session_id or str(uuid.uuid4())
 
     # Run the synchronous LangGraph in a thread pool so the event loop
     # stays free to handle other concurrent requests.
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(
         None,
-        lambda: agent_graph.invoke({
-            "user_input": request.message,
-            "messages": [],
-        }),
+        lambda: agent_graph.invoke(
+            {
+                "user_input": request.message,
+                "messages": [HumanMessage(content=request.message)],
+            },
+            config={"configurable": {"thread_id": session_id}},
+        ),
     )
 
     latency = int((time.time() - start) * 1000)
     return ChatResponse(
-        session_id=request.session_id,
+        session_id=session_id,
         response=result.get("final_answer", ""),
         cached=result.get("cached", False),
         latency_ms=latency,
@@ -76,16 +82,19 @@ async def chat(request: ChatRequest):
     )
 
 
-async def _stream_response(message: str) -> AsyncGenerator[str, None]:
+async def _stream_response(message: str, session_id: str) -> AsyncGenerator[str, None]:
     """Yield raw SSE frames with a smooth typing effect."""
     # Run graph in thread pool to avoid blocking the event loop
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(
         None,
-        lambda: agent_graph.invoke({
-            "user_input": message,
-            "messages": [],
-        }),
+        lambda: agent_graph.invoke(
+            {
+                "user_input": message,
+                "messages": [HumanMessage(content=message)],
+            },
+            config={"configurable": {"thread_id": session_id}},
+        ),
     )
     answer = result.get("final_answer", "")
     validation_flag = result.get("validation_flag")
@@ -106,7 +115,8 @@ async def _stream_response(message: str) -> AsyncGenerator[str, None]:
 
 @router.post("/chat/stream")
 async def chat_stream(request: ChatRequest):
+    session_id = request.session_id or str(uuid.uuid4())
     return StreamingResponse(
-        _stream_response(request.message),
+        _stream_response(request.message, session_id),
         media_type="text/event-stream",
     )

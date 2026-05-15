@@ -70,11 +70,17 @@ class Settings(BaseSettings):
         description="Policy retrieval mode: vector | graph | hybrid",
     )
 
+    # ─── Checkpointer ─────────────────────────────────────────────────────────
+    checkpoint_type: str = Field(
+        default="postgres",
+        description="Checkpointer backend: postgres | memory",
+    )
+
     # ─── App Paths ────────────────────────────────────────────────────────────
     data_dir: str = Field(default="data", description="Directory for local data files")
     memory_filepath: str = Field(
         default="data/memory_store.json",
-        description="Path to JSON memory store (dev only)",
+        description="Path to JSON memory store (dev only, legacy ReAct agent)",
     )
 
     # ─── Logging ──────────────────────────────────────────────────────────────
