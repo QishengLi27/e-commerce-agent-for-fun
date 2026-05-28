@@ -1,13 +1,23 @@
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.10
+  - repo: local
     hooks:
       - id: ruff
-        args: [--fix]
-      - id: ruff-format
+        name: ruff
+        entry: bash -c 'cd apps/backend && source venv/bin/activate && ruff check backend/ main.py tests/ --fix'
+        language: system
+        types: [python]
+        pass_filenames: false
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.15.0
-    hooks:
+      - id: ruff-format
+        name: ruff-format
+        entry: bash -c 'cd apps/backend && source venv/bin/activate && ruff format backend/ main.py tests/'
+        language: system
+        types: [python]
+        pass_filenames: false
+
       - id: mypy
-        additional_dependencies: [types-requests]
+        name: mypy
+        entry: bash -c 'cd apps/backend && source venv/bin/activate && mypy backend/ main.py tests/'
+        language: system
+        types: [python]
+        pass_filenames: false

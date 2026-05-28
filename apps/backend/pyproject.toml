@@ -7,6 +7,50 @@ name = "ecommerce-agent-backend"
 version = "0.1.0"
 description = "E-commerce AI support agent backend"
 requires-python = ">=3.11"
+dependencies = [
+    # LangChain / LangGraph
+    "langchain==1.2.15",
+    "langchain-core==1.3.2",
+    "langchain-openai==1.2.1",
+    "langchain-community==0.4.1",
+    "langgraph>=1.0.0",
+    "langchain-text-splitters>=1.0.0",
+    # Retrieval & Vector DB
+    "chromadb>=0.4.22",
+    "rank-bm25>=0.2.2",
+    "psycopg2-binary>=2.9.0",
+    "pgvector>=0.2.0",
+    "sqlalchemy>=2.0.0",
+    # Resilience
+    "tenacity>=8.0.0",
+    # API layer
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.27.0",
+    "python-multipart>=0.0.9",
+    "sse-starlette>=2.0.0",
+    # Validation & Config
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    # Production WSGI server
+    "gunicorn>=21.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=8.0.0",
+    # Evaluation
+    "ragas>=0.3.0",
+    "pandas>=2.0.0",
+    "datasets>=3.0.0",
+    # Code quality
+    "ruff>=0.15.0",
+    "mypy>=1.15.0",
+    "pre-commit>=4.0.0",
+]
+
+[tool.setuptools]
+packages = ["backend"]
 
 [tool.ruff]
 target-version = "py311"

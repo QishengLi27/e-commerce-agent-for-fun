@@ -210,16 +210,26 @@ venv\Scripts\activate
 
 ```bash
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install -e ".[dev]"
 ```
 
-### 4. Start PostgreSQL + pgvector
+> **Note:** `requirements.txt` is deprecated. All dependencies are now defined in `pyproject.toml`. The command above installs the package in editable mode with development extras (testing, linting, type checking). For production-only installs, use `pip install -e .`
+
+### 4. Install git hooks (one-time)
+
+Pre-commit was already installed in step 3 (via `[dev]` extras). Just activate the hook:
+
+```bash
+pre-commit install
+```
+
+### 5. Start PostgreSQL + pgvector
 
 ```bash
 docker run -d --name pgvector -p 5432:5432 -e POSTGRES_PASSWORD=postgres pgvector/pgvector:pg16
 ```
 
-### 5. Set up the database
+### 6. Set up the database
 
 Make sure your virtual environment is activated, then:
 
@@ -229,7 +239,7 @@ python -m backend.db.vector_setup
 python -m backend.knowledge.schema
 ```
 
-### 6. Run the API server (FastAPI)
+### 7. Run the API server (FastAPI)
 
 ```bash
 uvicorn backend.api.main:app --reload --host 0.0.0.0 --port 8000
@@ -241,7 +251,7 @@ Or with gunicorn + uvicorn workers (production):
 gunicorn backend.api.main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --workers 4
 ```
 
-### 7. Run the CLI agent (alternative)
+### 8. Run the CLI agent (alternative)
 
 ```bash
 python main.py
@@ -255,10 +265,44 @@ If you prefer to keep one virtual environment at the repository root:
 # From repo root
 source venv/bin/activate
 cd apps/backend
+pip install -e ".[dev]"
 python -m backend.db.setup
 python -m backend.db.vector_setup
 python main.py
 ```
+
+## Code Quality
+
+This project uses **ruff** (linting + formatting) and **mypy** (static type checking). All code is checked automatically on every commit via pre-commit hooks.
+
+### Run checks manually
+
+```bash
+# Linting + auto-fix import order, unused vars, Python upgrade checks, etc.
+ruff check backend/ main.py tests/ --fix
+
+# Format code
+ruff format backend/ main.py tests/
+
+# Type check
+mypy backend/ main.py tests/
+```
+
+**Recommended workflow** after making changes:
+
+```bash
+ruff check . --fix && ruff format . && mypy .
+```
+
+### Run all hooks without committing
+
+```bash
+pre-commit run --all-files
+```
+
+### VS Code integration
+
+Install the **Ruff** extension (Astral Software) for real-time linting and format-on-save.
 
 ## Environment Variables
 

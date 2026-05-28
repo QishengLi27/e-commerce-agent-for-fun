@@ -27,6 +27,25 @@ python main.py
 uvicorn backend.api.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
+## Backend Coding Standards
+
+When modifying code in `apps/backend/`, follow the standards defined in `apps/backend/AGENTS.md`:
+
+- **ruff** for linting and formatting (enforced by pre-commit)
+- **mypy** for static type checking (zero errors policy)
+- Google-style docstrings for all public functions
+- Full type annotations (`list[str]`, not `List` or bare `dict`)
+- Single-responsibility functions (< 50 lines, < 4 parameters)
+- No `print()` in modules (use `logging`); no bare `except:`
+
+Always run before committing:
+```bash
+cd apps/backend
+ruff check backend/ main.py tests/ --fix
+ruff format backend/ main.py tests/
+mypy backend/ main.py tests/
+```
+
 ## Architecture
 
 This is an e-commerce AI support agent monorepo. Only `apps/backend` is implemented; everything else is planned scaffolding.
