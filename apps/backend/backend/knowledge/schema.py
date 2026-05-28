@@ -11,6 +11,7 @@ Run setup via: python -m backend.knowledge.schema
 """
 
 import psycopg2
+
 from backend.config import settings
 
 CONNECTION_STRING = settings.pg_connection_raw

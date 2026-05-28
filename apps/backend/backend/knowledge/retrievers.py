@@ -13,8 +13,8 @@ Usage:
 """
 
 from abc import ABC, abstractmethod
-from backend.knowledge.graph_store import get_knowledge_store
 
+from backend.knowledge.graph_store import get_knowledge_store
 
 # ── Interface ──────────────────────────────────────────────────────────────────
 

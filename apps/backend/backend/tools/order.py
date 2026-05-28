@@ -1,5 +1,6 @@
 from langchain.tools import tool
-from backend.db.setup import get_order_status, get_all_orders
+
+from backend.db.setup import get_all_orders, get_order_status
 
 
 @tool

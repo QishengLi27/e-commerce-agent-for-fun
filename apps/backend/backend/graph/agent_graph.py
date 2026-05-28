@@ -13,22 +13,22 @@ The graph is a lazy singleton — call init_agent_graph() once during FastAPI
 startup, then use get_agent_graph() everywhere else.
 """
 
-from langgraph.graph import StateGraph, END
+from langgraph.graph import END, StateGraph
 
 from backend.graph.nodes import (
     AgentState,
-    sanitize_input,
     classify_intent,
-    route_by_intent,
-    route_after_validation,
-    order_node,
-    list_orders_node,
-    policy_node,
-    weather_node,
-    knowledge_node,
     generate_reply,
-    validate_reply,
+    knowledge_node,
+    list_orders_node,
+    order_node,
+    policy_node,
+    route_after_validation,
+    route_by_intent,
+    sanitize_input,
     update_memory,
+    validate_reply,
+    weather_node,
 )
 
 # ─── Lazy singleton ────────────────────────────────────────────────────────────

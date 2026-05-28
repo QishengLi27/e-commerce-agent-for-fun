@@ -9,23 +9,24 @@ Combines:
 """
 
 import os
-import re
 import pickle
-from typing import List, Tuple
+import re
 
-from langchain_community.vectorstores import PGVector
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
+from langchain_community.vectorstores import PGVector
 from langchain_core.documents import Document
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from rank_bm25 import BM25Okapi
+
+from backend.config import settings
 from backend.resilience import (
     CircuitBreaker,
-    Fallbacks,
     make_retry_decorator,
+)
+from backend.resilience import (
     logger as resilience_logger,
 )
-from backend.config import settings
 
 PG_CONNECTION = settings.database_url
 
@@ -74,14 +75,14 @@ class HybridPolicyRetriever:
         )
 
         # Build or load BM25 index
-        self.chunks: List[Document] = []
+        self.chunks: list[Document] = []
         self.bm25 = None
         self._load_or_build_bm25()
 
         self.llm_circuit = CircuitBreaker("rerank-llm", failure_threshold=3, recovery_timeout=60.0)
         self.embedding_circuit = CircuitBreaker("embeddings", failure_threshold=3, recovery_timeout=60.0)
 
-    def _tokenize(self, text: str) -> List[str]:
+    def _tokenize(self, text: str) -> list[str]:
         """Simple tokenizer for BM25."""
         return re.findall(r"\b\w+\b", text.lower())
 
@@ -115,7 +116,7 @@ class HybridPolicyRetriever:
             pickle.dump({"chunks": self.chunks, "bm25": self.bm25}, f)
         print(f"[retrieval] Built and cached BM25 index ({len(self.chunks)} chunks)")
 
-    def _dense_retrieve(self, query: str, k: int = 5) -> List[Tuple[Document, float]]:
+    def _dense_retrieve(self, query: str, k: int = 5) -> list[tuple[Document, float]]:
         """pgvector search. Returns (doc, score) where higher is better."""
         def _search():
             return self.vectorstore.similarity_search_with_score(query, k=k)
@@ -132,8 +133,10 @@ class HybridPolicyRetriever:
             resilience_logger.warning(f"[dense_retrieve] Failed: {e}")
             return []
 
-    def _sparse_retrieve(self, query: str, k: int = 5) -> List[Tuple[Document, float]]:
+    def _sparse_retrieve(self, query: str, k: int = 5) -> list[tuple[Document, float]]:
         """BM25 keyword search. Returns (doc, score) where higher is better."""
+        if self.bm25 is None:
+            return []
         tokens = self._tokenize(query)
         scores = self.bm25.get_scores(tokens)
         top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:k]
@@ -141,16 +144,16 @@ class HybridPolicyRetriever:
 
     @staticmethod
     def _rrf_fuse(
-        list_a: List[Tuple[Document, float]],
-        list_b: List[Tuple[Document, float]],
+        list_a: list[tuple[Document, float]],
+        list_b: list[tuple[Document, float]],
         k: int = 60,
-    ) -> List[Tuple[Document, float]]:
+    ) -> list[tuple[Document, float]]:
         """
         Reciprocal Rank Fusion of two ranked lists.
         score(doc) = sum(1 / (k + rank)) for each list
         """
-        doc_scores = {}
-        doc_map = {}
+        doc_scores: dict[str, float] = {}
+        doc_map: dict[str, Document] = {}
 
         for rank, (doc, _) in enumerate(list_a, start=1):
             key = doc.page_content
@@ -174,9 +177,9 @@ class HybridPolicyRetriever:
     def _llm_rerank(
         self,
         query: str,
-        docs: List[Tuple[Document, float]],
+        docs: list[tuple[Document, float]],
         top_n: int = 3,
-    ) -> List[Tuple[Document, float]]:
+    ) -> list[tuple[Document, float]]:
         """
         Batch LLM re-rank: scores all documents in a single LLM call.
         Returns re-ranked (doc, score) list.
@@ -249,7 +252,7 @@ class HybridPolicyRetriever:
         query: str,
         k: int = 5,
         rerank: bool = True,
-    ) -> List[Tuple[Document, float]]:
+    ) -> list[tuple[Document, float]]:
         """
         Full pipeline: dense + sparse -> RRF fusion -> optional LLM re-rank.
         """

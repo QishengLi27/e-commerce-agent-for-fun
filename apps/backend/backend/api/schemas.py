@@ -1,5 +1,5 @@
+
 from pydantic import BaseModel
-from typing import List, Optional, Dict
 
 
 class Source(BaseModel):
@@ -9,20 +9,20 @@ class Source(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    session_id: Optional[str] = None
+    session_id: str | None = None
     message: str
 
 
 class ChatResponse(BaseModel):
-    session_id: Optional[str] = None
+    session_id: str | None = None
     response: str
-    sources: List[Source] = []
+    sources: list[Source] = []
     cached: bool = False
-    latency_ms: Optional[int] = None
-    validation_flag: Optional[str] = None
+    latency_ms: int | None = None
+    validation_flag: str | None = None
 
 
 class HealthResponse(BaseModel):
     status: str
     version: str = "0.1.0"
-    checks: Optional[Dict[str, str]] = None
+    checks: dict[str, str] | None = None

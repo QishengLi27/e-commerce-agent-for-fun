@@ -14,27 +14,28 @@ Usage:
     python tests/eval_rag.py
 """
 
-import sys
-import os
 import json
+import os
+import sys
 import time
 from pathlib import Path
+from typing import Any
 
 # Ensure backend/ is on the import path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from openai import OpenAI
 from datasets import Dataset
+from openai import OpenAI
 from ragas import evaluate
-from ragas.metrics import faithfulness, answer_relevancy, context_precision
-from ragas.llms import llm_factory
 from ragas.embeddings import OpenAIEmbeddings as RagasOpenAIEmbeddings
+from ragas.llms import llm_factory
+from ragas.metrics import answer_relevancy, context_precision, faithfulness
 
+from backend.agent import clean_query
+from backend.agent import llm as gen_llm
 from backend.config import settings
 from backend.retrieval import get_policy_retriever
-from backend.tools import policy_retriever_tool, order_status_tool, list_orders_tool
-from backend.agent import llm as gen_llm, clean_query
-
+from backend.tools import list_orders_tool, order_status_tool
 
 # ─── Setup LLM for RAGAS scoring ────────────────────────────────────────────────
 
@@ -195,7 +196,8 @@ def _check_prerequisites():
             WHERE c.name = 'store_policies'
         """)
         count = cur.fetchone()[0]
-        cur.close(); conn.close()
+        cur.close()
+        conn.close()
         if count == 0:
             print("  WARNING: store_policies collection is empty — run: python -m backend.db.vector_setup")
             ok = False
@@ -228,10 +230,11 @@ def main():
     print("\n[1/3] Running agent pipeline for each test case...")
     records = []
     for i, case in enumerate(TEST_CASES):
-        q = case["question"]
+        case_dict: dict[str, str] = case  # type: ignore[assignment]
+        q = case_dict["question"]
         print(f"  [{i+1}/{len(TEST_CASES)}] {q}")
-        result = run_agent_for_eval(q)
-        result["ground_truth"] = case.get("ground_truth", "")
+        result: dict[str, Any] = run_agent_for_eval(q)
+        result["ground_truth"] = case_dict.get("ground_truth", "")
         records.append(result)
 
     # Convert to Dataset
@@ -247,7 +250,7 @@ def main():
     context_precision.llm = _ragas_llm
 
     start = time.time()
-    result = evaluate(
+    eval_result: Any = evaluate(
         dataset,
         metrics=[faithfulness, answer_relevancy, context_precision],
     )
@@ -256,7 +259,7 @@ def main():
 
     # Report
     print("\n[3/3] Results\n")
-    df = result.to_pandas()
+    df = eval_result.to_pandas()
 
     # Per-question scores
     for _, row in df.iterrows():

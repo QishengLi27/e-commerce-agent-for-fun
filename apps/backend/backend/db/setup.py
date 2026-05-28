@@ -6,6 +6,7 @@ Run this to create/reset the orders table:
 """
 
 import psycopg2
+
 from backend.config import settings
 
 CONNECTION_STRING = settings.pg_connection_raw

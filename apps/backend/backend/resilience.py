@@ -5,19 +5,18 @@ Resilience patterns for the AI agent:
 - Graceful degradation: returns friendly fallbacks when APIs are down
 """
 
+import logging
 import time
-import random
-from functools import wraps
-from typing import Callable, Any, Optional
+from collections.abc import Callable
+from typing import Any
 
 from tenacity import (
+    before_sleep_log,
     retry,
+    retry_if_exception_type,
     stop_after_attempt,
     wait_exponential,
-    retry_if_exception_type,
-    before_sleep_log,
 )
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -44,11 +43,12 @@ class CircuitBreaker:
         self.failure_threshold = failure_threshold
         self.recovery_timeout = recovery_timeout
         self.failure_count = 0
-        self.last_failure_time: Optional[float] = None
+        self.last_failure_time: float | None = None
         self.state = "CLOSED"  # CLOSED, OPEN, HALF_OPEN
 
     def call(self, func: Callable, fallback: Callable, *args, **kwargs) -> Any:
         if self.state == "OPEN":
+            assert self.last_failure_time is not None
             if time.time() - self.last_failure_time > self.recovery_timeout:
                 self.state = "HALF_OPEN"
                 logger.info(f"[{self.name}] Circuit HALF_OPEN - testing...")
@@ -60,7 +60,7 @@ class CircuitBreaker:
             result = func(*args, **kwargs)
             self._on_success()
             return result
-        except Exception as e:
+        except Exception:
             self._on_failure()
             if self.state == "OPEN":
                 logger.warning(f"[{self.name}] Circuit tripped - using fallback")
@@ -123,7 +123,4 @@ def is_transient_error(e: Exception) -> bool:
     error_str = str(e).lower()
     if "rate limit" in error_str or "timeout" in error_str:
         return True
-    for code in transient_codes:
-        if str(code) in error_str:
-            return True
-    return False
+    return any(str(code) in error_str for code in transient_codes)

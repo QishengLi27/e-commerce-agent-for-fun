@@ -5,13 +5,13 @@ Use pydantic-settings to validate and type-check all config.
 Create a .env file in apps/backend/ based on .env.example
 """
 
-from enum import Enum
+from enum import StrEnum
 
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class RetrievalMode(str, Enum):
+class RetrievalMode(StrEnum):
     VECTOR = "vector"
     GRAPH = "graph"
     HYBRID = "hybrid"

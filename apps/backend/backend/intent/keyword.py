@@ -12,14 +12,14 @@ import json
 import logging
 
 from backend.agent import llm
-from backend.resilience import make_retry_decorator
 from backend.intent.base import (
-    BaseIntentClassifier,
-    extract_entities,
-    WEATHER_SIGNALS,
     LIST_ORDERS_PHRASES,
     POLICY_SIGNALS,
+    WEATHER_SIGNALS,
+    BaseIntentClassifier,
+    extract_entities,
 )
+from backend.resilience import make_retry_decorator
 
 logger = logging.getLogger(__name__)
 
@@ -87,10 +87,9 @@ def _classify_with_entities(query: str, entities: dict) -> dict | None:
         }
 
     # Product, no conflicting signals → knowledge
-    if has_product:
-        if not any(w in lowered for w in _ORDER_SIGNALS):
-            return {"intent": "knowledge", "confidence": "high", "source": "entity",
-                    "context": {"products": entities["products"]}}
+    if has_product and not any(w in lowered for w in _ORDER_SIGNALS):
+        return {"intent": "knowledge", "confidence": "high", "source": "entity",
+                "context": {"products": entities["products"]}}
 
     # Category + knowledge signals → knowledge
     if has_category and any(w in lowered for w in _KNOWLEDGE_SIGNALS):

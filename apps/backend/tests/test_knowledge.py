@@ -5,21 +5,21 @@ Requires PostgreSQL with knowledge tables set up:
     python -m backend.knowledge.schema
 """
 
-import sys
 import os
+import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import pytest
-from backend.knowledge.graph_store import KnowledgeStore, get_knowledge_store
+
+from backend.config import RetrievalMode
+from backend.knowledge.graph_store import get_knowledge_store
 from backend.knowledge.retrievers import (
-    create_policy_retriever,
-    VectorPolicyRetriever,
     GraphPolicyRetriever,
     HybridRetriever,
+    VectorPolicyRetriever,
+    create_policy_retriever,
 )
-from backend.config import RetrievalMode
-
 
 # ── KnowledgeStore tests ───────────────────────────────────────────────────
 
@@ -50,7 +50,7 @@ class TestKnowledgeStore:
 
     def test_query_product_policies_tshirt(self):
         policies = self.store.query_product_policies("t-shirt")
-        policy_types = {p["policy_type"] for p in policies}
+        {p["policy_type"] for p in policies}
         # T-Shirt is General → standard return (30 days)
         return_policy = next(p for p in policies if p["policy_type"] == "return")
         assert "30-day" in return_policy["summary"]

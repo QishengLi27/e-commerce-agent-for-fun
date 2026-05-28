@@ -14,17 +14,17 @@ The KG is the ground-truth anchor that prevents the LLM from hallucinating produ
 
 import json
 import logging
+from typing import Any
 
 from backend.agent import llm
-from backend.resilience import make_retry_decorator
 from backend.intent.base import (
-    BaseIntentClassifier,
-    extract_entities,
-    WEATHER_SIGNALS,
+    _ORDER_ID_RE,
     LIST_ORDERS_PHRASES,
     POLICY_SIGNALS,
-    _ORDER_ID_RE,
+    WEATHER_SIGNALS,
+    BaseIntentClassifier,
 )
+from backend.resilience import make_retry_decorator
 
 logger = logging.getLogger(__name__)
 
@@ -72,8 +72,8 @@ def _validate_entities(llm_entities: dict) -> dict:
     all_products = kg._product_names or []
     all_categories = kg._category_names or []
 
-    confirmed = {"products": [], "categories": []}
-    candidates = {"products": []}
+    confirmed: dict[str, list[str]] = {"products": [], "categories": []}
+    candidates: dict[str, list[dict[str, Any]]] = {"products": []}
     rejected = []
 
     for product in llm_entities.get("products", []):
@@ -82,7 +82,8 @@ def _validate_entities(llm_entities: dict) -> dict:
             confirmed["products"].append(lowered)
         else:
             # Fuzzy: find closest match
-            best, best_score = None, 0
+            best: str | None = None
+            best_score = 0.0
             for known in all_products:
                 if lowered in known or known in lowered:
                     best, best_score = known, 0.9

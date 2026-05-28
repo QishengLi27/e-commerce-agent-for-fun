@@ -5,6 +5,7 @@ Provides current weather lookup by city name.
 """
 
 import re
+
 import requests
 from langchain.tools import tool
 
@@ -78,10 +79,10 @@ def _fetch_weather(lat: float, lon: float) -> dict | None:
 def get_current_weather(city: str) -> str:
     """
     Get the current weather for a city.
-    
+
     Args:
         city: The name of the city (e.g., "Beijing", "New York", "London").
-    
+
     Returns:
         A short description of the current weather and temperature.
     """

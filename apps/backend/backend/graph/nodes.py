@@ -5,26 +5,24 @@ Each node is a pure function: AgentState -> AgentState.
 """
 
 import logging
-from typing import Literal, TypedDict, Annotated
+from typing import Annotated, Literal, TypedDict, cast
 
-from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.messages import AIMessage, HumanMessage
 from langgraph.graph.message import add_messages
 
 from backend.agent import (
+    cache_response,
     clean_query,
     get_cached_response,
-    cache_response,
     llm,
 )
-from backend.tools import (
-    order_status_tool,
-    list_orders_tool,
-    policy_retriever_tool,
-    get_current_weather,
-    product_info_tool,
-    category_info_tool,
-)
 from backend.knowledge.graph_store import get_knowledge_store as _get_kg_store
+from backend.tools import (
+    get_current_weather,
+    list_orders_tool,
+    order_status_tool,
+    policy_retriever_tool,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -128,7 +126,7 @@ def route_by_intent(state: AgentState) -> Literal[
     intent = state.get("intent", "unknown")
     if intent in ("order", "list_orders", "policy", "weather", "knowledge"):
         logger.info("[graph] Route: %s", intent)
-        return intent
+        return cast(Literal["order", "list_orders", "policy", "weather", "knowledge", "generate_reply"], intent)
 
     logger.info("[graph] Route: unknown -> generate_reply")
     return "generate_reply"

@@ -1,6 +1,5 @@
 import json
 import os
-from typing import List, Dict
 
 
 class MemoryStore:
@@ -11,12 +10,12 @@ class MemoryStore:
         self.max_history = max_history
         self.history = self._load_memory()
 
-    def _load_memory(self) -> List[Dict[str, str]]:
+    def _load_memory(self) -> list[dict[str, str]]:
         if not os.path.exists(self.filepath):
             return []
 
         try:
-            with open(self.filepath, "r", encoding="utf-8") as f:
+            with open(self.filepath, encoding="utf-8") as f:
                 data = json.load(f)
             return data.get("history", []) if isinstance(data, dict) else []
         except Exception:
@@ -39,7 +38,7 @@ class MemoryStore:
     def add_agent(self, message: str) -> None:
         self.append("assistant", message)
 
-    def get_recent_messages(self) -> List[Dict[str, str]]:
+    def get_recent_messages(self) -> list[dict[str, str]]:
         return list(self.history)
 
     def clear(self) -> None:

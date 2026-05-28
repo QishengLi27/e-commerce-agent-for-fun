@@ -7,6 +7,7 @@ retrieval used for free-text policy search.
 """
 
 from langchain.tools import tool
+
 from backend.knowledge.graph_store import get_knowledge_store
 
 

@@ -18,6 +18,7 @@ Modes:
 """
 
 import logging
+
 from backend.config import settings
 
 logger = logging.getLogger(__name__)

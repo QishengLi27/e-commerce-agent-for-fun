@@ -1,21 +1,26 @@
-import os
-import time
-import logging
 import asyncio
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+import logging
+import time
 
 from langchain.agents import create_agent
 from langchain_core.messages import HumanMessage
+
+from backend.config import settings
 from backend.memory import MemoryStore
 from backend.resilience import (
     CircuitBreaker,
     Fallbacks,
     make_retry_decorator,
 )
-from backend.tools import order_status_tool, list_orders_tool, policy_retriever_tool, get_current_weather
-from backend.config import settings
+from backend.tools import (
+    get_current_weather,
+    list_orders_tool,
+    order_status_tool,
+    policy_retriever_tool,
+)
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class AgentManager:

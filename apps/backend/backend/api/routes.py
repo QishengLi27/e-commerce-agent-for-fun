@@ -1,17 +1,17 @@
-import json
-import time
 import asyncio
-import uuid
+import json
 import logging
-from typing import AsyncGenerator
+import time
+import uuid
+from collections.abc import AsyncGenerator
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from langchain_core.messages import HumanMessage
 
 from backend.api.schemas import ChatRequest, ChatResponse, HealthResponse
-from backend.graph.agent_graph import get_agent_graph
 from backend.config import settings
+from backend.graph.agent_graph import get_agent_graph
 
 logger = logging.getLogger(__name__)
 

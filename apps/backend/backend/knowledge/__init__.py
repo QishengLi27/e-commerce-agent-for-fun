@@ -10,10 +10,10 @@ Provides:
 
 from backend.knowledge.graph_store import KnowledgeStore, get_knowledge_store
 from backend.knowledge.retrievers import (
-    PolicyRetriever,
-    VectorPolicyRetriever,
     GraphPolicyRetriever,
     HybridRetriever,
+    PolicyRetriever,
+    VectorPolicyRetriever,
     create_policy_retriever,
 )
 

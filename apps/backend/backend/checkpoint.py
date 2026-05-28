@@ -52,8 +52,8 @@ async def aget_checkpointer():
 
 async def _create_postgres_checkpointer():
     """Create an AsyncPostgresSaver backed by an async connection pool."""
-    from psycopg_pool import AsyncConnectionPool
     from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
+    from psycopg_pool import AsyncConnectionPool
 
     conninfo = settings.pg_connection_raw
 

@@ -5,10 +5,9 @@ Provides graph traversal via SQL JOINs — no graph database needed.
 Singleton pattern: get_knowledge_store() returns the shared instance.
 """
 
-import re
 import psycopg2
-from backend.config import settings
 
+from backend.config import settings
 
 _CONNECTION_STRING = settings.pg_connection_raw
 
@@ -213,6 +212,7 @@ class KnowledgeStore:
     def _extract_product_name(self, query: str) -> str | None:
         """Extract product name from query via keyword matching against DB."""
         self._load_names()
+        assert self._product_names is not None
         query_lower = query.lower()
         # Longest match first to avoid "phone" matching "phone case"
         for name in sorted(self._product_names, key=len, reverse=True):
@@ -223,6 +223,7 @@ class KnowledgeStore:
     def _extract_category_name(self, query: str) -> str | None:
         """Extract category name from query via keyword matching."""
         self._load_names()
+        assert self._category_names is not None
         query_lower = query.lower()
         for name in sorted(self._category_names, key=len, reverse=True):
             if name in query_lower:

@@ -15,14 +15,14 @@ import json
 import logging
 
 from backend.agent import llm
-from backend.resilience import make_retry_decorator
 from backend.intent.base import (
-    BaseIntentClassifier,
-    WEATHER_SIGNALS,
+    _ORDER_ID_RE,
     LIST_ORDERS_PHRASES,
     POLICY_SIGNALS,
-    _ORDER_ID_RE,
+    WEATHER_SIGNALS,
+    BaseIntentClassifier,
 )
+from backend.resilience import make_retry_decorator
 
 logger = logging.getLogger(__name__)
 
