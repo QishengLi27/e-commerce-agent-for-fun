@@ -75,10 +75,20 @@ class AgentManager:
             self._agent = create_agent(self.llm, self.tools)
         return self._agent
 
-    def get_cached_response(self, query: str):
+    def get_cached_response(self, query: str, intent: str = ""):
         docs_and_scores = self.cache_vectorstore.similarity_search_with_score(query, k=1)
         if docs_and_scores and docs_and_scores[0][1] < 0.3:
-            response = docs_and_scores[0][0].metadata.get("response")
+            metadata = docs_and_scores[0][0].metadata
+            response = metadata.get("response")
+            cached_intent = metadata.get("intent", "")
+
+            # Intent changed since last cache → stale answer. Example:
+            # Old run classified as "knowledge" (no tool result) → "I don't know"
+            # New run correctly classified as "policy" → need fresh retrieval.
+            if intent and cached_intent and intent != cached_intent:
+                logger.info("[cache] Intent mismatch (cached=%s, current=%s) — skipping", cached_intent, intent)
+                return None
+
             # Belt-and-suspenders: never return cached weather responses.
             # Weather data is real-time and should always be fetched fresh.
             if response and any(k in response.lower() for k in ("°c", "temperature", "wind speed", "weather in")):
@@ -87,8 +97,8 @@ class AgentManager:
             return response
         return None
 
-    def cache_response(self, query: str, response: str):
-        self.cache_vectorstore.add_texts([query], metadatas=[{"response": response}])
+    def cache_response(self, query: str, response: str, intent: str = ""):
+        self.cache_vectorstore.add_texts([query], metadatas=[{"response": response, "intent": intent}])
 
     def extract_agent_response(self, result: object) -> str:
         """Extract the final AI message content from agent executor result."""
@@ -134,6 +144,14 @@ class AgentManager:
     @make_retry_decorator(max_attempts=2)
     def _clean_query_api_call(self, prompt: str):
         return self.llm.invoke(prompt)
+
+    def clear_semantic_cache(self):
+        """Delete all entries from the semantic cache. Use after prompt/intent changes."""
+        try:
+            self.cache_vectorstore.delete_collection()
+            logger.info("[cache] Semantic cache cleared")
+        except Exception as e:
+            logger.warning("[cache] Failed to clear cache: %s", e)
 
     def run_agent_with_cache(self, user_input: str, max_agent_calls: int = 5):
         """

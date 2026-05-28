@@ -1,0 +1,82 @@
+[
+  {
+    "question": "What is the return policy?",
+    "answer": "Our store offers a 30-day return window for most items, with a 14-day return period for electronics and high-value items. Returns must be in original condition and you'll receive a full refund or exchange. To start the process, contact support or use our online return portal. Refunds are issued within 5-7 business days upon receiving the item.",
+    "contexts": [
+      "Return Policy:\nOur store offers a 30-day return window for most items. You can return products within 30 days of delivery for a full refund or exchange, provided the item is in its original condition with all packaging and accessories. Electronics and certain high-value items may have a 14-day return period. To initiate a return, please contact our support team or use the online return portal on our website. Refunds are processed within 5-7 business days after we receive the returned item."
+    ],
+    "faithfulness": 1.0,
+    "answer_relevancy": NaN,
+    "context_precision": 0.9999999999
+  },
+  {
+    "question": "Can I return electronics after 10 days?",
+    "answer": "I'm sorry, but the information provided doesn't include details about the return policy for electronics. To find out if you can return electronics after 10 days, please check the return policy section on our website or contact our support team directly.",
+    "contexts": [
+      "Shipping and Delivery:\nWe offer free standard shipping on orders over $50. Standard delivery typically takes 5-7 business days, while expedited options are available for an additional fee. You can track your order status using the tracking number provided in your confirmation email. If your order is delayed, please check the estimated delivery date in your account or contact support for updates."
+    ],
+    "faithfulness": 0.6666666666666666,
+    "answer_relevancy": NaN,
+    "context_precision": 0.9999999999
+  },
+  {
+    "question": "How much does shipping cost?",
+    "answer": "For orders over $50, standard shipping is free. If your order is under $50, the cost for standard shipping isn't specified. Expedited options are available for an additional fee.",
+    "contexts": [
+      "Shipping and Delivery:\nWe offer free standard shipping on orders over $50. Standard delivery typically takes 5-7 business days, while expedited options are available for an additional fee. You can track your order status using the tracking number provided in your confirmation email. If your order is delayed, please check the estimated delivery date in your account or contact support for updates."
+    ],
+    "faithfulness": 1.0,
+    "answer_relevancy": NaN,
+    "context_precision": 0.9999999999
+  },
+  {
+    "question": "Do you provide extended warranties?",
+    "answer": "I'm sorry, but I don't have information on whether we provide extended warranties. Please check with our customer service team for more details.",
+    "contexts": [],
+    "faithfulness": 0.0,
+    "answer_relevancy": NaN,
+    "context_precision": 0.0
+  },
+  {
+    "question": "How long until I get my refund after returning something?",
+    "answer": "Refunds typically take 3-5 business days to process once we receive your return. Please check your account or contact support for updates if it's been longer than that.",
+    "contexts": [
+      "Shipping and Delivery:\nWe offer free standard shipping on orders over $50. Standard delivery typically takes 5-7 business days, while expedited options are available for an additional fee. You can track your order status using the tracking number provided in your confirmation email. If your order is delayed, please check the estimated delivery date in your account or contact support for updates."
+    ],
+    "faithfulness": 0.5,
+    "answer_relevancy": NaN,
+    "context_precision": 0.9999999999
+  },
+  {
+    "question": "What's the status of order 1001?",
+    "answer": "Your order 1001 has been successfully delivered. The estimated delivery date was October 15, 2023. Enjoy your purchase!",
+    "contexts": [],
+    "faithfulness": 0.3333333333333333,
+    "answer_relevancy": NaN,
+    "context_precision": NaN
+  },
+  {
+    "question": "Show me all my orders",
+    "answer": "Sure, I can help with that. You have one order on file. Order 1001 was delivered on 2023-10-15. Let me know if there's anything else you'd like to see!",
+    "contexts": [],
+    "faithfulness": 0.0,
+    "answer_relevancy": NaN,
+    "context_precision": NaN
+  },
+  {
+    "question": "Do you sell laptops?",
+    "answer": "Yes, we sell laptops.",
+    "contexts": [],
+    "faithfulness": 0.0,
+    "answer_relevancy": NaN,
+    "context_precision": 0.0
+  },
+  {
+    "question": "I want to talk to a human",
+    "answer": "I'm here to help! If you have any questions or need assistance, feel free to ask. If you prefer speaking with a human, I can connect you with one. How can I assist you today?",
+    "contexts": [],
+    "faithfulness": 1.0,
+    "answer_relevancy": NaN,
+    "context_precision": NaN
+  }
+]

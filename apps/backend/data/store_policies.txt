@@ -1,8 +1,458 @@
-Return Policy:
-Our store offers a 30-day return window for most items. You can return products within 30 days of delivery for a full refund or exchange, provided the item is in its original condition with all packaging and accessories. Electronics and certain high-value items may have a 14-day return period. To initiate a return, please contact our support team or use the online return portal on our website. Refunds are processed within 5-7 business days after we receive the returned item.
+Return Policy - Electronics:
+Our store offers a 7-day return window for Electronics. You can return products within 7 days of delivery for a full refund, provided the item is in its original condition with all packaging, tags, and accessories intact. Software and digital downloads are non-returnable once activated. To initiate a return, please contact our support team or use the online return portal on our website. Refunds are processed within 5 business days after we receive the returned item. Items that have been damaged by customer are not eligible for return.
 
-Shipping and Delivery:
-We offer free standard shipping on orders over $50. Standard delivery typically takes 5-7 business days, while expedited options are available for an additional fee. You can track your order status using the tracking number provided in your confirmation email. If your order is delayed, please check the estimated delivery date in your account or contact support for updates.
+Return Policy - Clothing and Apparel:
+Our store offers a 90-day return window for Clothing and Apparel. You can return products within 90 days of delivery for a partial refund based on condition, provided the item is in its original condition with all packaging, tags, and accessories intact. Original receipt or order confirmation is required. To initiate a return, please contact our support team or use the online return portal on our website. Refunds are processed within 3 business days after we receive the returned item. Items that have been washed are not eligible for return.
 
-Warranty Information:
-All electronics come with a manufacturer's warranty that covers defects in materials and workmanship. The warranty period varies by product but is typically 1 year from the date of purchase. If you experience an issue covered by warranty, please contact the manufacturer directly or our support team for assistance. We do not offer extended warranties, but third-party options may be available.
+Return Policy - Footwear:
+Our store offers a 90-day return window for Footwear. You can return products within 90 days of delivery for a full refund or exchange, provided the item is in its original condition with all packaging, tags, and accessories intact. Items with removed security tags are not eligible for return. To initiate a return, please contact our support team or use the online return portal on our website. Refunds are processed within 10 business days after we receive the returned item. Items that have been damaged by customer are not eligible for return.
+
+Return Policy - Food and Beverages:
+The return policy for Food and Beverages allows returns within 14 days. Products must be returned in saleable condition with all original tags and packaging. Items purchased as part of a bundle must be returned as a complete set. Items that have been altered are not eligible for return. Refunds are processed as partial refund based on condition within 3 business days. For hygiene reasons, food and beverages cannot be returned for safety reasons.
+
+Return Policy - Furniture and Home Decor:
+Our store offers a 7-day return window for Furniture and Home Decor. You can return products within 7 days of delivery for a store credit, provided the item is in its original condition with all packaging, tags, and accessories intact. Items purchased as part of a bundle must be returned as a complete set. To initiate a return, please contact our support team or use the online return portal on our website. Refunds are processed within 14 business days after we receive the returned item. Items that have been missing tags are not eligible for return.
+
+Return Policy - Cosmetics and Skincare:
+Returns for Cosmetics and Skincare are accepted within 60 days of purchase. We offer full refund for items that meet our return criteria: original packaging, no signs of use, and all included accessories. Items with removed security tags are not eligible for return. Return shipping is the responsibility of the customer unless the item is defective. Refunds are processed within 7 business days after we receive the returned item. If you received a defective or incorrect item, we will cover all return shipping costs and offer a full refund or replacement.
+
+Return Policy - Books and Media:
+Returns for Books and Media are accepted within 7 days of purchase. We offer full refund or exchange for items that meet our return criteria: original packaging, no signs of use, and all included accessories. A restocking fee of 10% may apply to opened items. Return shipping is deducted from your refund amount. Refunds are processed within 10 business days after we receive the returned item. If you received a defective or incorrect item, we will cover all return shipping costs and offer a full refund or replacement.
+
+Return Policy - Sports Equipment:
+The return policy for Sports Equipment allows returns within 30 days. Products must be returned in saleable condition with all original tags and packaging. Software and digital downloads are non-returnable once activated. Items that have been altered are not eligible for return. Refunds are processed as full refund or exchange within 10 business days. 
+
+Return Policy - Jewelry and Watches:
+The return policy for Jewelry and Watches allows returns within 30 days. Products must be returned in saleable condition with all original tags and packaging. Personalized or customized items cannot be returned unless defective. Items that have been worn are not eligible for return. Refunds are processed as refund to original payment method within 7 business days. 
+
+Return Policy - Baby and Maternity Products:
+The return policy for Baby and Maternity Products allows returns within 30 days. Products must be returned in saleable condition with all original tags and packaging. Personalized or customized items cannot be returned unless defective. Items that have been without original packaging are not eligible for return. Refunds are processed as full refund within 10 business days. 
+
+Return Policy - Pet Supplies:
+Returns for Pet Supplies are accepted within 14 days of purchase. We offer store credit for items that meet our return criteria: original packaging, no signs of use, and all included accessories. Final sale items are excluded from returns. Return shipping is deducted from your refund amount. Refunds are processed within 5 business days after we receive the returned item. If you received a defective or incorrect item, we will cover all return shipping costs and offer a full refund or replacement.
+
+Return Policy - Automotive Accessories:
+For Automotive Accessories, we accept returns within 14 days from the date of delivery. The product must be unused, unwashed, and in its original packaging. Items with removed security tags are not eligible for return. Please include the original receipt or order confirmation when returning. Full refund or exchange will be issued within 3 business days after we inspect the returned item. Items that have been washed are not eligible for return.
+
+Return Policy - Garden and Outdoor:
+We want you to be satisfied with your Garden and Outdoor purchase. If not, you may return eligible items within 60 days. A restocking fee of 10% may apply to opened items. The item must be in original condition, unused, and with all packaging. Refunds are processed within 10 business days after we receive the returned item. Return shipping is deducted from your refund amount. Exchange is also available if you prefer a different size, color, or variant.
+
+Return Policy - Office Supplies:
+For Office Supplies, we accept returns within 7 days from the date of delivery. The product must be unused, unwashed, and in its original packaging. Items with removed security tags are not eligible for return. Please include the original receipt or order confirmation when returning. Full refund will be issued within 7 business days after we inspect the returned item. Items that have been without original packaging are not eligible for return.
+
+Return Policy - Toys and Games:
+We want you to be satisfied with your Toys and Games purchase. If not, you may return eligible items within 60 days. Software and digital downloads are non-returnable once activated. The item must be in original condition, unused, and with all packaging. Refunds are processed within 14 business days after we receive the returned item. Return shipping is free for orders over $50; otherwise $5.99. Exchange is also available if you prefer a different size, color, or variant.
+
+Return Policy - Musical Instruments:
+Our store offers a 14-day return window for Musical Instruments. You can return products within 14 days of delivery for a full refund or exchange, provided the item is in its original condition with all packaging, tags, and accessories intact. Items purchased as part of a bundle must be returned as a complete set. To initiate a return, please contact our support team or use the online return portal on our website. Refunds are processed within 5 business days after we receive the returned item. Items that have been worn are not eligible for return.
+
+Return Policy - Health and Wellness:
+Our store offers a 30-day return window for Health and Wellness. You can return products within 30 days of delivery for a store credit, provided the item is in its original condition with all packaging, tags, and accessories intact. Personalized or customized items cannot be returned unless defective. To initiate a return, please contact our support team or use the online return portal on our website. Refunds are processed within 3 business days after we receive the returned item. Items that have been damaged by customer are not eligible for return.
+
+Return Policy - Kitchen Appliances:
+The return policy for Kitchen Appliances allows returns within 90 days. Products must be returned in saleable condition with all original tags and packaging. Final sale items are excluded from returns. Items that have been altered are not eligible for return. Refunds are processed as full refund or exchange within 14 business days. 
+
+Return Policy - Smart Home Devices:
+The return policy for Smart Home Devices allows returns within 14 days. Products must be returned in saleable condition with all original tags and packaging. Personalized or customized items cannot be returned unless defective. Items that have been personalized are not eligible for return. Refunds are processed as refund to original payment method within 14 business days. 
+
+Return Policy - Photography Equipment:
+For Photography Equipment, we accept returns within 7 days from the date of delivery. The product must be unused, unwashed, and in its original packaging. Personalized or customized items cannot be returned unless defective. Please include the original receipt or order confirmation when returning. Full refund or exchange will be issued within 14 business days after we inspect the returned item. Items that have been without original packaging are not eligible for return.
+
+Return Policy - Bags and Luggage:
+Returns for Bags and Luggage are accepted within 90 days of purchase. We offer full refund or exchange for items that meet our return criteria: original packaging, no signs of use, and all included accessories. Original receipt or order confirmation is required. Return shipping is the responsibility of the customer unless the item is defective. Refunds are processed within 3 business days after we receive the returned item. If you received a defective or incorrect item, we will cover all return shipping costs and offer a full refund or replacement.
+
+Return Policy - Arts and Crafts:
+We want you to be satisfied with your Arts and Crafts purchase. If not, you may return eligible items within 7 days. Personalized or customized items cannot be returned unless defective. The item must be in original condition, unused, and with all packaging. Refunds are processed within 7 business days after we receive the returned item. Return shipping is the responsibility of the customer unless the item is defective. Exchange is also available if you prefer a different size, color, or variant.
+
+Shipping and Delivery - Electronics:
+Delivery policies for Electronics: Standard shipping ($5.99) arrives in 5 business days. Express shipping ($19.99) arrives in 1 business days.  Orders are processed within 2 business day(s).  You will receive email notifications at each stage: order confirmation, shipment, and delivery.
+
+Shipping and Delivery - Clothing and Apparel:
+Shipping options for Clothing and Apparel include standard (3 business days), express (2 business days), and same-day delivery where available. All orders qualify for free standard shipping during promotional periods. Standard shipping costs $4.99, while express shipping is $9.99.  Orders placed before 12:00 PM are shipped the same business day.
+
+Shipping and Delivery - Footwear:
+We offer standard and express shipping for Footwear. Standard delivery typically takes 3 business days and is $5.99. Expedited shipping is available for an additional fee of $19.99, with delivery in 2 business days.  Orders are processed within 2 business day(s). You can track your order using the tracking number sent to your email.
+
+Shipping and Delivery - Food and Beverages:
+We offer standard ground and air shipping for Food and Beverages. Standard delivery typically takes 3 business days and is $4.99. Expedited shipping is available for an additional fee of $12.99, with delivery in 2 business days. Free standard shipping is available on orders over $50. Orders are processed within 2 business day(s). You can track your order using the tracking number sent to your email.
+
+Shipping and Delivery - Furniture and Home Decor:
+Shipping options for Furniture and Home Decor include standard (5 business days), express (2 business days), and same-day delivery where available. Free shipping is available for orders over $35 within the continental US. Standard shipping costs $4.99, while express shipping is $19.99.  Orders placed before 11:00 AM are shipped the same business day.
+
+Shipping and Delivery - Cosmetics and Skincare:
+Shipping options for Cosmetics and Skincare include standard (7 business days), express (2 business days), and same-day delivery where available. Members receive free standard shipping on all orders. Standard shipping costs $4.99, while express shipping is $9.99. Alaska, Hawaii, and PO Box addresses may require additional shipping time and cost. Orders placed before 11:00 AM are shipped the same business day.
+
+Shipping and Delivery - Books and Media:
+Shipping options for Books and Media include standard (7 business days), express (1 business days), and same-day delivery where available. Free standard shipping is available on orders over $50. Standard shipping costs $5.99, while express shipping is $9.99. Remote or rural areas may experience additional delivery delays of 2-3 business days. Orders placed before 2:00 PM are shipped the same business day.
+
+Shipping and Delivery - Sports Equipment:
+For Sports Equipment, we partner with FedEx and local carriers to ensure reliable delivery. Standard shipping takes 5 business days at free on orders over $50.  Expedited options deliver in 3 business days for $9.99. Remote or rural areas may experience additional delivery delays of 2-3 business days. All shipments include tracking and delivery confirmation.
+
+Shipping and Delivery - Jewelry and Watches:
+We offer standard ground and air shipping for Jewelry and Watches. Standard delivery typically takes 7 business days and is free on orders over $25. Expedited shipping is available for an additional fee of $12.99, with delivery in 3 business days. Free shipping is available for orders over $35 within the continental US. Orders are processed within 1 business day(s). You can track your order using the tracking number sent to your email.
+
+Shipping and Delivery - Baby and Maternity Products:
+For Baby and Maternity Products, we partner with USPS and UPS to ensure reliable delivery. Standard shipping takes 7 business days at $4.99. All orders qualify for free standard shipping during promotional periods. Expedited options deliver in 2 business days for $12.99. Remote or rural areas may experience additional delivery delays of 2-3 business days. All shipments include tracking and delivery confirmation.
+
+Shipping and Delivery - Pet Supplies:
+For Pet Supplies, we partner with UPS, FedEx, and DHL to ensure reliable delivery. Standard shipping takes 7 business days at free on orders over $25. Members receive free standard shipping on all orders. Expedited options deliver in 3 business days for $14.99. Alaska, Hawaii, and PO Box addresses may require additional shipping time and cost. All shipments include tracking and delivery confirmation.
+
+Shipping and Delivery - Automotive Accessories:
+For Automotive Accessories, we partner with USPS and UPS to ensure reliable delivery. Standard shipping takes 5 business days at free on orders over $50. Free standard shipping is available on orders over $50. Expedited options deliver in 2 business days for $12.99. Remote or rural areas may experience additional delivery delays of 2-3 business days. All shipments include tracking and delivery confirmation.
+
+Shipping and Delivery - Garden and Outdoor:
+For Garden and Outdoor, we partner with DHL Express and regional partners to ensure reliable delivery. Standard shipping takes 3 business days at $6.99.  Expedited options deliver in 3 business days for $9.99.  All shipments include tracking and delivery confirmation.
+
+Shipping and Delivery - Office Supplies:
+Shipping options for Office Supplies include standard (7 business days), express (3 business days), and same-day delivery where available. Free shipping is available for orders over $35 within the continental US. Standard shipping costs $5.99, while express shipping is $19.99. International and remote deliveries may take longer than standard estimates. Orders placed before 2:00 PM are shipped the same business day.
+
+Shipping and Delivery - Toys and Games:
+For Toys and Games, we partner with UPS, FedEx, and DHL to ensure reliable delivery. Standard shipping takes 5 business days at $6.99.  Expedited options deliver in 1 business days for $12.99. Remote or rural areas may experience additional delivery delays of 2-3 business days. All shipments include tracking and delivery confirmation.
+
+Shipping and Delivery - Musical Instruments:
+Delivery policies for Musical Instruments: Standard shipping ($4.99) arrives in 7 business days. Express shipping ($14.99) arrives in 2 business days. Free shipping is available for orders over $35 within the continental US. Orders are processed within 1 business day(s). Alaska, Hawaii, and PO Box addresses may require additional shipping time and cost. You will receive email notifications at each stage: order confirmation, shipment, and delivery.
+
+Shipping and Delivery - Health and Wellness:
+We offer standard, express, and same-day delivery for Health and Wellness. Standard delivery typically takes 7 business days and is $6.99. Expedited shipping is available for an additional fee of $19.99, with delivery in 3 business days. Free standard shipping is available on orders over $50. Orders are processed within 3 business day(s). You can track your order using the tracking number sent to your email.
+
+Shipping and Delivery - Kitchen Appliances:
+We offer standard, express, and same-day delivery for Kitchen Appliances. Standard delivery typically takes 3 business days and is free on orders over $25. Expedited shipping is available for an additional fee of $12.99, with delivery in 2 business days. All orders qualify for free standard shipping during promotional periods. Orders are processed within 1 business day(s). You can track your order using the tracking number sent to your email.
+
+Shipping and Delivery - Smart Home Devices:
+We offer standard ground and air shipping for Smart Home Devices. Standard delivery typically takes 3 business days and is $6.99. Expedited shipping is available for an additional fee of $14.99, with delivery in 2 business days. Free shipping is available for orders over $35 within the continental US. Orders are processed within 1 business day(s). You can track your order using the tracking number sent to your email.
+
+Shipping and Delivery - Photography Equipment:
+We offer standard, express, and same-day delivery for Photography Equipment. Standard delivery typically takes 3 business days and is free on orders over $50. Expedited shipping is available for an additional fee of $14.99, with delivery in 1 business days. Members receive free standard shipping on all orders. Orders are processed within 2 business day(s). You can track your order using the tracking number sent to your email.
+
+Shipping and Delivery - Bags and Luggage:
+We offer standard and express shipping for Bags and Luggage. Standard delivery typically takes 7 business days and is $6.99. Expedited shipping is available for an additional fee of $9.99, with delivery in 2 business days. All orders qualify for free standard shipping during promotional periods. Orders are processed within 2 business day(s). You can track your order using the tracking number sent to your email.
+
+Shipping and Delivery - Arts and Crafts:
+For Arts and Crafts, we partner with DHL Express and regional partners to ensure reliable delivery. Standard shipping takes 7 business days at $4.99. Members receive free standard shipping on all orders. Expedited options deliver in 2 business days for $14.99. International and remote deliveries may take longer than standard estimates. All shipments include tracking and delivery confirmation.
+
+Warranty Information - Electronics:
+Electronics are backed by a 3-year limited warranty. Coverage includes defects in manufacturing, material flaws, and functional failures. Battery and accessory warranties may have shorter coverage periods. Eligible claims will receive a replacement unit or full refund. The warranty becomes void if the product is disassembled, repaired by unauthorized personnel, or used outside specified operating conditions. Normal wear and tear is not covered.
+
+Warranty Information - Clothing and Apparel:
+We stand behind the quality of our Clothing and Apparel with a lifetime warranty. This covers defects in materials, workmanship, and electrical components.  Warranty claims can be initiated through our support portal. Eligible claims will receive a replacement unit or full refund. Extended warranty plans are available for select premium products. Please retain your receipt as proof of purchase.
+
+Warranty Information - Footwear:
+We stand behind the quality of our Footwear with a 90-day warranty. This covers defects in materials, workmanship, and electrical components. Software updates and support are included for the warranty duration. Warranty claims can be initiated through our support portal. We will repair or replace the defective item at no cost to you. Extended warranty plans are not currently offered. Please retain your receipt as proof of purchase.
+
+Warranty Information - Food and Beverages:
+Food and Beverages are backed by a 2-year limited warranty. Coverage includes defects in manufacturing, material flaws, and functional failures. Commercial use voids the consumer warranty. Our team will diagnose the issue and provide a repair, replacement, or refund. The warranty becomes void if the product is disassembled, repaired by unauthorized personnel, or used outside specified operating conditions. Normal wear and tear is not covered.
+
+Warranty Information - Furniture and Home Decor:
+Furniture and Home Decor are backed by a 90-day limited warranty. Coverage includes defects in manufacturing, material flaws, and functional failures.  Eligible claims will receive a replacement unit or full refund. The warranty becomes void if the product is disassembled, repaired by unauthorized personnel, or used outside specified operating conditions. Normal wear and tear is not covered.
+
+Warranty Information - Cosmetics and Skincare:
+We stand behind the quality of our Cosmetics and Skincare with a lifetime warranty. This covers defects in materials, workmanship, and electrical components. Battery and accessory warranties may have shorter coverage periods. Warranty claims can be initiated through our support portal. We will repair or replace the defective item at no cost to you. Extended warranty plans are not currently offered. Please retain your receipt as proof of purchase.
+
+Warranty Information - Books and Media:
+The warranty for Books and Media is 1-year from the date of purchase. It covers manufacturing defects and component failures under normal use. Battery and accessory warranties may have shorter coverage periods. To file a warranty claim, provide proof of purchase and photos or videos of the defect. Our team will diagnose the issue and provide a repair, replacement, or refund. Cosmetic damage, water damage (unless specified as water-resistant), and damage from improper use are excluded.
+
+Warranty Information - Sports Equipment:
+Sports Equipment are backed by a 2-year limited warranty. Coverage includes defects in manufacturing, material flaws, and functional failures. Accidental damage protection is available as an add-on. We will repair or replace the defective item at no cost to you. The warranty becomes void if the product is disassembled, repaired by unauthorized personnel, or used outside specified operating conditions. Normal wear and tear is not covered.
+
+Warranty Information - Jewelry and Watches:
+The warranty for Jewelry and Watches is 3-year from the date of purchase. It covers manufacturing defects and component failures under normal use. Accidental damage protection is available as an add-on. To file a warranty claim, provide proof of purchase and photos or videos of the defect. After verification, we will ship a replacement or issue a refund. Cosmetic damage, water damage (unless specified as water-resistant), and damage from improper use are excluded.
+
+Warranty Information - Baby and Maternity Products:
+Baby and Maternity Products are backed by a lifetime limited warranty. Coverage includes defects in manufacturing, material flaws, and functional failures.  After verification, we will ship a replacement or issue a refund. The warranty becomes void if the product is disassembled, repaired by unauthorized personnel, or used outside specified operating conditions. Normal wear and tear is not covered.
+
+Warranty Information - Pet Supplies:
+Pet Supplies are backed by a 2-year limited warranty. Coverage includes defects in manufacturing, material flaws, and functional failures. Battery and accessory warranties may have shorter coverage periods. We will repair or replace the defective item at no cost to you. The warranty becomes void if the product is disassembled, repaired by unauthorized personnel, or used outside specified operating conditions. Normal wear and tear is not covered.
+
+Warranty Information - Automotive Accessories:
+The warranty for Automotive Accessories is 2-year from the date of purchase. It covers manufacturing defects and component failures under normal use. Battery and accessory warranties may have shorter coverage periods. To file a warranty claim, provide proof of purchase and photos or videos of the defect. After verification, we will ship a replacement or issue a refund. Cosmetic damage, water damage (unless specified as water-resistant), and damage from improper use are excluded.
+
+Warranty Information - Garden and Outdoor:
+We stand behind the quality of our Garden and Outdoor with a 1-year warranty. This covers defects in materials, workmanship, and electrical components. Commercial use voids the consumer warranty. Warranty claims can be initiated through our support portal. Eligible claims will receive a replacement unit or full refund. Extended warranty plans are not currently offered. Please retain your receipt as proof of purchase.
+
+Warranty Information - Office Supplies:
+Office Supplies are backed by a 90-day limited warranty. Coverage includes defects in manufacturing, material flaws, and functional failures. Software updates and support are included for the warranty duration. After verification, we will ship a replacement or issue a refund. The warranty becomes void if the product is disassembled, repaired by unauthorized personnel, or used outside specified operating conditions. Normal wear and tear is not covered.
+
+Warranty Information - Toys and Games:
+We stand behind the quality of our Toys and Games with a 2-year warranty. This covers defects in materials, workmanship, and electrical components.  Warranty claims can be initiated through our support portal. After verification, we will ship a replacement or issue a refund. Extended warranty plans are not currently offered. Please retain your receipt as proof of purchase.
+
+Order Cancellation and Modification - Electronics:
+For Electronics, we offer a 2-hour cancellation window. During this period, you can change the shipping address, product variant, or quantity. Pre-orders can be cancelled at any time before the release date. After the order enters the fulfillment stage, modifications are no longer possible. In such cases, please wait for delivery and then use our return process.
+
+Order Cancellation and Modification - Clothing and Apparel:
+For Clothing and Apparel, we offer a 2-hour cancellation window. During this period, you can change the shipping address, product variant, or quantity. Pre-orders can be cancelled at any time before the release date. After the order enters the fulfillment stage, modifications are no longer possible. In such cases, please wait for delivery and then use our return process.
+
+Order Cancellation and Modification - Footwear:
+Orders for Footwear can be cancelled or modified within 1 hours of placement, provided the order has not yet been processed for shipment. Pre-orders can be cancelled at any time before the release date. To cancel, log into your account and select 'Cancel Order' from your order history, or contact support immediately. If the order has already shipped, you may refuse delivery or initiate a return once received.
+
+Order Cancellation and Modification - Food and Beverages:
+For Food and Beverages, we offer a 4-hour cancellation window. During this period, you can change the shipping address, product variant, or quantity. Pre-orders can be cancelled at any time before the release date. After the order enters the fulfillment stage, modifications are no longer possible. In such cases, please wait for delivery and then use our return process.
+
+Order Cancellation and Modification - Furniture and Home Decor:
+Orders for Furniture and Home Decor can be cancelled or modified within 24 hours of placement, provided the order has not yet been processed for shipment. Custom-made or personalized orders cannot be cancelled once production has begun. To cancel, log into your account and select 'Cancel Order' from your order history, or contact support immediately. If the order has already shipped, you may refuse delivery or initiate a return once received.
+
+Order Cancellation and Modification - Cosmetics and Skincare:
+For Cosmetics and Skincare, we offer a 2-hour cancellation window. During this period, you can change the shipping address, product variant, or quantity. Digital products and subscriptions are processed immediately and cannot be cancelled. After the order enters the fulfillment stage, modifications are no longer possible. In such cases, please wait for delivery and then use our return process.
+
+Order Cancellation and Modification - Books and Media:
+Orders for Books and Media can be cancelled or modified within 2 hours of placement, provided the order has not yet been processed for shipment. Digital products and subscriptions are processed immediately and cannot be cancelled. To cancel, log into your account and select 'Cancel Order' from your order history, or contact support immediately. If the order has already shipped, you may refuse delivery or initiate a return once received.
+
+Order Cancellation and Modification - Sports Equipment:
+For Sports Equipment, we offer a 12-hour cancellation window. During this period, you can change the shipping address, product variant, or quantity. Bulk orders may require additional processing time before cancellation is possible. After the order enters the fulfillment stage, modifications are no longer possible. In such cases, please wait for delivery and then use our return process.
+
+Order Cancellation and Modification - Jewelry and Watches:
+For Jewelry and Watches, we offer a 24-hour cancellation window. During this period, you can change the shipping address, product variant, or quantity. Bulk orders may require additional processing time before cancellation is possible. After the order enters the fulfillment stage, modifications are no longer possible. In such cases, please wait for delivery and then use our return process.
+
+Order Cancellation and Modification - Baby and Maternity Products:
+For Baby and Maternity Products, we offer a 1-hour cancellation window. During this period, you can change the shipping address, product variant, or quantity. Digital products and subscriptions are processed immediately and cannot be cancelled. After the order enters the fulfillment stage, modifications are no longer possible. In such cases, please wait for delivery and then use our return process.
+
+Order Cancellation and Modification - Pet Supplies:
+For Pet Supplies, we offer a 12-hour cancellation window. During this period, you can change the shipping address, product variant, or quantity. Custom-made or personalized orders cannot be cancelled once production has begun. After the order enters the fulfillment stage, modifications are no longer possible. In such cases, please wait for delivery and then use our return process.
+
+Order Cancellation and Modification - Automotive Accessories:
+For Automotive Accessories, we offer a 12-hour cancellation window. During this period, you can change the shipping address, product variant, or quantity. Custom-made or personalized orders cannot be cancelled once production has begun. After the order enters the fulfillment stage, modifications are no longer possible. In such cases, please wait for delivery and then use our return process.
+
+Price Protection - Electronics:
+Our price matching policy applies to Electronics. If you find a lower price from an authorized retailer within 14 days of purchase, we will match that price. Price adjustments are limited to one per item per customer. The competitor must have the item in stock and available for immediate shipping. Auction sites, membership clubs, and unauthorized resellers are not eligible.
+
+Price Protection - Clothing and Apparel:
+We offer price protection on Clothing and Apparel within 30 days of purchase. If the price drops on our website during this period, contact us with your order number to receive a refund for the difference. Membership discounts cannot be combined with price match adjustments. The item must be identical in model, color, and size. Clearance, flash sale, and third-party marketplace prices are excluded.
+
+Price Protection - Footwear:
+Our price matching policy applies to Footwear. If you find a lower price from an authorized retailer within 14 days of purchase, we will match that price. We reserve the right to verify competitor pricing before honoring a match. The competitor must have the item in stock and available for immediate shipping. Auction sites, membership clubs, and unauthorized resellers are not eligible.
+
+Price Protection - Food and Beverages:
+We offer price protection on Food and Beverages within 14 days of purchase. If the price drops on our website during this period, contact us with your order number to receive a refund for the difference. Price adjustments are limited to one per item per customer. The item must be identical in model, color, and size. Clearance, flash sale, and third-party marketplace prices are excluded.
+
+Price Protection - Furniture and Home Decor:
+Our price matching policy applies to Furniture and Home Decor. If you find a lower price from an authorized retailer within 14 days of purchase, we will match that price. Price adjustments are limited to one per item per customer. The competitor must have the item in stock and available for immediate shipping. Auction sites, membership clubs, and unauthorized resellers are not eligible.
+
+Price Protection - Cosmetics and Skincare:
+Our price matching policy applies to Cosmetics and Skincare. If you find a lower price from an authorized retailer within 30 days of purchase, we will match that price. We reserve the right to verify competitor pricing before honoring a match. The competitor must have the item in stock and available for immediate shipping. Auction sites, membership clubs, and unauthorized resellers are not eligible.
+
+Price Protection - Books and Media:
+We offer price protection on Books and Media within 7 days of purchase. If the price drops on our website during this period, contact us with your order number to receive a refund for the difference. Membership discounts cannot be combined with price match adjustments. The item must be identical in model, color, and size. Clearance, flash sale, and third-party marketplace prices are excluded.
+
+Price Protection - Sports Equipment:
+We offer price protection on Sports Equipment within 14 days of purchase. If the price drops on our website during this period, contact us with your order number to receive a refund for the difference. Membership discounts cannot be combined with price match adjustments. The item must be identical in model, color, and size. Clearance, flash sale, and third-party marketplace prices are excluded.
+
+Price Protection - Jewelry and Watches:
+Our price matching policy applies to Jewelry and Watches. If you find a lower price from an authorized retailer within 7 days of purchase, we will match that price. Membership discounts cannot be combined with price match adjustments. The competitor must have the item in stock and available for immediate shipping. Auction sites, membership clubs, and unauthorized resellers are not eligible.
+
+Price Protection - Baby and Maternity Products:
+We offer price protection on Baby and Maternity Products within 7 days of purchase. If the price drops on our website during this period, contact us with your order number to receive a refund for the difference. Price adjustments are limited to one per item per customer. The item must be identical in model, color, and size. Clearance, flash sale, and third-party marketplace prices are excluded.
+
+Product Quality and Safety - Electronics:
+Product quality is our priority. For Electronics, if you notice any defect upon receipt, contact us within 3 days. Our team will investigate and offer a resolution within 48 hours. Items that have been used, washed, or altered may not be eligible for quality-related returns. Please preserve the original packaging for inspection.
+
+Product Quality and Safety - Clothing and Apparel:
+Product quality is our priority. For Clothing and Apparel, if you notice any defect upon receipt, contact us within 7 days. You may choose between a full refund, store credit, or a replacement item. Items that have been used, washed, or altered may not be eligible for quality-related returns. Please preserve the original packaging for inspection.
+
+Product Quality and Safety - Footwear:
+Product quality is our priority. For Footwear, if you notice any defect upon receipt, contact us within 7 days. Our team will investigate and offer a resolution within 48 hours. Items that have been used, washed, or altered may not be eligible for quality-related returns. Please preserve the original packaging for inspection.
+
+Product Quality and Safety - Food and Beverages:
+Product quality is our priority. For Food and Beverages, if you notice any defect upon receipt, contact us within 7 days. We will provide a prepaid return label and process your choice of refund or replacement. Items that have been used, washed, or altered may not be eligible for quality-related returns. Please preserve the original packaging for inspection.
+
+Product Quality and Safety - Furniture and Home Decor:
+If you receive Furniture and Home Decor that is damaged, defective, or does not match your order, please report it within 3 days of delivery. We will provide a prepaid return label and process your choice of refund or replacement. Please include photos of the damage and packaging in your report. We may request the item be returned for inspection before processing a replacement or refund.
+
+Product Quality and Safety - Cosmetics and Skincare:
+Product quality is our priority. For Cosmetics and Skincare, if you notice any defect upon receipt, contact us within 14 days. We will arrange a replacement to be shipped immediately at no extra cost. Items that have been used, washed, or altered may not be eligible for quality-related returns. Please preserve the original packaging for inspection.
+
+Product Quality and Safety - Books and Media:
+If you receive Books and Media that is damaged, defective, or does not match your order, please report it within 5 days of delivery. We will arrange a replacement to be shipped immediately at no extra cost. Please include photos of the damage and packaging in your report. We may request the item be returned for inspection before processing a replacement or refund.
+
+Product Quality and Safety - Sports Equipment:
+If you receive Sports Equipment that is damaged, defective, or does not match your order, please report it within 3 days of delivery. You may choose between a full refund, store credit, or a replacement item. Please include photos of the damage and packaging in your report. We may request the item be returned for inspection before processing a replacement or refund.
+
+Product Quality and Safety - Jewelry and Watches:
+If you receive Jewelry and Watches that is damaged, defective, or does not match your order, please report it within 3 days of delivery. You may choose between a full refund, store credit, or a replacement item. Please include photos of the damage and packaging in your report. We may request the item be returned for inspection before processing a replacement or refund.
+
+Product Quality and Safety - Baby and Maternity Products:
+If you receive Baby and Maternity Products that is damaged, defective, or does not match your order, please report it within 5 days of delivery. We will provide a prepaid return label and process your choice of refund or replacement. Please include photos of the damage and packaging in your report. We may request the item be returned for inspection before processing a replacement or refund.
+
+Product Quality and Safety - Pet Supplies:
+Product quality is our priority. For Pet Supplies, if you notice any defect upon receipt, contact us within 14 days. You may choose between a full refund, store credit, or a replacement item. Items that have been used, washed, or altered may not be eligible for quality-related returns. Please preserve the original packaging for inspection.
+
+Product Quality and Safety - Automotive Accessories:
+If you receive Automotive Accessories that is damaged, defective, or does not match your order, please report it within 7 days of delivery. Our team will investigate and offer a resolution within 48 hours. Please include photos of the damage and packaging in your report. We may request the item be returned for inspection before processing a replacement or refund.
+
+Privacy and Data Protection - General Customers:
+Our privacy policy outlines how we handle your data. Information collected during browsing and purchase is used to improve your shopping experience, process transactions, and send order updates. Aggregated and anonymized data may be shared with analytics partners. Payment processing is handled by PCI-compliant third-party providers. We retain order records for 3 years for legal and accounting purposes.
+
+Privacy and Data Protection - Website Visitors:
+Our privacy policy outlines how we handle your data. Information collected during browsing and purchase is used to improve your shopping experience, process transactions, and send order updates. We do not sell your personal information to third parties. Payment processing is handled by PCI-compliant third-party providers. We retain order records for 5 years for legal and accounting purposes.
+
+Privacy and Data Protection - Mobile App Users:
+We collect personal information such as name, email, shipping address, and payment details to process your orders and provide customer support. Your browsing data is used to personalize recommendations and improve our website. We use industry-standard encryption to protect your data. Shipping information is shared with our logistics partners for delivery purposes only. You have the right to access, correct, or delete your personal information by contacting our privacy team.
+
+Privacy and Data Protection - International Customers:
+We collect personal information such as name, email, shipping address, and payment details to process your orders and provide customer support. We do not sell your personal information to third parties. We use industry-standard encryption to protect your data. Marketing communications are optional and can be unsubscribed at any time. You have the right to access, correct, or delete your personal information by contacting our privacy team.
+
+Membership and Loyalty Program:
+Our loyalty program rewards you for every purchase. Members earn 5 point(s) per dollar spent, which can be redeemed for discounts, free shipping, and exclusive products. Silver members receive free shipping on orders over $35. Gold members enjoy free shipping on all orders and exclusive early access to sales. Points expire after 18 months of inactivity. Membership is free and can be cancelled at any time.
+
+Gift Cards and Store Credit:
+Our store credit and gift cards are valid for 5 years from the date of issue. Gift cards are non-transferable between accounts. They cannot be redeemed for cash unless required by law. Store credit is issued to your account and can be used on future purchases.
+
+International Orders - Electronics:
+We ship Electronics to select international destinations. Shipping costs are calculated at checkout based on weight and destination. Custom-made or personalized orders cannot be cancelled once production has begun. Please note that international orders may be subject to customs inspection, which can cause delays. Returns from international addresses must be shipped at the customer's expense unless the item is defective.
+
+International Orders - Clothing and Apparel:
+We ship Clothing and Apparel to select international destinations. Shipping costs are calculated at checkout based on weight and destination. Bulk orders may require additional processing time before cancellation is possible. Please note that international orders may be subject to customs inspection, which can cause delays. Returns from international addresses must be shipped at the customer's expense unless the item is defective.
+
+International Orders - Footwear:
+International orders for Footwear are shipped via DHL Express and regional partners. Delivery times range from 10 business days depending on the destination. Bulk orders may require additional processing time before cancellation is possible. The customer is responsible for all customs duties, taxes, and import fees. Prices are displayed in USD; currency conversion fees may apply.
+
+International Orders - Food and Beverages:
+We ship Food and Beverages to select international destinations. Shipping costs are calculated at checkout based on weight and destination. Bulk orders may require additional processing time before cancellation is possible. Please note that international orders may be subject to customs inspection, which can cause delays. Returns from international addresses must be shipped at the customer's expense unless the item is defective.
+
+International Orders - Furniture and Home Decor:
+International orders for Furniture and Home Decor are shipped via FedEx and local carriers. Delivery times range from 14 business days depending on the destination. Digital products and subscriptions are processed immediately and cannot be cancelled. The customer is responsible for all customs duties, taxes, and import fees. Prices are displayed in USD; currency conversion fees may apply.
+
+International Orders - Cosmetics and Skincare:
+We ship Cosmetics and Skincare to select international destinations. Shipping costs are calculated at checkout based on weight and destination. Digital products and subscriptions are processed immediately and cannot be cancelled. Please note that international orders may be subject to customs inspection, which can cause delays. Returns from international addresses must be shipped at the customer's expense unless the item is defective.
+
+International Orders - Books and Media:
+We ship Books and Media to select international destinations. Shipping costs are calculated at checkout based on weight and destination. Custom-made or personalized orders cannot be cancelled once production has begun. Please note that international orders may be subject to customs inspection, which can cause delays. Returns from international addresses must be shipped at the customer's expense unless the item is defective.
+
+International Orders - Sports Equipment:
+International orders for Sports Equipment are shipped via FedEx and local carriers. Delivery times range from 10 business days depending on the destination. Bulk orders may require additional processing time before cancellation is possible. The customer is responsible for all customs duties, taxes, and import fees. Prices are displayed in USD; currency conversion fees may apply.
+
+International Orders - Jewelry and Watches:
+We ship Jewelry and Watches to select international destinations. Shipping costs are calculated at checkout based on weight and destination. Pre-orders can be cancelled at any time before the release date. Please note that international orders may be subject to customs inspection, which can cause delays. Returns from international addresses must be shipped at the customer's expense unless the item is defective.
+
+International Orders - Baby and Maternity Products:
+International orders for Baby and Maternity Products are shipped via FedEx and local carriers. Delivery times range from 7 business days depending on the destination. Digital products and subscriptions are processed immediately and cannot be cancelled. The customer is responsible for all customs duties, taxes, and import fees. Prices are displayed in USD; currency conversion fees may apply.
+
+Payment Methods and Security:
+Available payment options include major credit cards (Visa, MasterCard, American Express, Discover), PayPal, Apple Pay, and Google Pay. We use tokenization to protect your card details; no sensitive payment data is stored on our servers. For subscription or recurring orders, you can save a preferred payment method to your account. Refunds are returned to the original payment method within 5 business days.
+
+Promotions and Discounts:
+Flash sales and limited-time promotions are available while supplies last. Minimum purchase amounts may apply. Shipping costs are not included in the qualifying total. Prices during promotions are not eligible for additional price matching. Members may receive exclusive early access to select sales events.
+
+Damaged and Defective Items - Electronics:
+For shipping damage claims involving Electronics, submit photos of the damaged item and packaging through our support portal. We will arrange a replacement to be shipped immediately at no extra cost. We will coordinate with the shipping carrier on your behalf. Processing typically takes 1 business days.
+
+Damaged and Defective Items - Clothing and Apparel:
+If your Clothing and Apparel arrives damaged during shipping, please notify us within 5 days of delivery. We will provide a prepaid return label and process your choice of refund or replacement. Keep all original packaging materials as the carrier may require an inspection. Claims filed after 5 days may not be eligible for compensation.
+
+Damaged and Defective Items - Footwear:
+For shipping damage claims involving Footwear, submit photos of the damaged item and packaging through our support portal. Our team will investigate and offer a resolution within 48 hours. We will coordinate with the shipping carrier on your behalf. Processing typically takes 2 business days.
+
+Damaged and Defective Items - Food and Beverages:
+For shipping damage claims involving Food and Beverages, submit photos of the damaged item and packaging through our support portal. Our team will investigate and offer a resolution within 48 hours. We will coordinate with the shipping carrier on your behalf. Processing typically takes 2 business days.
+
+Damaged and Defective Items - Furniture and Home Decor:
+If your Furniture and Home Decor arrives damaged during shipping, please notify us within 7 days of delivery. Our team will investigate and offer a resolution within 48 hours. Keep all original packaging materials as the carrier may require an inspection. Claims filed after 7 days may not be eligible for compensation.
+
+Damaged and Defective Items - Cosmetics and Skincare:
+If your Cosmetics and Skincare arrives damaged during shipping, please notify us within 3 days of delivery. You may choose between a full refund, store credit, or a replacement item. Keep all original packaging materials as the carrier may require an inspection. Claims filed after 3 days may not be eligible for compensation.
+
+Damaged and Defective Items - Books and Media:
+If your Books and Media arrives damaged during shipping, please notify us within 14 days of delivery. You may choose between a full refund, store credit, or a replacement item. Keep all original packaging materials as the carrier may require an inspection. Claims filed after 14 days may not be eligible for compensation.
+
+Damaged and Defective Items - Sports Equipment:
+For shipping damage claims involving Sports Equipment, submit photos of the damaged item and packaging through our support portal. Our team will investigate and offer a resolution within 48 hours. We will coordinate with the shipping carrier on your behalf. Processing typically takes 3 business days.
+
+Damaged and Defective Items - Jewelry and Watches:
+If your Jewelry and Watches arrives damaged during shipping, please notify us within 3 days of delivery. You may choose between a full refund, store credit, or a replacement item. Keep all original packaging materials as the carrier may require an inspection. Claims filed after 3 days may not be eligible for compensation.
+
+Damaged and Defective Items - Baby and Maternity Products:
+If your Baby and Maternity Products arrives damaged during shipping, please notify us within 7 days of delivery. You may choose between a full refund, store credit, or a replacement item. Keep all original packaging materials as the carrier may require an inspection. Claims filed after 7 days may not be eligible for compensation.
+
+Damaged and Defective Items - Pet Supplies:
+If your Pet Supplies arrives damaged during shipping, please notify us within 14 days of delivery. You may choose between a full refund, store credit, or a replacement item. Keep all original packaging materials as the carrier may require an inspection. Claims filed after 14 days may not be eligible for compensation.
+
+Damaged and Defective Items - Automotive Accessories:
+If your Automotive Accessories arrives damaged during shipping, please notify us within 3 days of delivery. Our team will investigate and offer a resolution within 48 hours. Keep all original packaging materials as the carrier may require an inspection. Claims filed after 3 days may not be eligible for compensation.
+
+Recycling and Sustainability - Electronics:
+We are committed to sustainability. Electronics packaging uses 80% recycled or biodegradable materials. Return eligible used products to any of our stores or via mail using a prepaid recycling label. We partner with certified recycling facilities to ensure responsible disposal of electronic waste and batteries.
+
+Recycling and Sustainability - Clothing and Apparel:
+Our sustainability program for Clothing and Apparel includes reduced packaging, carbon-neutral shipping options, and a take-back program for end-of-life products. Trade in your old device for store credit toward a new purchase. Customers who participate in our recycling program earn loyalty points.
+
+Recycling and Sustainability - Footwear:
+Our sustainability program for Footwear includes reduced packaging, carbon-neutral shipping options, and a take-back program for end-of-life products. Trade in your old device for store credit toward a new purchase. Customers who participate in our recycling program earn loyalty points.
+
+Recycling and Sustainability - Food and Beverages:
+Our sustainability program for Food and Beverages includes reduced packaging, carbon-neutral shipping options, and a take-back program for end-of-life products. Return eligible used products to any of our stores or via mail using a prepaid recycling label. Customers who participate in our recycling program earn loyalty points.
+
+Recycling and Sustainability - Furniture and Home Decor:
+We are committed to sustainability. Furniture and Home Decor packaging uses 80% recycled or biodegradable materials. Return eligible used products to any of our stores or via mail using a prepaid recycling label. We partner with certified recycling facilities to ensure responsible disposal of electronic waste and batteries.
+
+Recycling and Sustainability - Cosmetics and Skincare:
+We are committed to sustainability. Cosmetics and Skincare packaging uses 80% recycled or biodegradable materials. Trade in your old device for store credit toward a new purchase. We partner with certified recycling facilities to ensure responsible disposal of electronic waste and batteries.
+
+Recycling and Sustainability - Books and Media:
+We are committed to sustainability. Books and Media packaging uses 100% recycled or biodegradable materials. Participating customers receive a discount on their next purchase when they recycle qualifying items. We partner with certified recycling facilities to ensure responsible disposal of electronic waste and batteries.
+
+Recycling and Sustainability - Sports Equipment:
+Our sustainability program for Sports Equipment includes reduced packaging, carbon-neutral shipping options, and a take-back program for end-of-life products. Return eligible used products to any of our stores or via mail using a prepaid recycling label. Customers who participate in our recycling program earn loyalty points.
+
+Recycling and Sustainability - Jewelry and Watches:
+We are committed to sustainability. Jewelry and Watches packaging uses 30% recycled or biodegradable materials. Return eligible used products to any of our stores or via mail using a prepaid recycling label. We partner with certified recycling facilities to ensure responsible disposal of electronic waste and batteries.
+
+Recycling and Sustainability - Baby and Maternity Products:
+We are committed to sustainability. Baby and Maternity Products packaging uses 100% recycled or biodegradable materials. Trade in your old device for store credit toward a new purchase. We partner with certified recycling facilities to ensure responsible disposal of electronic waste and batteries.
+
+Customer Support - Electronics:
+We provide support for Electronics through live chat, email, and our community forum. Complex cases may be assigned a dedicated support agent for personalized follow-up. Our knowledge base and FAQ section are available 24/7 for self-service. If a resolution cannot be reached through standard support, your case will be escalated to a senior specialist.
+
+Customer Support - Clothing and Apparel:
+Our customer support team is available via live chat, email, and our community forum. Standard response time is 24 hours during business days. For disputes or legal inquiries, please contact our legal department directly via the email provided in our Terms of Service. For urgent issues, live chat offers the fastest resolution. Support is available in English, Spanish, and Mandarin.
+
+Customer Support - Footwear:
+Our customer support team is available via email, live chat, and phone. Standard response time is 12 hours during business days. For disputes or legal inquiries, please contact our legal department directly via the email provided in our Terms of Service. For urgent issues, live chat offers the fastest resolution. Support is available in English, Spanish, and Mandarin.
+
+Customer Support - Food and Beverages:
+Our customer support team is available via email, phone, and social media direct messages. Standard response time is 48 hours during business days. If your issue requires specialized assistance, it will be escalated to our technical or product team within 24 hours. For urgent issues, live chat offers the fastest resolution. Support is available in English, Spanish, and Mandarin.
+
+Customer Support - Furniture and Home Decor:
+Our customer support team is available via email and live chat. Standard response time is 12 hours during business days. For disputes or legal inquiries, please contact our legal department directly via the email provided in our Terms of Service. For urgent issues, live chat offers the fastest resolution. Support is available in English, Spanish, and Mandarin.
+
+Customer Support - Cosmetics and Skincare:
+We provide support for Cosmetics and Skincare through email and live chat. Complex cases may be assigned a dedicated support agent for personalized follow-up. Our knowledge base and FAQ section are available 24/7 for self-service. If a resolution cannot be reached through standard support, your case will be escalated to a senior specialist.
+
+Customer Support - Books and Media:
+Our customer support team is available via live chat, email, and our community forum. Standard response time is 24 hours during business days. If your issue requires specialized assistance, it will be escalated to our technical or product team within 24 hours. For urgent issues, live chat offers the fastest resolution. Support is available in English, Spanish, and Mandarin.
+
+Customer Support - Sports Equipment:
+We provide support for Sports Equipment through email, phone, and social media direct messages. Complex cases may be assigned a dedicated support agent for personalized follow-up. Our knowledge base and FAQ section are available 24/7 for self-service. If a resolution cannot be reached through standard support, your case will be escalated to a senior specialist.
+
+Customer Support - Jewelry and Watches:
+We provide support for Jewelry and Watches through email, live chat, and phone. If your issue requires specialized assistance, it will be escalated to our technical or product team within 24 hours. Our knowledge base and FAQ section are available 24/7 for self-service. If a resolution cannot be reached through standard support, your case will be escalated to a senior specialist.
+
+Customer Support - Baby and Maternity Products:
+Our customer support team is available via email and live chat. Standard response time is 24 hours during business days. If your issue requires specialized assistance, it will be escalated to our technical or product team within 24 hours. For urgent issues, live chat offers the fastest resolution. Support is available in English, Spanish, and Mandarin.
+
+Customer Support - Pet Supplies:
+Our customer support team is available via email and live chat. Standard response time is 24 hours during business days. If your issue requires specialized assistance, it will be escalated to our technical or product team within 24 hours. For urgent issues, live chat offers the fastest resolution. Support is available in English, Spanish, and Mandarin.
+
+Customer Support - Automotive Accessories:
+We provide support for Automotive Accessories through email, live chat, and phone. Complex cases may be assigned a dedicated support agent for personalized follow-up. Our knowledge base and FAQ section are available 24/7 for self-service. If a resolution cannot be reached through standard support, your case will be escalated to a senior specialist.
+
+Seasonal Holiday Policy:
+During major holiday periods (November 15 - January 5), return windows are extended by 15 days. Standard shipping may take an additional 3-5 business days due to high volume. Customer support hours are extended to 7 days a week, 8 AM - 10 PM local time. Gift card purchases during this period are eligible for bonus loyalty points.
+
+Force Majeure and Supply Chain Delays:
+In the event of unforeseen circumstances including natural disasters, pandemics, labor strikes, or supply chain disruptions, delivery times may be extended beyond our standard estimates. We will notify affected customers via email with updated delivery timelines. Cancellation fees may be waived for orders impacted by force majeure events.
+
+Accessibility and Inclusion Policy:
+We are committed to ensuring our website and services are accessible to all customers, including those with disabilities. Our website complies with WCAG 2.1 Level AA standards. If you require assistance placing an order or accessing information, please contact our accessibility support line. We offer alternative formats for product manuals and policy documents upon request.
+
+Community Guidelines for Reviews and User Content:
+Product reviews and user-submitted content must be honest, respectful, and relevant. We reserve the right to remove content that contains profanity, personal attacks, spam, or misleading information. Reviews must be based on genuine purchase experience. Incentivized reviews must be clearly disclosed. We do not edit review ratings, but we may verify purchase history before publishing.
+
+Fraud Prevention and Account Security:
+We employ advanced fraud detection systems to protect our customers and business. Suspicious orders may be temporarily held for verification. We may request additional identification for high-value orders or orders shipped to addresses that differ from the billing address. Accounts with repeated failed payment attempts or suspicious activity may be suspended pending review.
+
+Bulk and Corporate Purchasing Policy:
+Orders exceeding 50 units of a single item or $5,000 in total value are classified as bulk orders. Bulk orders require advance approval and may be subject to different pricing, payment terms, and return conditions. Lead times for bulk orders are typically 2-4 weeks. Bulk purchases are not eligible for standard promotional discounts unless specifically agreed in writing.
+
+Subscription and Auto-Delivery Policy:
+Subscription orders are billed automatically at the interval selected during signup (weekly, monthly, or quarterly). You can modify, skip, or cancel your subscription at any time through your account dashboard. Changes must be made at least 48 hours before the next scheduled shipment. Subscription pricing is locked for 6 months; after that, you will be notified of any price changes 30 days in advance.
+
+Preorder and Backorder Policy:
+Preorder items are charged at the time of order placement. The estimated release date is provided at checkout and may be subject to change by the manufacturer. If a preorder is cancelled by us due to manufacturer discontinuation, a full refund will be issued automatically. Backordered items will be shipped as soon as stock is available; you may cancel a backorder at any time before it ships.

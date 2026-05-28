@@ -1,6 +1,8 @@
+import json
 import time
 import asyncio
 import uuid
+import logging
 from typing import AsyncGenerator
 
 from fastapi import APIRouter, Request
@@ -8,8 +10,10 @@ from fastapi.responses import StreamingResponse
 from langchain_core.messages import HumanMessage
 
 from backend.api.schemas import ChatRequest, ChatResponse, HealthResponse
-from backend.graph.agent_graph import agent_graph
+from backend.graph.agent_graph import get_agent_graph
 from backend.config import settings
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -63,7 +67,7 @@ async def chat(request: ChatRequest):
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(
         None,
-        lambda: agent_graph.invoke(
+        lambda: get_agent_graph().invoke(
             {
                 "user_input": request.message,
                 "messages": [HumanMessage(content=request.message)],
@@ -83,34 +87,83 @@ async def chat(request: ChatRequest):
 
 
 async def _stream_response(message: str, session_id: str) -> AsyncGenerator[str, None]:
-    """Yield raw SSE frames with a smooth typing effect."""
-    # Run graph in thread pool to avoid blocking the event loop
-    loop = asyncio.get_event_loop()
-    result = await loop.run_in_executor(
-        None,
-        lambda: agent_graph.invoke(
-            {
-                "user_input": message,
-                "messages": [HumanMessage(content=message)],
-            },
-            config={"configurable": {"thread_id": session_id}},
-        ),
-    )
-    answer = result.get("final_answer", "")
-    validation_flag = result.get("validation_flag")
+    """Stream tokens in real time via get_agent_graph().astream_events().
 
-    # Stream word-by-word for visible typing effect
-    words = answer.split(" ")
-    for i, word in enumerate(words):
-        chunk = word + (" " if i < len(words) - 1 else "")
-        safe = chunk.replace("\n", "\\n").replace("\r", "")
-        yield f"data: {safe}\n\n"
-        await asyncio.sleep(0.03)
+    Intercepts:
+      - on_chat_model_stream  → token-level LLM output from generate_reply
+      - on_tool_start/end     → tool execution visibility for the frontend
+      - on_chain_start/end    → retry detection (validation loop)
+      - on_chain_end          → final metadata after update_memory
 
-    if validation_flag:
-        yield f"data: [FLAG:{validation_flag}]\n\n"
+    Only tokens from inside the generate_reply node are forwarded to the user.
+    Tokens from auxiliary LLM calls (city extraction, summarization, validation)
+    are filtered out by tracking whether we're inside the generate_reply node.
+    """
+    initial_state = {
+        "user_input": message,
+        "messages": [HumanMessage(content=message)],
+    }
 
-    yield "data: [DONE]\n\n"
+    config = {"configurable": {"thread_id": session_id}}
+    in_generate_reply = False
+    token_count = 0
+
+    async def event_generator():
+        nonlocal in_generate_reply, token_count
+
+        async for event in get_agent_graph().astream_events(
+            initial_state,
+            config=config,
+            version="v2",
+        ):
+            kind = event["event"]
+            name = event.get("name", "")
+
+            if kind == "on_chain_start" and name == "generate_reply":
+                in_generate_reply = True
+                if token_count > 0:
+                    # Retry: validation flagged the previous answer, generate_reply
+                    # is running again with the strict prompt. Signal frontend to
+                    # clear the previous partial content.
+                    token_count = 0
+                    yield f"data: {json.dumps({'type': 'retry'})}\n\n"
+
+            elif kind == "on_chain_end" and name == "generate_reply":
+                in_generate_reply = False
+
+            elif kind == "on_chat_model_stream" and in_generate_reply:
+                chunk = event["data"]["chunk"]
+                if hasattr(chunk, "content") and chunk.content:
+                    token_count += len(chunk.content)
+                    yield f"data: {json.dumps({'type': 'token', 'content': chunk.content})}\n\n"
+
+            elif kind == "on_tool_start":
+                tool_input = event["data"].get("input", {})
+                # Redact potentially long inputs for display
+                safe_input = {k: str(v)[:100] for k, v in tool_input.items()} if isinstance(tool_input, dict) else str(tool_input)[:100]
+                yield f"data: {json.dumps({'type': 'tool_start', 'tool': name, 'input': safe_input})}\n\n"
+
+            elif kind == "on_tool_end":
+                tool_output = str(event["data"].get("output", ""))[:200]
+                yield f"data: {json.dumps({'type': 'tool_end', 'tool': name, 'output': tool_output})}\n\n"
+
+        # Graph completed — pull final state for metadata (use async version
+        # since the checkpointer is an AsyncPostgresSaver).
+        final_state = await get_agent_graph().aget_state(config=config)
+        metadata = {"type": "done"}
+        if final_state and final_state.values:
+            metadata["cached"] = final_state.values.get("cached", False)
+            metadata["validation_flag"] = final_state.values.get("validation_flag")
+            metadata["intent"] = final_state.values.get("intent")
+        yield f"data: {json.dumps(metadata)}\n\n"
+
+    try:
+        async for frame in event_generator():
+            yield frame
+    except Exception:
+        logger.exception("[stream] astream_events failed")
+        yield f"data: {json.dumps({'type': 'error', 'message': 'Streaming failed. Please retry.'})}\n\n"
+        yield f"data: {json.dumps({'type': 'done'})}\n\n"
 
 
 @router.post("/chat/stream")
@@ -119,4 +172,9 @@ async def chat_stream(request: ChatRequest):
     return StreamingResponse(
         _stream_response(request.message, session_id),
         media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",  # Disable nginx buffering
+        },
     )

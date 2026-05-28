@@ -6,8 +6,8 @@ persistence, or an in-memory fallback for local development.
 
 Usage:
     from backend.checkpoint import get_checkpointer
-    checkpointer = get_checkpointer()
-    graph = builder.compile(checkpointer=checkpointer)
+    checkpointer = get_checkpointer()          # sync (memory only)
+    checkpointer = await aget_checkpointer()   # async (Postgres or memory)
 """
 
 import logging
@@ -16,45 +16,59 @@ from backend.config import settings
 
 logger = logging.getLogger(__name__)
 
-# Lazy singleton — created on first call so FastAPI import graphs don't
-# trigger a DB connection at module-load time.
 _checkpointer = None
 
 
 def get_checkpointer():
-    """Return a compiled checkpointer instance (Postgres or in-memory)."""
+    """Return a previously-initialized checkpointer.
+
+    Call aget_checkpointer() first to initialize. This sync getter exists
+    for code paths that can't be async (e.g., graph invoked via run_in_executor).
+    """
+    global _checkpointer
+    if _checkpointer is None:
+        # Fall back to memory if not initialized yet (tests, scripts, CLI)
+        _checkpointer = _create_memory_checkpointer()
+    return _checkpointer
+
+
+async def aget_checkpointer():
+    """Async checkpointer factory. Call once during app startup.
+
+    Creates an AsyncPostgresSaver (persistent) or InMemorySaver (dev),
+    both of which support async operations required by astream_events().
+    """
     global _checkpointer
     if _checkpointer is not None:
         return _checkpointer
 
     if settings.checkpoint_type == "postgres":
-        _checkpointer = _create_postgres_checkpointer()
+        _checkpointer = await _create_postgres_checkpointer()
     else:
         _checkpointer = _create_memory_checkpointer()
 
     return _checkpointer
 
 
-def _create_postgres_checkpointer():
-    """Create a PostgresSaver backed by a connection pool."""
-    from psycopg_pool import ConnectionPool
-    from langgraph.checkpoint.postgres import PostgresSaver
+async def _create_postgres_checkpointer():
+    """Create an AsyncPostgresSaver backed by an async connection pool."""
+    from psycopg_pool import AsyncConnectionPool
+    from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 
-    # psycopg v3 expects postgresql:// (not postgresql+psycopg2://)
     conninfo = settings.pg_connection_raw
 
-    logger.info("[checkpoint] Creating Postgres connection pool for checkpointer")
-    pool = ConnectionPool(
+    logger.info("[checkpoint] Creating async Postgres checkpointer")
+    pool = AsyncConnectionPool(
         conninfo=conninfo,
         min_size=1,
         max_size=10,
-        kwargs={"row_factory": None, "autocommit": True},
+        open=False,
+        kwargs={"autocommit": True, "prepare_threshold": 0},
     )
-    pool.open(wait=True)
-
-    saver = PostgresSaver(conn=pool)
-    saver.setup()
-    logger.info("[checkpoint] Postgres checkpointer ready (tables created if needed)")
+    await pool.open()
+    saver = AsyncPostgresSaver(conn=pool)
+    await saver.setup()
+    logger.info("[checkpoint] Async Postgres checkpointer ready (tables created if needed)")
     return saver
 
 

@@ -70,6 +70,13 @@ class Settings(BaseSettings):
         description="Policy retrieval mode: vector | graph | hybrid",
     )
 
+    # ─── Intent Classification ────────────────────────────────────────────────
+    classification_mode: str = Field(
+        default="keyword",
+        description="Intent classifier: keyword (<100 products) | "
+                    "llm_hybrid (100-10K) | semantic (10K+)",
+    )
+
     # ─── Checkpointer ─────────────────────────────────────────────────────────
     checkpoint_type: str = Field(
         default="postgres",

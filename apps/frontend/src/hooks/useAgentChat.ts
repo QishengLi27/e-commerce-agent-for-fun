@@ -57,13 +57,24 @@ export function useAgentChat() {
 
       try {
         if (useStream) {
-          for await (const chunk of streamMessage({ message: text, session_id: sessionId })) {
+          for await (const event of streamMessage({ message: text, session_id: sessionId })) {
             if (abortRef.current) break
             setMessages((prev) => {
               const last = prev[prev.length - 1]
               if (last.role !== 'assistant') return prev
-              const updated = { ...last, content: last.content + chunk }
-              return [...prev.slice(0, -1), updated]
+
+              switch (event.type) {
+                case 'token':
+                  return [...prev.slice(0, -1), { ...last, content: last.content + event.content }]
+
+                case 'retry':
+                  // Validation flagged the previous answer — clear it so the
+                  // regenerated strict-prompt answer replaces it from scratch.
+                  return [...prev.slice(0, -1), { ...last, content: '' }]
+
+                default:
+                  return prev
+              }
             })
           }
         } else {

@@ -4,7 +4,6 @@ LangGraph nodes for the e-commerce support agent.
 Each node is a pure function: AgentState -> AgentState.
 """
 
-import re
 import logging
 from typing import Literal, TypedDict, Annotated
 
@@ -38,6 +37,7 @@ class AgentState(TypedDict, total=False):
     user_input: str
     intent: str
     order_id: str
+    entity_context: dict   # {"products": [...], "categories": [...], "matched_signals": [...]}
     tool_result: str
     final_answer: str
     cached: bool
@@ -70,6 +70,10 @@ def sanitize_input(state: AgentState) -> AgentState:
         logger.info("[graph] Weather query detected, skipping semantic cache")
         return state
 
+    # Check cache without intent — we don't know intent yet.
+    # Stale entries from misclassified runs are handled by cache TTL/intent
+    # metadata in agent.py; for the graph path we rely on prompt evolution
+    # and occasional cache clears.
     cached = get_cached_response(cleaned)
     if cached:
         state["final_answer"] = cached
@@ -85,49 +89,29 @@ def sanitize_input(state: AgentState) -> AgentState:
 
 def classify_intent(state: AgentState) -> AgentState:
     """
-    Fast keyword-based intent classification.
-    Returns: order | list_orders | policy | weather | unknown
+    Hybrid intent classification: keyword fast-path + LLM fallback.
+    Returns: order | list_orders | policy | weather | knowledge | unknown
     """
-    text = state.get("user_input", "").lower()
+    from backend.intent import classify_intent_hybrid
 
-    # 1. Weather (most specific)
-    if any(w in text for w in ["weather", "天气", "temperature", "rain", "sunny"]):
-        state["intent"] = "weather"
-        logger.info("[graph] Intent: weather")
-        return state
+    text = state.get("user_input", "")
+    result = classify_intent_hybrid(text)
 
-    # 2. List all orders
-    if any(w in text for w in ["all orders", "订单列表", "show me orders", "list orders"]):
-        state["intent"] = "list_orders"
-        logger.info("[graph] Intent: list_orders")
-        return state
+    intent = result.get("intent", "unknown")
+    state["intent"] = intent
 
-    # 3. Single order status
-    if any(w in text for w in ["order", "订单", "status of", "track"]):
-        match = re.search(r"\b(10\d{2,})\b", text)
-        if match:
-            state["order_id"] = match.group(1)
-            state["intent"] = "order"
-            logger.info("[graph] Intent: order, id=%s", match.group(1))
-            return state
+    # Store entity context for downstream nodes (policy_node uses it for retrieval)
+    if "entities" in result:
+        state["entity_context"] = result["entities"]
+        if result.get("context"):
+            state["entity_context"]["matched_signals"] = result["context"].get("matched_signals", [])
 
-    # 4. Product / category queries (more specific than generic policy)
-    if any(w in text for w in ["product", "category", "item info", "headphone",
-        "laptop", "mouse", "keyboard", "phone case", "t-shirt", "speaker",
-        "what is", "tell me about", "which policy applies to"]):
-        state["intent"] = "knowledge"
-        logger.info("[graph] Intent: knowledge")
-        return state
+    if intent == "order":
+        state["order_id"] = result.get("order_id", "")
+        logger.info("[graph] Intent: order (source=%s, id=%s)", result.get("source"), state["order_id"])
+    else:
+        logger.info("[graph] Intent: %s (source=%s, confidence=%s)", intent, result.get("source"), result.get("confidence"))
 
-    # 5. Policy / returns
-    if any(w in text for w in ["policy", "return", "refund", "shipping", "warranty", "退货", "退款", "政策", "运费"]):
-        state["intent"] = "policy"
-        logger.info("[graph] Intent: policy")
-        return state
-
-    # 6. Fallback
-    state["intent"] = "unknown"
-    logger.info("[graph] Intent: unknown")
     return state
 
 
@@ -173,8 +157,25 @@ def list_orders_node(state: AgentState) -> AgentState:
 
 
 def policy_node(state: AgentState) -> AgentState:
-    """Retrieve store policies."""
+    """Retrieve store policies, enriched with entity context if available."""
     query = state.get("user_input", "")
+    entity_ctx = state.get("entity_context", {})
+
+    # Enrich query with entity context for better retrieval
+    # "Can I return headphones?" → "headphones Audio 14-day return" (product + category + policy)
+    if entity_ctx:
+        enrichment_parts = []
+        if entity_ctx.get("products"):
+            enrichment_parts.extend(entity_ctx["products"])
+        if entity_ctx.get("categories"):
+            enrichment_parts.extend(entity_ctx["categories"])
+        if entity_ctx.get("matched_signals"):
+            enrichment_parts.extend(entity_ctx["matched_signals"])
+        if enrichment_parts:
+            enriched = " ".join(enrichment_parts) + " " + query
+            logger.info("[graph] Policy query enriched: %s", enriched[:80])
+            query = enriched
+
     result = policy_retriever_tool.invoke({"query": query})
     state["tool_result"] = result
     logger.info("[graph] Policy result: %s", result[:60])
@@ -392,11 +393,14 @@ Your reply:"""
 
 _STRICT_REPLY_PROMPT = """You are a helpful e-commerce support agent.
 Your previous answer was FLAGGED for containing unverified claims.
+The auditor noted: {validation_issue}
+
 Regenerate the answer following these stricter rules:
 
 1. Use ONLY the exact facts in "Relevant information". No inference, no extrapolation.
 2. If the answer isn't fully supported by the text below, say: "I don't have that specific information."
-3. Do NOT mention that you are regenerating an answer.
+3. Address the auditor's concern above — fix the specific issue they flagged.
+4. Do NOT mention that you are regenerating an answer.
 
 {history}
 User question: {question}
@@ -420,11 +424,22 @@ def generate_reply(state: AgentState) -> AgentState:
 
     # Choose prompt based on retry status
     is_retry = state.get("retry_count", 0) > 0
-    prompt_template = _STRICT_REPLY_PROMPT if is_retry else _REPLY_PROMPT
-    prompt = prompt_template.format(history=history, question=question, result=result)
+    if is_retry:
+        prompt = _STRICT_REPLY_PROMPT.format(
+            history=history,
+            question=question,
+            result=result,
+            validation_issue=state.get("validation_notes", "unspecified issue"),
+        )
+    else:
+        prompt = _REPLY_PROMPT.format(history=history, question=question, result=result)
 
-    response = llm.invoke([HumanMessage(content=prompt)])
-    state["final_answer"] = response.content.strip()
+    # Use .stream() instead of .invoke() so astream_events() can capture
+    # on_chat_model_stream events for real token-level SSE streaming.
+    full_content = ""
+    for chunk in llm.stream([HumanMessage(content=prompt)]):
+        full_content += chunk.content
+    state["final_answer"] = full_content.strip()
     logger.info("[graph] Generated answer (retry=%s): %s", is_retry, state["final_answer"][:60])
     return state
 
@@ -510,21 +525,29 @@ def validate_reply(state: AgentState) -> AgentState:
         state["validation_notes"] = f"validation call failed: {e}"
         logger.warning("[graph] Validation error: %s", e)
 
+    # Self-correction: if validation failed and we have retries left,
+    # clear the answer and increment the counter so generate_reply runs again.
+    retries = state.get("retry_count", 0)
+    if state["validation_flag"] == "unverified_claims" and retries < 2:
+        state["retry_count"] = retries + 1
+        state["final_answer"] = ""
+        logger.info("[graph] Validation failed — flagging for retry (attempt %d)", retries + 1)
+
     return state
 
 
 def route_after_validation(state: AgentState) -> str:
-    """Conditional edge: retry generation if validation fails, else proceed."""
+    """Conditional edge: retry generation if validation failed, else proceed.
+
+    Pure function — all state mutation happens in validate_reply.
+    """
     flag = state.get("validation_flag", "valid")
     retries = state.get("retry_count", 0)
 
     if flag == "unverified_claims" and retries < 2:
-        state["retry_count"] = retries + 1
-        state["final_answer"] = ""  # Clear so generate_reply runs again
-        logger.info("[graph] Validation failed — retrying generation (attempt %d)", retries + 1)
+        logger.info("[graph] Route: retry generation (attempt %d)", retries)
         return "generate_reply"
 
-    # Either valid, not_applicable, or max retries reached
     return "update_memory"
 
 
@@ -544,12 +567,11 @@ def update_memory(state: AgentState) -> AgentState:
     # Reset retry counter for the next turn
     state["retry_count"] = 0
 
-    # Do NOT cache weather responses in semantic cache — real-time data should
-    # always be fetched fresh to avoid stale or cross-city cache pollution.
+    # Cache with intent so future intent changes invalidate stale entries
     if _is_weather_query(user_input):
         logger.info("[graph] Checkpoint updated (weather response not cached)")
     else:
-        cache_response(user_input, answer)
-        logger.info("[graph] Checkpoint updated and response cached")
+        cache_response(user_input, answer, intent=state.get("intent", ""))
+        logger.info("[graph] Checkpoint updated and response cached (intent=%s)", state.get("intent"))
 
     return state

@@ -28,10 +28,12 @@ def setup_vector_db():
     chunks = text_splitter.split_documents(documents)
 
     # Create embeddings
+    # chunk_size=64: Zhipu embedding-2 API limits batch size to 64
     embeddings = OpenAIEmbeddings(
         model=settings.embedding_model,
         openai_api_key=settings.openai_api_key,
         openai_api_base=settings.openai_api_base,
+        chunk_size=64,
     )
 
     # Create pgvector collection (replaces Chroma)
