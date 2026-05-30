@@ -184,9 +184,133 @@ Any change to retrieval logic must:
 
 ---
 
-## 5. Reference
+## 5. Design Patterns for Data Access (Taxonomy & Knowledge Graph)
+
+These patterns apply to all new code in `backend/knowledge/`. Existing code should be migrated to these patterns when touched.
+
+### 5.1 Repository Pattern with Typed Returns
+
+`KnowledgeStore` is a **repository** — it encapsulates all SQL, and callers never write queries. New methods must return **dataclass instances**, never raw `dict`.
+
+```python
+# ✅ Good — typed return value
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class ProductInfo:
+    name: str
+    price: float | None
+    sku: str
+    category_name: str
+    category_description: str | None
+    attributes: list[ProductAttribute]
+    policies: list[PolicySummary]
+    accessories: list[ProductRef]
+    alternatives: list[ProductRef]
+
+class KnowledgeStore:
+    def get_product_info(self, query: str) -> ProductInfo | None:
+        ...
+
+# ❌ Bad — raw dict, unknown shape
+class KnowledgeStore:
+    def get_product_info(self, query: str) -> dict | None:
+        ...
+```
+
+**Rule:** if a method returns a compound value, define a frozen dataclass for it. Use `@dataclass(frozen=True)` for immutability. Place dataclasses in the same file as the method that produces them, or extract to `backend/knowledge/models.py` if shared.
+
+### 5.2 Query Object Pattern
+
+Complex queries (multi-filter, attribute search) must be encapsulated in a dedicated query object — no SQL string building in repository methods.
+
+```python
+# ✅ Good — query object
+@dataclass(frozen=True)
+class AttributeFilter:
+    attribute_name: str
+    operator: str  # eq, gt, lt, gte, lte, contains, between
+    value: str | int | float | bool
+
+@dataclass(frozen=True)
+class ProductQuery:
+    keyword: str | None = None
+    category: str | None = None
+    filters: list[AttributeFilter] = field(default_factory=list)
+    limit: int = 20
+
+class KnowledgeStore:
+    def search_products(self, query: ProductQuery) -> list[ProductRef]:
+        ...
+
+# ❌ Bad — positional args, implicit logic
+class KnowledgeStore:
+    def search_products(
+        self, keyword: str, filters: list[dict] | None = None,
+        category: str | None = None, limit: int = 20,
+    ) -> list[dict]:
+        ...
+```
+
+### 5.3 Interface Segregation for Retrievers
+
+The `PolicyRetriever` ABC already enforces a single interface. Extend this pattern — new retrieval capabilities get their own protocol/ABC, not monolith methods on an existing class.
+
+```python
+# ✅ Good — focused interface
+class SynonymResolver(Protocol):
+    def resolve(self, term: str, entity_type: str | None = None) -> str | None: ...
+    def expand_query(self, query: str) -> list[str]: ...
+
+# ✅ Good — separate interface
+class RelationLookup(Protocol):
+    def get_accessories(self, product_name: str) -> list[ProductRef]: ...
+    def get_alternatives(self, product_name: str) -> list[ProductRef]: ...
+```
+
+**Rule:** if a new capability adds 3+ methods to KnowledgeStore, extract it to a focused class/Protocol behind its own interface.
+
+### 5.4 No Primitive Obsession
+
+Domain concepts must be represented as types, not strings/dicts.
+
+| Primitive | Replace with |
+|-----------|-------------|
+| `str` product name | `ProductRef(name: str, id: int)` |
+| `str` category name | `CategoryRef(name: str, id: int)` |
+| `dict` policy | `PolicySummary(name: str, summary: str, type: str)` |
+| `tuple[str, float]` score | `ScoredDoc(doc: Document, score: float)` |
+
+### 5.5 Dependency Injection (reinforced)
+
+The singleton `get_knowledge_store()` is acceptable for CLI usage, but all new retrievers and tools must accept their dependencies through `__init__`:
+
+```python
+# ✅ Good — injectable
+class GraphPolicyRetriever(PolicyRetriever):
+    def __init__(self, store: KnowledgeStore | None = None):
+        self._store = store or get_knowledge_store()
+
+# ✅ Good — FastAPI DI
+async def chat(
+    retriever: Annotated[HybridPolicyRetriever, Depends(get_retriever)],
+): ...
+```
+
+### 5.6 Testing Requirements for Data Access
+
+- **Unit tests:** mock the DB connection, test query logic in isolation
+- **Integration tests:** hit a real PostgreSQL (use a test database or the existing local pgvector container)
+- **AAA pattern:** Arrange → Act → Assert, with explicit section comments
+- **Parametrize:** use `@pytest.mark.parametrize` for synonym variants, filter combinations, edge cases
+
+---
+
+## 6. Reference
 
 - [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
 - [PEP 8](https://peps.python.org/pep-0008/)
 - [PEP 257](https://peps.python.org/pep-0257/)
 - [PEP 484](https://peps.python.org/pep-0484/)
+- [Repository Pattern (Fowler)](https://martinfowler.com/eaaCatalog/repository.html)
+- [Query Object Pattern (Fowler)](https://martinfowler.com/eaaCatalog/queryObject.html)
