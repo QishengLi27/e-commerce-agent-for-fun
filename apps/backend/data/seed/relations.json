@@ -1,0 +1,23 @@
+[
+  {"source_product_name": "iPhone 15 Pro", "target_product_name": "iPhone 15 Pro Leather Case", "relation_type": "accessory", "strength": 0.95},
+  {"source_product_name": "iPhone 15 Pro", "target_product_name": "AirPods Pro 2", "relation_type": "accessory", "strength": 0.90},
+  {"source_product_name": "iPhone 15 Pro", "target_product_name": "iPhone 15 Pro Tempered Glass", "relation_type": "accessory", "strength": 0.95},
+  {"source_product_name": "iPhone 15 Pro", "target_product_name": "Apple 20W USB-C Charger", "relation_type": "accessory", "strength": 0.85},
+  {"source_product_name": "Samsung Galaxy S24", "target_product_name": "Samsung Galaxy S24 Silicone Case", "relation_type": "accessory", "strength": 0.95},
+  {"source_product_name": "Samsung Galaxy S24", "target_product_name": "Samsung Galaxy Buds3", "relation_type": "accessory", "strength": 0.90},
+  {"source_product_name": "MacBook Pro 16", "target_product_name": "Apple Magic Keyboard", "relation_type": "accessory", "strength": 0.85},
+  {"source_product_name": "MacBook Pro 16", "target_product_name": "Anker USB-C Cable 2m", "relation_type": "accessory", "strength": 0.80},
+  {"source_product_name": "MacBook Pro 16", "target_product_name": "Dell XPS 15", "relation_type": "alternative", "strength": 0.80},
+  {"source_product_name": "MacBook Pro 16", "target_product_name": "ASUS ROG Strix G16", "relation_type": "alternative", "strength": 0.60},
+  {"source_product_name": "iPhone 15 Pro", "target_product_name": "Samsung Galaxy S24", "relation_type": "alternative", "strength": 0.85},
+  {"source_product_name": "iPhone 15 Pro", "target_product_name": "Google Pixel 8", "relation_type": "alternative", "strength": 0.80},
+  {"source_product_name": "Samsung Galaxy S24", "target_product_name": "Xiaomi 14", "relation_type": "alternative", "strength": 0.75},
+  {"source_product_name": "Sony WH-1000XM5", "target_product_name": "Bose QuietComfort Ultra", "relation_type": "alternative", "strength": 0.90},
+  {"source_product_name": "Sony WH-1000XM5", "target_product_name": "AirPods Pro 2", "relation_type": "alternative", "strength": 0.70},
+  {"source_product_name": "iPad Air", "target_product_name": "Samsung Galaxy Tab S9", "relation_type": "alternative", "strength": 0.85},
+  {"source_product_name": "JBL Flip 6", "target_product_name": "Bose SoundLink Flex", "relation_type": "alternative", "strength": 0.85},
+  {"source_product_name": "ASUS ROG Strix G16", "target_product_name": "Lenovo Legion Pro 7", "relation_type": "alternative", "strength": 0.90},
+  {"source_product_name": "Nike Air Max 90", "target_product_name": "Adidas Ultraboost 23", "relation_type": "alternative", "strength": 0.80},
+  {"source_product_name": "Samsung Galaxy S24", "target_product_name": "Anker USB-C Cable 2m", "relation_type": "compatible", "strength": 0.90},
+  {"source_product_name": "Google Pixel 8", "target_product_name": "Anker USB-C Cable 2m", "relation_type": "compatible", "strength": 0.90}
+]

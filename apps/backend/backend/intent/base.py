@@ -17,7 +17,7 @@ from abc import ABC, abstractmethod
 from typing import Literal
 
 IntentType = Literal[
-    "order", "list_orders", "policy", "weather", "knowledge", "unknown"
+    "order", "list_orders", "policy", "weather", "knowledge", "product_qa", "unknown"
 ]
 
 _ORDER_ID_RE = re.compile(r"\b(10\d{2,})\b")
@@ -25,21 +25,47 @@ _ORDER_ID_RE = re.compile(r"\b(10\d{2,})\b")
 # ── Shared keyword sets used across all classifiers as pre-filters ────────────
 
 WEATHER_SIGNALS = {
-    "weather", "temperature", "rain", "sunny", "cloudy", "forecast", "天气",
+    "weather",
+    "temperature",
+    "rain",
+    "sunny",
+    "cloudy",
+    "forecast",
+    "天气",
 }
 
 LIST_ORDERS_PHRASES = {
-    "all orders", "订单列表", "show me orders", "list orders", "my orders",
+    "all orders",
+    "订单列表",
+    "show me orders",
+    "list orders",
+    "my orders",
 }
 
 POLICY_SIGNALS = {
-    "return", "refund", "exchange", "shipping", "delivery", "warranty",
-    "policy", "policies", "退货", "退款", "政策", "运费",
-    "ship", "money back", "cancel", "package", "send back", "arrive",
+    "return",
+    "refund",
+    "exchange",
+    "shipping",
+    "delivery",
+    "warranty",
+    "policy",
+    "policies",
+    "退货",
+    "退款",
+    "政策",
+    "运费",
+    "ship",
+    "money back",
+    "cancel",
+    "package",
+    "send back",
+    "arrive",
 }
 
 
 # ── Entity Extraction (shared, no LLM) ────────────────────────────────────────
+
 
 def extract_entities(query: str) -> dict:
     """Extract known entities from the query using the knowledge graph + regex."""
@@ -65,6 +91,7 @@ def extract_entities(query: str) -> dict:
 
 
 # ── Classifier Interface ──────────────────────────────────────────────────────
+
 
 class BaseIntentClassifier(ABC):
     """Interface for all intent classifiers."""

@@ -23,6 +23,7 @@ from backend.graph.nodes import (
     list_orders_node,
     order_node,
     policy_node,
+    product_qa_node,
     route_after_validation,
     route_by_intent,
     sanitize_input,
@@ -43,6 +44,7 @@ async def init_agent_graph():
         return _agent_graph
 
     from backend.checkpoint import aget_checkpointer
+
     checkpointer = await aget_checkpointer()
     _agent_graph = _build_graph(checkpointer)
     return _agent_graph
@@ -53,6 +55,7 @@ def get_agent_graph():
     global _agent_graph
     if _agent_graph is None:
         from backend.checkpoint import get_checkpointer
+
         _agent_graph = _build_graph(get_checkpointer())
     return _agent_graph
 
@@ -69,6 +72,7 @@ def _build_graph(checkpointer):
     builder.add_node("policy_node", policy_node)
     builder.add_node("weather_node", weather_node)
     builder.add_node("knowledge_node", knowledge_node)
+    builder.add_node("product_qa_node", product_qa_node)
     builder.add_node("generate_reply", generate_reply)
     builder.add_node("validate_reply", validate_reply)
     builder.add_node("update_memory", update_memory)
@@ -89,6 +93,7 @@ def _build_graph(checkpointer):
             "policy": "policy_node",
             "weather": "weather_node",
             "knowledge": "knowledge_node",
+            "product_qa": "product_qa_node",
             "generate_reply": "generate_reply",
         },
     )
@@ -99,6 +104,7 @@ def _build_graph(checkpointer):
     builder.add_edge("policy_node", "generate_reply")
     builder.add_edge("weather_node", "generate_reply")
     builder.add_edge("knowledge_node", "generate_reply")
+    builder.add_edge("product_qa_node", "generate_reply")
 
     # Final steps with self-correction loop
     builder.add_edge("generate_reply", "validate_reply")

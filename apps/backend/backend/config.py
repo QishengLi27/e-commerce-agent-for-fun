@@ -32,6 +32,20 @@ class Settings(BaseSettings):
         description="PostgreSQL connection string (SQLAlchemy format)",
     )
 
+    # ─── Neo4j Graph Database ─────────────────────────────────────────────────
+    neo4j_uri: str = Field(
+        default="bolt://localhost:7687",
+        description="Neo4j Bolt connection URI",
+    )
+    neo4j_user: str = Field(
+        default="neo4j",
+        description="Neo4j username",
+    )
+    neo4j_password: str = Field(
+        default="password",
+        description="Neo4j password",
+    )
+
     # ─── LLM / Embeddings (GLM-4 via OpenAI-compatible API) ───────────────────
     openai_api_key: str = Field(
         default="",
@@ -48,6 +62,10 @@ class Settings(BaseSettings):
     embedding_model: str = Field(
         default="embedding-2",
         description="Embedding model name",
+    )
+    embedding_dim: int = Field(
+        default=1024,
+        description="Embedding vector dimension",
     )
 
     # ─── Redis (optional — for session memory in production) ──────────────────
@@ -74,7 +92,7 @@ class Settings(BaseSettings):
     classification_mode: str = Field(
         default="keyword",
         description="Intent classifier: keyword (<100 products) | "
-                    "llm_hybrid (100-10K) | semantic (10K+)",
+        "llm_hybrid (100-10K) | semantic (10K+)",
     )
 
     # ─── Checkpointer ─────────────────────────────────────────────────────────

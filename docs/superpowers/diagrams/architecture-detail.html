@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Commerce AI Agent — Interactive Architecture</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --text: #e2e8f0;
+    --accent: #38bdf8; --green: #4ade80; --amber: #fbbf24;
+    --purple: #c084fc; --pink: #f472b6; --border: #334155;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; line-height:1.6; }
+
+  /* ── Header ── */
+  header {
+    background:var(--card); border-bottom:1px solid var(--border);
+    padding:1.5rem 2rem; text-align:center;
+  }
+  header h1 { font-size:1.6rem; color:var(--accent); }
+  header p { color:#94a3b8; font-size:0.85rem; margin-top:0.3rem; }
+
+  /* ── Nav tabs ── */
+  nav {
+    display:flex; gap:0; justify-content:center; background:#1a2332;
+    border-bottom:1px solid var(--border); position:sticky; top:0; z-index:20;
+  }
+  nav button {
+    background:none; border:none; color:#94a3b8; padding:0.7rem 1.2rem;
+    cursor:pointer; font-size:0.85rem; border-bottom:2px solid transparent;
+    transition:0.2s; font-family:inherit;
+  }
+  nav button:hover { color:#fff; }
+  nav button.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+  /* ── Tab panels ── */
+  .tab-panel { display:none; max-width:1000px; margin:2rem auto; padding:0 1.5rem; }
+  .tab-panel.active { display:block; }
+
+  /* ── Tech term: dashed underline + tooltip ── */
+  .term {
+    border-bottom:1px dashed var(--accent); cursor:help; position:relative;
+    color:var(--accent); display:inline-block;
+  }
+  .term .tip {
+    visibility:hidden; opacity:0; position:absolute; z-index:100;
+    bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+    background:#0f172a; border:1px solid var(--accent); border-radius:8px;
+    padding:0.8rem 1rem; width:320px; text-align:left; font-size:0.8rem;
+    line-height:1.5; transition:0.15s; pointer-events:none;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5); color:var(--text);
+  }
+  .term .tip::after {
+    content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+    border:6px solid transparent; border-top-color:var(--accent);
+  }
+  .term:hover .tip, .term:focus-within .tip { visibility:visible; opacity:1; }
+  .tip-title { font-weight:700; color:var(--accent); margin-bottom:0.3rem; display:block; }
+  .tip-row { margin:0.2rem 0; }
+  .tip-row .label { color:#94a3b8; font-size:0.7rem; }
+
+  /* ── Diagram area ── */
+  .mermaid-box {
+    background:#fff; border-radius:12px; padding:1.5rem; margin:1.5rem 0;
+    display:flex; justify-content:center; overflow-x:auto;
+    box-shadow:0 4px 24px rgba(0,0,0,0.3);
+  }
+
+  /* ── Custom interactive diagram ── */
+  .interactive-diagram {
+    display:flex; flex-wrap:wrap; gap:1.2rem; justify-content:center;
+    align-items:flex-start; margin:1.5rem 0;
+  }
+  .stage-card {
+    background:var(--card); border-radius:12px; padding:1.5rem;
+    width:220px; min-height:180px; border:1px solid var(--border);
+    transition:0.2s; cursor:default; position:relative;
+  }
+  .stage-card:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 8px 24px rgba(56,189,248,0.15); }
+  .stage-card h3 { font-size:1rem; margin-bottom:0.5rem; }
+  .stage-card .icon { font-size:1.8rem; margin-bottom:0.5rem; }
+  .stage-card .badge {
+    display:inline-block; padding:0.15rem 0.5rem; border-radius:3px;
+    font-size:0.68rem; font-weight:600; margin:0.2rem;
+  }
+  .badge-blue { background:#1e40af; color:#93c5fd; }
+  .badge-green { background:#065f46; color:#6ee7b7; }
+  .badge-amber { background:#78350f; color:#fcd34d; }
+  .badge-purple { background:#581c87; color:#d8b4fe; }
+  .badge-pink { background:#831843; color:#f9a8d4; }
+  .badge-slate { background:#334155; color:#cbd5e1; }
+  .stage-card .meta { font-size:0.7rem; color:#64748b; margin-top:0.5rem; }
+  .stage-arrow {
+    display:flex; align-items:center; font-size:1.5rem; color:var(--accent);
+    min-width:30px; justify-content:center; padding-top:3rem;
+  }
+
+  /* ── Flow row ── */
+  .flow-row {
+    display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;
+    justify-content:center; margin:1rem 0;
+  }
+  .flow-node {
+    background:var(--card); border:1px solid var(--border); border-radius:8px;
+    padding:0.7rem 1rem; text-align:center; font-size:0.82rem; min-width:90px;
+    transition:0.2s;
+  }
+  .flow-node:hover { border-color:var(--accent); }
+  .flow-node .n-title { font-weight:600; color:var(--accent); }
+  .flow-node .n-detail { color:#94a3b8; font-size:0.7rem; margin-top:0.2rem; }
+  .flow-arr { color:var(--accent); font-size:1.2rem; }
+
+  /* ── Glossary ── */
+  .glossary-grid {
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+    gap:1rem; margin:1.5rem 0;
+  }
+  .glossary-card {
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    padding:1.2rem; transition:0.2s;
+  }
+  .glossary-card:hover { border-color:var(--accent); }
+  .glossary-card h4 { color:var(--accent); font-size:0.9rem; margin-bottom:0.4rem; }
+  .glossary-card p { color:#94a3b8; font-size:0.8rem; line-height:1.5; }
+  .glossary-card .category {
+    font-size:0.65rem; padding:0.1rem 0.4rem; border-radius:3px;
+    display:inline-block; margin-bottom:0.4rem;
+  }
+
+  /* ── RAG stage detail ── */
+  .rag-detail { margin-top:2rem; }
+  .rag-detail h3 { font-size:1.1rem; color:var(--accent); margin:1.5rem 0 0.5rem; }
+  .rag-detail .desc { color:#94a3b8; font-size:0.85rem; margin-bottom:0.8rem; line-height:1.6; }
+
+  footer { text-align:center; padding:2rem; color:#475569; font-size:0.8rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>E-Commerce AI Agent — Interactive Architecture</h1>
+  <p>Hover over <span class="term">dashed terms<span class="tip"><span class="tip-title">Like this!</span>Every underlined term has a tooltip explaining what it means in plain language.</span></span> for explanations · Each tab explores a different layer</p>
+</header>
+
+<nav>
+  <button class="active" onclick="switchTab('flow')">🔀 Agent Flow</button>
+  <button onclick="switchTab('rag')">🔍 RAG Pipeline</button>
+  <button onclick="switchTab('neo4j-demo')">🎯 Query Demo</button>
+  <button onclick="switchTab('neo4j')">🕸️ Neo4j</button>
+  <button onclick="switchTab('llamaindex')">📦 LlamaIndex</button>
+  <button onclick="switchTab('graph')">🔗 Graph+Vector</button>
+  <button onclick="switchTab('guard')">🛡️ Guardrails</button>
+  <button onclick="switchTab('glossary')">📖 Glossary</button>
+</nav>
+
+<!-- ================================================================ -->
+<!-- TAB 1: REQUEST FLOW -->
+<!-- ================================================================ -->
+<div class="tab-panel active" id="tab-flow">
+
+  <h2 style="color:var(--accent);margin-bottom:1rem;">End-to-End Request Flow</h2>
+  <div class="mermaid-box">
+<div class="mermaid">
+flowchart TB
+  U["👤 User Query"]
+
+  subgraph AGENT["LangGraph Agent — 确定性状态机"]
+    S["sanitize_input"]
+    C["classify_intent"]
+    R["route_by_intent"]
+  end
+
+  S --> C --> R
+  U --> S
+
+  R -->|intent: policy| POL
+  R -->|intent: product_qa| QA
+  R -->|intent: order| ORD
+  R -->|intent: weather| WTH
+
+  subgraph POL["Policy Path"]
+    direction LR
+    GR["GraphRetriever<br/>确定性 SQL JOIN"]
+    VR["VectorRetriever<br/>概率性 RAG 回退"]
+  end
+
+  subgraph QA["Product QA Path"]
+    N4J["Neo4j + LlamaIndex<br/>图查询 + 向量检索"]
+  end
+
+  subgraph ORD["Order Path"]
+    OS["order_status_tool<br/>PostgreSQL 查单"]
+  end
+
+  subgraph WTH["Weather Path"]
+    WT["weather_tool<br/>外部 API 调用"]
+  end
+
+  POL --> GEN
+  QA --> GEN
+  ORD --> GEN
+  WTH --> GEN
+
+  GEN["generate_reply<br/>LLM 合成回答"]
+  VAL["validate_reply<br/>LLM 审计 + 自纠错"]
+  MEM["update_memory<br/>持久化 + 缓存"]
+
+  GEN --> VAL
+  VAL -->|"✅ valid"| MEM
+  VAL -->|"❌ unverified<br/>重试 ≤2次"| GEN
+</div>
+  </div>
+
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">
+    <div class="stage-card" style="border-color:var(--accent);">
+      <h3><span class="term">sanitize_input<span class="tip"><span class="tip-title">输入清洗 + 缓存检查</span>1. 拼写纠错（typo correction）<br/>2. 检查语义缓存：pgvector cosine &lt; 0.3 命中<br/>3. <b>Weather 查询跳过缓存</b> — 不同城市的天气 embedding 太相似，会错误命中</span></span></h3>
+      <div><span class="badge badge-blue">typo fix</span><span class="badge badge-green">cache check</span></div>
+      <div class="meta">缓存命中时跳过后续所有步骤</div>
+    </div>
+    <div class="stage-arrow">→</div>
+    <div class="stage-card" style="border-color:var(--purple);">
+      <h3><span class="term">classify_intent<span class="tip"><span class="tip-title">意图分类 — 三档可切换</span><b>keyword</b> (&lt;100 SKU): 正则匹配 → 规则引擎 → LLM 兜底<br/><b>llm_hybrid</b> (100-10K): LLM 一次调用做意图+实体提取<br/><b>semantic</b> (10K+): embedding 搜索 top-K 候选 → LLM 在候选内分类（Amazon 模式）<br/><br/>支持 6 个 intent: order | list_orders | policy | weather | knowledge | product_qa</span></span></h3>
+      <div><span class="badge badge-purple">keyword</span><span class="badge badge-pink">llm_hybrid</span><span class="badge badge-amber">semantic</span></div>
+      <div class="meta">按 catalog 规模选择模式</div>
+    </div>
+    <div class="stage-arrow">→</div>
+    <div class="stage-card" style="border-color:var(--green);">
+      <h3><span class="term">tool_node<span class="tip"><span class="tip-title">工具执行 — 确定性路由</span>每个 intent 绑定一个 node 函数。LangGraph 的 conditional edge 保证确定性路由 — 不会出现 "LLM 临时决定不调工具" 的情况。<br/><br/>每个工具包装了 circuit breaker + retry + fallback。</span></span></h3>
+      <div><span class="badge badge-green">graph path</span><span class="badge badge-amber">vector path</span><span class="badge badge-blue">neo4j</span></div>
+      <div class="meta">6 个工具节点，每个都是纯函数</div>
+    </div>
+    <div class="stage-arrow">→</div>
+    <div class="stage-card" style="border-color:var(--accent);">
+      <h3><span class="term">validate_reply<span class="tip"><span class="tip-title">LLM 自检循环</span>LLM-as-auditor 检查回复是否基于 tool result。<br/>Flag: valid | unverified_claims | not_applicable<br/>❌ unverified 时清空回答，用更严格 prompt 重新生成，最多 2 次。<br/>✅ 同时运行 hard_verify: 检查回复中的 ID/数字是否来自 tool result（正则匹配，零 LLM 依赖）</span></span></h3>
+      <div><span class="badge badge-pink">LLM judge</span><span class="badge badge-amber">hard verify</span></div>
+      <div class="meta">最多 2 次重试，统计上 3 次以上无增益</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================================================================ -->
+<!-- TAB 2: RAG PIPELINE -->
+<!-- ================================================================ -->
+<div class="tab-panel" id="tab-rag">
+
+  <h2 style="color:var(--accent);margin-bottom:1rem;">4-Stage Modular RAG Pipeline</h2>
+  <p style="color:#94a3b8;margin-bottom:1.5rem;">
+    这是 <code>retrieval.py</code> 中的手写 RAG——每一层独立调优，<span class="term">不是框架默认配置<span class="tip"><span class="tip-title">Modular RAG</span>业界趋势（Cohere、Anthropic 推荐）：Ingestion、Retrieval、Re-rank、Resilience 各自独立选型，不绑定单一框架。每一层选择该层最好的组件。</span></span>。
+  </p>
+
+  <!-- Interactive stage cards -->
+  <div class="interactive-diagram">
+    <div class="stage-card" style="border-color:var(--accent);">
+      <div class="icon">🔢</div>
+      <h3><span class="term">Dense Retrieval<span class="tip"><span class="tip-title">稠密检索 = 语义搜索</span><b>原理：</b>把用户 query 转成 1024 维向量（embedding），在 pgvector 中做 ANN（近似最近邻）搜索。<br/><br/><b>vector(1024)：</b>句子被压缩成 1024 个数字。相似的句子 → 向量距离近。<br/><br/><b>HNSW：</b>层次化可导航小世界图。把 200 个向量组织成多层图结构，查最近邻不需要遍历全部 200 个 — 跳表式查找，2-5ms 返回 top-5。<br/><br/><b>Cosine Distance：</b>衡量向量夹角的余弦值。越小 = 越相似。不同于欧氏距离（几何距离），余弦距离更关注方向而非绝对位置。<br/><br/><b>擅长：</b>"退货" 匹配 "return policy"（语义相似但用词不同）<br/><b>弱点：</b>"headphones" 和 "earbuds" 的 embedding 很接近，但它们的 return policy 不同 — 向量分不开不同品类的政策</span></span></h3>
+      <div><span class="badge badge-blue">Zhipu embedding-2</span></div>
+      <div><span class="badge badge-slate">1024-dim vector</span></div>
+      <div><span class="badge badge-green">HNSW index</span></div>
+      <div><span class="badge badge-slate">cosine distance</span></div>
+      <div class="meta">⏱ 2-5ms · top-5 results</div>
+    </div>
+
+    <div class="stage-arrow">+</div>
+
+    <div class="stage-card" style="border-color:var(--amber);">
+      <div class="icon">🔤</div>
+      <h3><span class="term">Sparse Retrieval<span class="tip"><span class="tip-title">稀疏检索 = 关键词匹配</span><b>原理：</b>把 query 拆成词，用 BM25 算法给每个 chunk 打分。<br/><br/><b>BM25（Okapi Best Match 25）：</b>TF × IDF 的升级版。TF (Term Frequency) — 词出现次数；IDF (Inverse Document Frequency) — 词有多稀有。例如 "return" 在许多文档中不出现 → 高 IDF → 出现时权重高。<br/><br/><b>k1=1.5, b=0.75：</b>TF 饱和参数和长度归一化参数。k1 控制 TF 的增长速度（1.5 = 出现 2 次 vs 1 次的差距比线性大）；b 控制文档长度的影响（0.75 = 长文档有较弱的归一化惩罚）。<br/><br/><b>Pickle 缓存：</b>索引序列化到 data/bm25_index.pkl，重启不需要重建。<br/><br/><b>擅长：</b>精确关键词（"headphones" → 包含 "headphones" 的 chunk）<br/><b>弱点：</b>不同表达方式（"return" vs "send back"）— 不同词，BM25 无法匹配</span></span></h3>
+      <div><span class="badge badge-amber">BM25Okapi</span></div>
+      <div><span class="badge badge-slate">TF × IDF</span></div>
+      <div><span class="badge badge-slate">pickle cache</span></div>
+      <div class="meta">⏱ &lt;1ms · top-5 results</div>
+    </div>
+
+    <div class="stage-arrow">→</div>
+
+    <div class="stage-card" style="border-color:var(--purple);">
+      <div class="icon">🔄</div>
+      <h3><span class="term">RRF Fusion<span class="tip"><span class="tip-title">倒数排序融合 = 合并两个排名</span><b>公式：score(doc) = Σ 1/(k + rank)</b><br/><br/><b>k=60：</b>控制融合平滑度的参数。k 越小 → 高排位 doc 的优势越大；k 越大 → 更平均。60 是经典值，在大多数数据集上效果最好。<br/><br/><b>Dense 排 #1，Sparse 排 #3：</b>1/(60+1) + 1/(60+3) = 0.0164 + 0.0159 = 0.0323<br/><b>另一个 doc 两个列表都排 #2：</b>1/(60+2) + 1/(60+2) = 0.0161 + 0.0161 = 0.0322<br/><br/><b>共识 boost：</b>在两个列表都出现的 doc 获得更高分。<br/><b>互补保留：</b>只在一个列表高排名的 doc 不会消失，只是得分略低。<br/><br/><b>为什么不用加权求和？</b>RRF 不需要调权重 — 两个列表的单位不同（cosine distance vs BM25 score），直接加权需要大量实验确定 α 和 β。RRF 用排名而不是原始分数，天然跨域可比。<br/><br/><b>零延迟：</b>纯数学运算，没有 API 调用。</span></span></h3>
+      <div><span class="badge badge-purple">k=60</span></div>
+      <div><span class="badge badge-slate">Σ 1/(k+rank)</span></div>
+      <div class="meta">⏱ &lt;1ms · 纯数学 · 无需调权重</div>
+    </div>
+
+    <div class="stage-arrow">→</div>
+
+    <div class="stage-card" style="border-color:var(--pink);">
+      <div class="icon">🎯</div>
+      <h3><span class="term">Batch LLM Re-rank<span class="tip"><span class="tip-title">批量 LLM 精排 = 质量门禁</span><b>一次 LLM 调用评所有 5 个 doc：</b>不是逐文档调用（5 doc = 5 次 LLM = 2.5-10s），而是把所有 doc 放进一个 prompt，一次调用评所有。<br/><br/><b>Prompt 格式：</b>"[1] {doc1}\n[2] {doc2}...\nScores (format: [N] score):"<br/><b>解析：</b>regex 提取 [N] score 格式，clamp 到 [1, 10]<br/><b>过滤：</b>保留 score ≥ 7 的 doc。如果全部 &lt; 7，返回最高分的 1 个（safety net）<br/><br/><b>GLM-4-Flash, temperature=0：</b>用最快的模型 + 零温度保证评分一致。<br/><br/><b>5x 快于框架默认：</b>LlamaIndex 默认 LLMRerank 是逐文档调用。这个 batch 优化把延迟从 2.5-10s 降到 0.5-2s。<br/><br/><b>为什么需要这一层？</b>RRF 融合后 top-5 可能包含 2-3 个不相关的 doc。直接喂给 LLM 会降低回答质量。Re-rank 把不相关的排到后面（或直接过滤掉）。</span></span></h3>
+      <div><span class="badge badge-pink">GLM-4-Flash</span></div>
+      <div><span class="badge badge-slate">temp=0</span></div>
+      <div><span class="badge badge-green">score ≥7</span></div>
+      <div><span class="badge badge-amber">batch call</span></div>
+      <div class="meta">⏱ 500ms-2s · 一次调用评所有 · 5x faster</div>
+    </div>
+  </div>
+
+  <!-- Comparison Table -->
+  <div style="margin-top:2rem;">
+    <h3 style="color:var(--accent);">Stage-by-Stage: What Each Layer Solves</h3>
+    <table style="width:100%;border-collapse:collapse;margin-top:0.8rem;font-size:0.85rem;">
+      <thead>
+        <tr style="border-bottom:2px solid var(--accent);text-align:left;">
+          <th style="padding:0.6rem;">Stage</th><th style="padding:0.6rem;">Solves</th><th style="padding:0.6rem;">If Removed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:0.6rem;color:var(--accent);">Dense</td>
+          <td style="padding:0.6rem;">语义相似 — "退货" ↦ "return policy"</td>
+          <td style="padding:0.6rem;color:#f87171;">纯关键词会漏掉同义表达</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:0.6rem;color:var(--amber);">Sparse</td>
+          <td style="padding:0.6rem;">精确关键词 — "headphones" vs "earbuds" 不同品类的政策区分</td>
+          <td style="padding:0.6rem;color:#f87171;">embedding 会把相似品类政策混在一起</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:0.6rem;color:var(--purple);">RRF</td>
+          <td style="padding:0.6rem;">合并两个排名，无人工权重，共识 boost + 互补保留</td>
+          <td style="padding:0.6rem;color:#f87171;">需要手调 dense/sparse 权重，跨项目不可迁移</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem;color:var(--pink);">Re-rank</td>
+          <td style="padding:0.6rem;">质量门禁 — 找出真正相关的文档，过滤"看起来像"的</td>
+          <td style="padding:0.6rem;color:#f87171;">top-5 中 2-3 个不相关 → 降低 LLM 回答质量</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ================================================================ -->
+<!-- TAB 3: NEO4J -->
+<!-- ================================================================ -->
+<div class="tab-panel" id="tab-neo4j">
+
+  <h2 style="color:var(--accent);margin-bottom:0.5rem;">Neo4j — Graph Database for Structured Reasoning</h2>
+  <p style="color:#94a3b8;margin-bottom:1.5rem;">
+    <span class="term">Neo4j<span class="tip"><span class="tip-title">为什么需要图数据库</span><b>SQL 能 JOIN，但 JOIN 不是 graph traversal。</b><br/><br/>"Find smartphones under $800, not Apple, with 256GB storage, AND their accessories from different brands, AND the policies that apply to those accessories" — 用 SQL 写需要 4 个 JOIN + 2 个子查询 + recursive CTE。用 Cypher 是一个自然的多跳路径表达式。<br/><br/><b>Neo4j Community Edition：</b>免费，单节点，足够的 scale。Neo4j 在这个项目中的角色是 <b>read-only graph cache</b> — PostgreSQL 是 source of truth，Neo4j 从 PG 同步数据，查询时只读。</span></span>
+    是纯图数据库，用 Cypher 语言做多跳关系查询。和 SQL JOIN 的本质区别：Cypher 把关系表达为图中的边（edge），遍历是 O(1) 的指针追踪，不是 O(N) 的扫描。
+  </p>
+
+  <!-- Graph Model -->
+  <h3 style="color:var(--accent);margin:1.5rem 0 0.5rem;">Graph Model — 节点 + 关系 + 索引</h3>
+  <div class="mermaid-box">
+<div class="mermaid">
+graph TB
+  subgraph CATEGORY_TREE["Category Tree — CHILD_OF* hierarchy"]
+    direction TB
+    C1["Electronics<br/>level:1"] -->|CHILD_OF| C2["Mobile Devices<br/>level:2"]
+    C2 -->|CHILD_OF| C3["Smartphones<br/>level:3"]
+    C3 -->|CHILD_OF| C4["Flagship Phones<br/>level:4"]
+    C1 -->|CHILD_OF| C5["Audio<br/>level:2"]
+    C5 -->|CHILD_OF| C6["Headphones<br/>level:3"]
+    C5 -->|CHILD_OF| C7["Wireless Earbuds<br/>level:3"]
+    C1 -->|CHILD_OF| C8["Computing<br/>level:2"]
+    C8 -->|CHILD_OF| C9["Laptops<br/>level:3"]
+    C9 -->|CHILD_OF| C10["Gaming Laptops<br/>level:4"]
+  end
+
+  subgraph PRODUCTS["Products — IN_CATEGORY → leaf category"]
+    P1["iPhone 15 Pro<br/>$999"] --> C4
+    P2["Samsung Galaxy S24<br/>$899"] --> C3
+    P3["Google Pixel 8<br/>$699"] --> C3
+    P4["MacBook Pro 16<br/>$2499"] --> C9
+    P5["Sony WH-1000XM5<br/>$349"] --> C6
+    P6["AirPods Pro 2<br/>$249"] --> C7
+  end
+
+  subgraph BRANDS["Brands — HAS_BRAND → Brand node"]
+    B1["Apple"] --- P1
+    B2["Samsung"] --- P2
+    B3["Google"] --- P3
+    B1 --- P4
+    B4["Sony"] --- P5
+    B1 --- P6
+  end
+
+  subgraph RELS["Product Relations — typed edges"]
+    P1 -->|"ACCESSORY_OF<br/>strength:0.90"| P6
+    P1 -->|"ALTERNATIVE_TO<br/>strength:0.85"| P2
+    P1 -->|"ALTERNATIVE_TO<br/>strength:0.80"| P3
+    P4 -->|"ALTERNATIVE_TO<br/>strength:0.80"| P2
+  end
+
+  subgraph POLS["Policies — HAS_POLICY on ancestor categories"]
+    C1 -->|HAS_POLICY| POL1["electronics_return<br/>14-day"]
+    C1 -->|HAS_POLICY| POL2["free_shipping<br/>orders >$50"]
+    C1 -->|HAS_POLICY| POL3["manufacturer_warranty<br/>1-year"]
+  end
+</div>
+  </div>
+
+  <!-- Key Cypher Queries -->
+  <h3 style="color:var(--accent);margin:1.5rem 0 0.5rem;">Key Cypher Query Patterns</h3>
+  <div class="glossary-grid">
+    <div class="glossary-card">
+      <span class="category badge-amber">Cypher</span>
+      <h4><span class="term">Synonym-Aware Product Lookup<span class="tip"><span class="tip-title">Fulltext + Synonym</span>Neo4j 的 Lucene fulltext index 索引 Product 节点的 name + search_terms（synonyms）。<br/><br/>"苹果手机" → fulltext 搜索 → "iPhone 15 Pro"<br/>"索尼耳机" → fulltext 搜索 → "Sony WH-1000XM5"<br/><br/>Synonyms 在 neo4j_setup.py 中从 entity_synonyms 表读取，写入 Product.search_terms 数组属性。</span></span></h4>
+      <pre style="background:#0f172a;color:#38bdf8;padding:0.5rem;border-radius:6px;font-size:0.75rem;overflow-x:auto;">CALL db.index.fulltext.queryNodes(
+  'product_search', '苹果手机')
+YIELD node, score
+WHERE score > 0.5
+RETURN node.name, node.price, score
+ORDER BY score DESC LIMIT 1</pre>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-amber">Cypher</span>
+      <h4><span class="term">Category Path & Policy Inheritance<span class="tip"><span class="tip-title">CHILD_OF* 多跳遍历</span>[:CHILD_OF*0..4] 表示 0 到 4 跳。0 跳 = 自身。所以查询会找到 iPhone 所在的所有 ancestor category。<br/><br/>Policies 挂在 Electronics 上。通过 CHILD_OF*，Flagship Phones → Smartphones → Mobile Devices → Electronics → 找到 policies。<br/><br/>DISTINCT 去重：同一个 policy 可能通过不同 ancestor 被多次找到。</span></span></h4>
+      <pre style="background:#0f172a;color:#38bdf8;padding:0.5rem;border-radius:6px;font-size:0.75rem;overflow-x:auto;">MATCH (p:Product {name:'iPhone 15 Pro'})
+  -[:IN_CATEGORY]->(:Category)
+  -[:CHILD_OF*0..4]->(anc:Category)
+  -[:HAS_POLICY]->(pol:Policy)
+RETURN DISTINCT pol.name, pol.summary,
+       pol.policy_type</pre>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-amber">Cypher</span>
+      <h4><span class="term">Attribute-Filtered Product Search<span class="tip"><span class="tip-title">多约束候选搜索</span>WHERE 子句做属性过滤。<br/>EXISTS 子查询检查属性值（EAV 模型的图版本）。<br/>NOT (p)-[:HAS_BRAND]->(:Brand {name:'Apple'}) 排除 Apple 产品。<br/><br/>Neo4j 的 Cypher planner 自动优化执行顺序 — 先用 fulltext index 找到候选产品，再用属性过滤。</span></span></h4>
+      <pre style="background:#0f172a;color:#38bdf8;padding:0.5rem;border-radius:6px;font-size:0.75rem;overflow-x:auto;">MATCH (p:Product)
+  -[:IN_CATEGORY]->(:Category)
+  -[:CHILD_OF*0..]->(:Category
+    {name:'Smartphones'})
+WHERE p.price < 800
+  AND NOT (p)-[:HAS_BRAND]->
+    (:Brand {name:'Apple'})
+RETURN p.name, p.price
+ORDER BY p.price DESC</pre>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-amber">Cypher</span>
+      <h4><span class="term">Product Relations Traversal<span class="tip"><span class="tip-title">关系双向查询</span>ACCESSORY_OF 是有向关系。但查询时用双向匹配（← 和 → 都查）确保覆盖。<br/><br/>UNION 合并两个方向的结果。<br/>OPTIONAL MATCH 获取 accessory 的 category 名，不强制要求有 category。</span></span></h4>
+      <pre style="background:#0f172a;color:#38bdf8;padding:0.5rem;border-radius:6px;font-size:0.75rem;overflow-x:auto;">MATCH (p:Product
+  {name:'iPhone 15 Pro'})
+  -[:ACCESSORY_OF]->(a:Product)
+RETURN a.name, a.price
+UNION
+MATCH (a:Product)
+  -[:ACCESSORY_OF]->(p:Product
+    {name:'iPhone 15 Pro'})
+RETURN a.name, a.price</pre>
+    </div>
+  </div>
+
+  <!-- PG → Neo4j Sync -->
+  <h3 style="color:var(--accent);margin:1.5rem 0 0.5rem;">Source of Truth Pattern: PG → Neo4j Sync</h3>
+  <div class="mermaid-box">
+<div class="mermaid">
+flowchart LR
+  subgraph SETUP["Offline Setup — one-shot rebuild"]
+    direction TB
+    S1["schema.py<br/>seed PG tables"]
+    S2["neo4j_setup.py<br/>read PG → batch UNWIND → Neo4j"]
+    S3["vector_setup.py<br/>chunk → embed → pgvector"]
+    S1 --> S2 --> S3
+  end
+
+  subgraph RUNTIME["Runtime — read-only graph"]
+    direction LR
+    PG["PostgreSQL<br/>source of truth<br/>transactional writes<br/>orders + catalog"]
+    NEO["Neo4j<br/>read-only graph cache<br/>Cypher traversal<br/>fulltext index<br/>vector index"]
+    PGV["pgvector<br/>product_chunks<br/>store_policies<br/>semantic_cache"]
+  end
+
+  SETUP -->|"synced, no runtime dual-write"| RUNTIME
+
+  NEO ---|"✗ no writes<br/>✓ read only"| PG
+  NEO -.->|"query"| PGV
+</div>
+  </div>
+
+</div>
+
+<!-- ================================================================ -->
+<!-- TAB 3.5: NEO4J QUERY WALKTHROUGH -->
+<!-- ================================================================ -->
+<div class="tab-panel" id="tab-neo4j-demo">
+
+  <h2 style="color:var(--accent);margin-bottom:0.5rem;">Concrete Query Walkthrough — 从用户提问到拿到答案</h2>
+  <p style="color:#94a3b8;margin-bottom:1.5rem;">
+    以真实查询为例，追踪 Neo4j + LlamaIndex + LLM 在每个步骤做了什么。
+    <b>左列是"发生了什么"，右列是"为什么这样做 + 出了什么问题"。</b>
+  </p>
+
+  <!-- ===== Example 1: Single Product ===== -->
+  <h3 style="color:var(--accent);margin-top:2rem;">Example 1: Single-Product Feature Question</h3>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin:1rem 0;">
+
+    <div style="font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:1.5rem;">
+      👤 User: <span style="color:var(--accent);">"Does the iPhone 15 Pro have MagSafe wireless charging?"</span>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="flow-row" style="justify-content:flex-start;align-items:flex-start;">
+      <div style="min-width:60px;color:var(--accent);font-weight:700;font-size:0.9rem;">Step 1</div>
+      <div class="flow-node" style="border-color:var(--accent);min-width:450px;text-align:left;flex:1;">
+        <div class="n-title">classify_intent → product_qa</div>
+        <div class="n-detail" style="margin-top:0.3rem;">
+          Keyword classifier 检测到 product QA signals（"does the", "have"）+ product mention（"iPhone 15 Pro"）
+          → 路由到 product_qa_node → 调用 product_qa_tool
+        </div>
+      </div>
+      <div style="min-width:240px;color:#64748b;font-size:0.78rem;padding-left:1rem;">
+        <span style="color:#4ade80;">✅ 走 product_qa 路径</span><br/>
+        如果不走这里，会 fall 到 policy 或 unknown，回答不准确。
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="flow-row" style="justify-content:flex-start;align-items:flex-start;">
+      <div style="min-width:60px;color:var(--accent);font-weight:700;font-size:0.9rem;">Step 2</div>
+      <div class="flow-node" style="border-color:var(--amber);min-width:450px;text-align:left;flex:1;">
+        <div class="n-title" style="color:var(--amber);">Neo4j: resolve_product("iPhone 15 Pro")</div>
+        <div class="n-detail" style="margin-top:0.3rem;">
+          <b>实际执行的 Cypher:</b>
+          <pre style="background:#0f172a;color:#38bdf8;padding:0.4rem;border-radius:4px;font-size:0.72rem;margin:0.3rem 0;">CALL db.index.fulltext.queryNodes('product_search', 'iPhone 15 Pro')
+YIELD node, score WHERE score > 0.5
+RETURN node.name, node.price, node.sku, score
+ORDER BY score DESC LIMIT 1</pre>
+          <b>返回结果:</b> {name: "iPhone 15 Pro", price: 999.00, sku: "SKU-IPH15P", score: 0.98}
+        </div>
+      </div>
+      <div style="min-width:240px;color:#64748b;font-size:0.78rem;padding-left:1rem;">
+        <span style="color:#4ade80;">✅ Fulltext index 命中</span><br/>
+        search_terms 包含 "苹果手机" — 如果用户输入的是中文同义词，这一步同样命中。<br/><br/>
+        <span style="color:#f87171;">❌ 如果不命中:</span><br/>
+        回退到 ILIKE 匹配 → 再回退到向量搜索
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="flow-row" style="justify-content:flex-start;align-items:flex-start;">
+      <div style="min-width:60px;color:var(--accent);font-weight:700;font-size:0.9rem;">Step 3</div>
+      <div class="flow-node" style="border-color:var(--amber);min-width:450px;text-align:left;flex:1;">
+        <div class="n-title" style="color:var(--amber);">Neo4j: get_product_info("iPhone 15 Pro")</div>
+        <div class="n-detail" style="margin-top:0.3rem;">
+          同时查出 <b>3 类结构化数据</b>（并行查询还是顺序查询取决于实现）:<br/>
+          <pre style="background:#0f172a;color:#38bdf8;padding:0.4rem;border-radius:4px;font-size:0.72rem;margin:0.3rem 0;">// ① Category Path
+MATCH (p:Product {name:'iPhone 15 Pro'})-[:IN_CATEGORY]->(c:Category)
+      -[:CHILD_OF*0..4]->(anc:Category)
+RETURN anc.name, anc.level ORDER BY anc.level</pre>
+          <pre style="background:#0f172a;color:#38bdf8;padding:0.4rem;border-radius:4px;font-size:0.72rem;margin:0.3rem 0;">// ② Attributes
+MATCH (p:Product {name:'iPhone 15 Pro'})-[:HAS_ATTRIBUTE]->(av:AttributeValue)
+      -[:OF_TYPE]->(a:Attribute)
+RETURN a.name, a.display_name, av.value, a.data_type</pre>
+          <pre style="background:#0f172a;color:#38bdf8;padding:0.4rem;border-radius:4px;font-size:0.72rem;margin:0.3rem 0;">// ③ Policies (inherited via CHILD_OF*)
+MATCH (p:Product {name:'iPhone 15 Pro'})-[:IN_CATEGORY]->(c:Category)
+      -[:CHILD_OF*0..4]->(anc:Category)-[:HAS_POLICY]->(pol:Policy)
+RETURN DISTINCT pol.name, pol.summary, pol.policy_type</pre>
+        </div>
+      </div>
+      <div style="min-width:240px;color:#64748b;font-size:0.78rem;padding-left:1rem;">
+        <span style="color:#4ade80;">3 个查询并行运行</span><br/>
+        返回: 5 层 category path,<br/>
+        8 个 attributes,<br/>
+        3 个 inherited policies<br/><br/>
+        <span style="color:#fbbf24;">⚠ 结构化数据没有 "MagSafe" 信息</span><br/>
+        MagSafe 是产品描述里的内容，不在 attribute 表里 → 需要 RAG
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="flow-row" style="justify-content:flex-start;align-items:flex-start;">
+      <div style="min-width:60px;color:var(--accent);font-weight:700;font-size:0.9rem;">Step 4</div>
+      <div class="flow-node" style="border-color:var(--purple);min-width:450px;text-align:left;flex:1;">
+        <div class="n-title" style="color:var(--purple);">LlamaIndex RAG: 在这个产品的 chunks 里搜索 "MagSafe"</div>
+        <div class="n-detail" style="margin-top:0.3rem;">
+          <b>元数据过滤:</b> product_name = 'iPhone 15 Pro'<br/>
+          <b>向量搜索:</b> query embedding "MagSafe wireless charging" vs iPhone 15 Pro 的 ~15 个 chunks<br/>
+          <b>返回 top-3 chunks:</b>
+          <pre style="background:#0f172a;color:#38bdf8;padding:0.4rem;border-radius:4px;font-size:0.72rem;margin:0.3rem 0;">[Score 0.92] "MagSafe wireless charging supports up to 15W
+with compatible accessories. The titanium design is both
+stronger and lighter than previous models..."
+[Score 0.87] "Battery life lasts up to 29 hours. Fast
+charging delivers 50% charge in 30 minutes with 20W adapter..."
+[Score 0.76] "USB-C with USB 3 speeds up to 10Gb/s..."</pre>
+        </div>
+      </div>
+      <div style="min-width:240px;color:#64748b;font-size:0.78rem;padding-left:1rem;">
+        <span style="color:#4ade80;">✅ 关键：metadata filter</span><br/>
+        先过滤到只搜 iPhone 15 Pro 的 chunks（~15 个），<br/>
+        不是全量 500K chunks。<br/><br/>
+        <span style="color:#f87171;">❌ 不过滤:</span><br/>
+        可能搜到 iPad 或 MacBook 的 MagSafe 描述，回答混淆产品。
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="flow-row" style="justify-content:flex-start;align-items:flex-start;">
+      <div style="min-width:60px;color:var(--accent);font-weight:700;font-size:0.9rem;">Step 5</div>
+      <div class="flow-node" style="border-color:var(--green);min-width:700px;text-align:left;">
+        <div class="n-title" style="color:var(--green);">LLM Synthesis → 最终回答</div>
+        <div class="n-detail" style="margin-top:0.3rem;">
+          LLM 收到的 prompt 包含：
+          <pre style="background:#0f172a;color:#94a3b8;padding:0.4rem;border-radius:4px;font-size:0.72rem;margin:0.3rem 0;">Structured data (from Neo4j):
+  Product: iPhone 15 Pro | Price: $999 | Category: Flagship Phones
+  Category Path: Flagship Phones → Smartphones → Mobile Devices → Electronics
+  Attributes: brand=Apple, storage=256GB, screen_size=6.1, wireless=true
+
+Description excerpts (from LlamaIndex RAG):
+  [1] "MagSafe wireless charging supports up to 15W with compatible accessories..."
+  [2] "Fast charging delivers 50% charge in 30 minutes with 20W adapter..."
+
+User question: Does the iPhone 15 Pro have MagSafe wireless charging?</pre>
+          <b>LLM 生成的回答:</b>
+          <div style="background:#0f172a;color:#4ade80;padding:0.6rem;border-radius:4px;font-size:0.82rem;margin:0.3rem 0;">
+            "Yes, the iPhone 15 Pro supports MagSafe wireless charging up to 15W
+            with compatible accessories. It also supports fast wired charging —
+            50% charge in 30 minutes using a 20W USB-C adapter. The phone is rated
+            IP68 for water and dust resistance."
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== Example 2: Cross-Product Comparison ===== -->
+  <h3 style="color:var(--accent);margin-top:2.5rem;">Example 2: Cross-Product Comparison</h3>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin:1rem 0;">
+
+    <div style="font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:1.5rem;">
+      👤 User: <span style="color:var(--accent);">"Which Android phone under $800 has the best camera?"</span>
+    </div>
+
+    <div class="flow-row" style="justify-content:flex-start;align-items:flex-start;">
+      <div style="min-width:60px;color:var(--accent);font-weight:700;font-size:0.9rem;">Step 1</div>
+      <div class="flow-node" style="border-color:var(--amber);min-width:500px;text-align:left;flex:1;">
+        <div class="n-title" style="color:var(--amber);">Neo4j: search_products — 候选产品筛选</div>
+        <div class="n-detail" style="margin-top:0.3rem;">
+          <b>提取约束条件:</b> category=Smartphones, brand≠Apple ("Android"), max_price=800<br/>
+          <b>Cypher:</b>
+          <pre style="background:#0f172a;color:#38bdf8;padding:0.4rem;border-radius:4px;font-size:0.72rem;margin:0.3rem 0;">MATCH (p:Product)-[:IN_CATEGORY]->(:Category)
+      -[:CHILD_OF*0..]->(:Category {name:'Smartphones'})
+WHERE p.price < 800
+  AND NOT (p)-[:HAS_BRAND]->(:Brand {name:'Apple'})
+RETURN p.name, p.price
+ORDER BY p.price DESC</pre>
+          <b>返回 3 个候选:</b> Samsung Galaxy S24 ($899❌超预算), Google Pixel 8 ($699), Xiaomi 14 ($599)
+        </div>
+      </div>
+      <div style="min-width:240px;color:#64748b;font-size:0.78rem;padding-left:1rem;">
+        <span style="color:#4ade80;">✅ CHILD_OF* 层级匹配</span><br/>
+        "Smartphones" 自动匹配到 Flagship Phones 子品类<br/><br/>
+        <span style="color:#f87171;">Samsung Galaxy S24 被排除</span><br/>
+        因为 $899 > $800<br/><br/>
+        <span style="color:#fbbf24;">剩下 2 个有效候选</span>
+      </div>
+    </div>
+
+    <div class="flow-row" style="justify-content:flex-start;align-items:flex-start;">
+      <div style="min-width:60px;color:var(--accent);font-weight:700;font-size:0.9rem;">Step 2</div>
+      <div class="flow-node" style="border-color:var(--purple);min-width:500px;text-align:left;flex:1;">
+        <div class="n-title" style="color:var(--purple);">LlamaIndex RAG: 对每个候选搜索 "camera"</div>
+        <div class="n-detail" style="margin-top:0.3rem;">
+          <b>Sub-query 1:</b> metadata filter product_name='Google Pixel 8', query="camera quality"<br/>
+          <b>返回:</b> "50MP main sensor, Octa PD autofocus, 12MP ultrawide, Super Res Zoom up to 8x..."<br/><br/>
+          <b>Sub-query 2:</b> metadata filter product_name='Xiaomi 14', query="camera quality"<br/>
+          <b>返回:</b> "50MP Leica Summilux, 50MP ultrawide, 50MP telephoto, Leica Authentic/Vibrant modes..."
+        </div>
+      </div>
+      <div style="min-width:240px;color:#64748b;font-size:0.78rem;padding-left:1rem;">
+        <span style="color:#4ade80;">✅ 每个候选独立检索</span><br/>
+        不交叉污染 — Pixel 的 chunks 里不会出现 Xiaomi 的相机描述
+      </div>
+    </div>
+
+    <div class="flow-row" style="justify-content:flex-start;align-items:flex-start;">
+      <div style="min-width:60px;color:var(--accent);font-weight:700;font-size:0.9rem;">Step 3</div>
+      <div class="flow-node" style="border-color:var(--green);min-width:700px;text-align:left;">
+        <div class="n-title" style="color:var(--green);">LLM Compare & Recommend</div>
+        <div class="n-detail" style="margin-top:0.3rem;">
+          <b>LLM 收到的 prompt:</b>
+          <pre style="background:#0f172a;color:#94a3b8;padding:0.4rem;border-radius:4px;font-size:0.72rem;margin:0.3rem 0;">Compare these products based on camera quality:
+
+--- Google Pixel 8 ($699) ---
+Camera: 50MP main (Octa PD autofocus), 12MP ultrawide (Macro Focus),
+Super Res Zoom up to 8x, Night Sight, Astrophotography, Real Tone
+
+--- Xiaomi 14 ($599) ---
+Camera: 50MP Leica Summilux main, 50MP ultrawide, 50MP telephoto,
+Leica Authentic/Vibrant modes, 8K video recording
+
+Which has the best camera under $800? Explain trade-offs.</pre>
+          <b>LLM 回答:</b>
+          <div style="background:#0f172a;color:#4ade80;padding:0.6rem;border-radius:4px;font-size:0.82rem;margin:0.3rem 0;">
+            "Both are excellent. The <b>Google Pixel 8 ($699)</b> wins on computational
+            photography — Google's AI features (Night Sight, Real Tone, Astrophotography)
+            produce consistently great photos in challenging conditions. The
+            <b>Xiaomi 14 ($599)</b> has more versatile hardware — the triple Leica
+            camera system covers more focal lengths and shoots 8K video. If you
+            prioritize point-and-shoot reliability, go with the Pixel. If you want
+            hardware flexibility and 8K video, the Xiaomi is great at a lower price."
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Summary: What Neo4j Did vs What LlamaIndex Did -->
+  <h3 style="color:var(--accent);margin-top:2rem;">Summary: Who Did What in Each Query</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin-top:1rem;">
+    <thead>
+      <tr style="border-bottom:2px solid var(--accent);text-align:left;">
+        <th style="padding:0.5rem;">Query</th>
+        <th style="padding:0.5rem;">Neo4j</th>
+        <th style="padding:0.5rem;">LlamaIndex</th>
+        <th style="padding:0.5rem;">LLM</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:0.5rem;">"Does iPhone have MagSafe?"</td>
+        <td style="padding:0.5rem;color:var(--amber);">✅ resolve product<br/>✅ category path<br/>✅ attributes<br/>✅ policies</td>
+        <td style="padding:0.5rem;color:var(--purple);">✅ RAG over iPhone chunks<br/>metadata filter: product_name</td>
+        <td style="padding:0.5rem;color:var(--green);">✅ synthesize<br/>answer from both sources</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:0.5rem;">"Best camera phone under $800?"</td>
+        <td style="padding:0.5rem;color:var(--amber);">✅ candidate search<br/>✅ price + brand filter<br/>✅ CHILD_OF* hierarchy</td>
+        <td style="padding:0.5rem;color:var(--purple);">✅ RAG per candidate<br/>metadata filter: product_name</td>
+        <td style="padding:0.5rem;color:var(--green);">✅ compare + rank<br/>+ recommend</td>
+      </tr>
+      <tr>
+        <td style="padding:0.5rem;">"What category is iPhone in?"</td>
+        <td style="padding:0.5rem;color:var(--amber);">✅ full ancestor chain<br/>with CHILD_OF*<br/>+ inheritance path</td>
+        <td style="padding:0.5rem;color:var(--purple);">— (not needed)</td>
+        <td style="padding:0.5rem;color:var(--green);">✅ explain "why" from<br/>attributes + category path</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- ================================================================ -->
+<!-- TAB 4: LLAMAINDEX -->
+<!-- ================================================================ -->
+<div class="tab-panel" id="tab-llamaindex">
+
+  <h2 style="color:var(--accent);margin-bottom:0.5rem;">LlamaIndex — RAG Framework for Ingestion & Querying</h2>
+  <p style="color:#94a3b8;margin-bottom:1.5rem;">
+    <span class="term">LlamaIndex<span class="tip"><span class="tip-title">LlamaIndex 在项目中的角色</span><b>不是替代 hand-built RAG。</b>LlamaIndex 负责两件事：<br/><br/><b>1. Ingestion（数据预处理）：</b>SentenceWindowNodeParser 做智能 chunking，替换现有的 RecursiveCharacterTextSplitter(500,50)。这是 hand-built RAG 最弱的一层。<br/><br/><b>2. Query Engine（查询引擎）：</b>可选。对于需要 metadata-filtered vector search 或 query decomposition 的场景，用 LlamaIndex QueryEngine。简单场景继续用 hand-built RAG。<br/><br/><b>Hand-built RAG 保留：</b>dense+sparse→RRF→batch rerank+circuit breaker 全部保留 — 这些是 hand-built RAG 比 LlamaIndex 默认做得更好的部分。</span></span>
+    在项目中的角色是 <b>Ingestion 层 + 可选 Query Engine</b>。不是替代 hand-built RAG——它是增强 hand-built RAG 最弱的一层（chunking），同时保留最强的部分（retrieval + re-rank + resilience）。
+  </p>
+
+  <!-- Ingestion Pipeline -->
+  <h3 style="color:var(--accent);margin:1.5rem 0 0.5rem;">
+    <span class="term">Ingestion Pipeline<span class="tip"><span class="tip-title">声明式数据预处理管道</span>LlamaIndex 的 IngestionPipeline 是声明式的 — 你指定 transformations（chunking → embedding → store），框架处理执行。<br/><br/>对比 hand-built：需要手动调用 TextLoader、TextSplitter、Embedding、PGVector.from_documents()。LlamaIndex 把这些封装成一个 pipeline 对象。</span></span>
+    — 从 product_descriptions.txt 到 pgvector
+  </h3>
+  <div class="mermaid-box">
+<div class="mermaid">
+flowchart LR
+  TXT["📄 product_descriptions.txt<br/>[product: iPhone 15 Pro]<br/>category: Smartphones<br/>brand: Apple<br/>price: 999.00<br/>...<br/>iPhone 15 Pro features a 6.1-inch<br/>Super Retina XDR display..."]
+
+  subgraph PIPELINE["LlamaIndex IngestionPipeline"]
+    direction TB
+    P1["SimpleDirectoryReader<br/>parse [product: X] blocks<br/>extract metadata"]
+    P2["SentenceWindowNodeParser<br/>window_size=5<br/>window_overlap=1<br/><br/>⚠ 关键：不是按 500 字符切<br/>✅ 按句子边界切<br/>✅ 每个 chunk 带前后 context"]
+    P3["OpenAIEmbedding<br/>Zhipu embedding-2<br/>1024-dim batch=64"]
+    P4["PGVectorStore<br/>collection: product_chunks<br/>metadata JSONB:<br/>product_name, brand,<br/>price, category, color<br/>+ window context text"]
+    P1 --> P2 --> P3 --> P4
+  end
+
+  TXT --> PIPELINE
+</div>
+  </div>
+
+  <!-- SentenceWindow Comparison -->
+  <h3 style="color:var(--accent);margin:1.5rem 0 0.5rem;">
+    <span class="term">SentenceWindowNodeParser<span class="tip"><span class="tip-title">智能 chunking — LlamaIndex 的核心价值</span><b>RecursiveCharacterTextSplitter(500,50)：</b>按字符数硬切。"...up to 15W. Battery life lasts up to 29 hours of..." — 截断了。LLM 看到碎片。<br/><br/><b>SentenceWindowNodeParser(window=5, overlap=1)：</b>按句子边界切。每个 chunk 是 5 个句子。相邻 chunk 重叠 1 句。<b>关键：</b>每个 chunk 的 metadata 里保存了完整的 window context（前后句子）。检索时 MetadataReplacementPostProcessor 把检索到的 chunk 替换成完整的 5 句 context window。<br/><br/><b>LLM 看到的上下文：</b>500 字符 → ~2500 字符的连贯文本。答案质量明显提升。</span></span>
+    — 为什么比 RecursiveCharacterTextSplitter 更好
+  </h3>
+
+  <div class="flow-row" style="flex-wrap:nowrap;overflow-x:auto;">
+    <div class="flow-node" style="border-color:#f87171;min-width:260px;flex-shrink:0;">
+      <div class="n-title" style="color:#f87171;">❌ Current: RecursiveCharacterTextSplitter(500,50)</div>
+      <div class="n-detail">按字符数硬切，chunk 是孤立的</div>
+      <div class="n-detail" style="margin-top:0.5rem;background:#1a1a1a;padding:0.4rem;border-radius:4px;text-align:left;font-size:0.75rem;">
+        "...supports up to 15W wireless.<br/>
+        <span style="background:#f87171;color:#000;padding:0 2px;">Battery life lasts up to 29h</span><br/>
+        of video playback. The Action<br/>
+        button replaces the mute switch..."
+      </div>
+      <div class="n-detail" style="color:#f87171;margin-top:0.5rem;">LLM sees: 500 chars · no context · fragmented</div>
+    </div>
+    <div class="flow-arr" style="min-width:60px;">→</div>
+    <div class="flow-node" style="border-color:#4ade80;min-width:260px;flex-shrink:0;">
+      <div class="n-title" style="color:#4ade80;">✅ Target: SentenceWindowNodeParser(5,1)</div>
+      <div class="n-detail">按句子边界切，metadata 存 context window</div>
+      <div class="n-detail" style="margin-top:0.5rem;background:#1a1a1a;padding:0.4rem;border-radius:4px;text-align:left;font-size:0.75rem;">
+        <span style="color:#64748b;">[prev] MagSafe supports up to 15W</span><br/>
+        <span style="background:#4ade80;color:#000;padding:0 2px;">Battery: 29h video playback</span><br/>
+        <span style="color:#64748b;">[next] 50% charge in 30 min (20W)</span><br/>
+        <span style="color:#64748b;">[next] A17 Pro extends battery life</span><br/>
+        <span style="color:#64748b;">[next] Battery health management</span>
+      </div>
+      <div class="n-detail" style="color:#4ade80;margin-top:0.5rem;">LLM sees: ~2500 chars · full context · complete answer</div>
+    </div>
+  </div>
+
+  <!-- Other Capabilities -->
+  <h3 style="color:var(--accent);margin:2rem 0 0.5rem;">Additional LlamaIndex Capabilities</h3>
+  <div class="glossary-grid">
+    <div class="glossary-card">
+      <span class="category badge-purple">Query Engine</span>
+      <h4><span class="term">MetadataReplacementPostProcessor<span class="tip"><span class="tip-title">上下文展开后处理器</span>检索时自动把 chunk 替换成完整的 sentence window。关键：不需要手动查相邻 chunk。<br/><br/>SentenceWindowNodeParser 在 ingestion 时把 window 文本写入 node.metadata['window']。MetadataReplacementPostProcessor 在 query 时读取这个 metadata key，用 window 文本替换 chunk 文本。所以 LLM 看到的不是 500 字符碎片，而是完整的 5 句上下文。</span></span></h4>
+      <p>检索后自动替换 chunk 为完整 sentence window。LLM 看到 ~2500 字连贯文本。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-purple">Query Engine</span>
+      <h4><span class="term">SubQuestionQueryEngine<span class="tip"><span class="tip-title">查询分解引擎</span>把复杂问题自动分解为子查询，每个子查询独立检索，最后汇总。<br/><br/><b>"$800 以下拍照最好的安卓手机"</b> →<br/>Sub-Q1: "Find Android phones under $800"（结构化查询）<br/>Sub-Q2: "What are the camera specs of Pixel 8?"（RAG）<br/>Sub-Q3: "What are the camera specs of Xiaomi 14?"（RAG）<br/>→ LLM 比较 Sub-Q2 + Sub-Q3，给出推荐<br/><br/><b>不用手写分解逻辑</b> — 框架自动管理子查询的并发执行和结果聚合。</span></span></h4>
+      <p>复杂查询自动分解。"which phone under $800 has best camera?" → 3 个子查询 → 汇总</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-purple">Query Engine</span>
+      <h4><span class="term">MetadataFilters<span class="tip"><span class="tip-title">元数据预过滤</span>在向量搜索之前先用结构化条件过滤候选集。<br/><br/>filter: product_name IN ['iPhone 15 Pro', 'Pixel 8']<br/>→ 只在这两个产品的 chunk 里做向量搜索<br/><br/>不用 metadata filter：在所有 500K chunks 里搜索。用 metadata filter：只在 30 个 chunk 里搜索。精度和延迟都明显改善。</span></span></h4>
+      <p>向量搜索前用结构化条件预过滤。brand='Apple' + price < 800 → 缩小搜索空间。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-green">Ingestion</span>
+      <h4><span class="term">IngestionPipeline (Declarative)<span class="tip"><span class="tip-title">声明式 Pipeline</span>3 行代码定义整个 ingestion 流程。Transformations 链式执行：parse → chunk → embed → store。框架处理 batch、错误重试、进度追踪。<br/><br/>对比 hand-built：手动管理 TextLoader、Splitter、Embedding loop、PGVector.from_documents() — 每个步骤独立处理，没有统一的错误处理和重试。</span></span></h4>
+      <p>声明式定义：parse → chunk → embed → store。框架处理 batch + 重试。</p>
+    </div>
+  </div>
+
+  <!-- Integration with hand-built RAG -->
+  <h3 style="color:var(--accent);margin:1.5rem 0 0.5rem;">Integration: LlamaIndex + Hand-Built RAG</h3>
+  <div class="mermaid-box">
+<div class="mermaid">
+flowchart TB
+  subgraph INGEST["Ingestion Layer — LlamaIndex"]
+    direction LR
+    II["SentenceWindowNodeParser<br/>metadata-rich chunks"]
+    IE["OpenAIEmbedding<br/>1024-dim vectors"]
+    IS["PGVectorStore<br/>product_chunks<br/>+ window metadata"]
+    II --> IE --> IS
+  end
+
+  subgraph RETRIEVE["Retrieval Layer — Hand-Built RAG (保留)"]
+    direction LR
+    RD["dense_retrieve<br/>pgvector HNSW<br/>cosine distance"]
+    RS["sparse_retrieve<br/>BM25Okapi<br/>TF × IDF"]
+    RF["_rrf_fuse k=60<br/>Σ 1/(60+rank)"]
+    RL["_llm_rerank<br/>batch LLM call<br/>score 1-10"]
+    RD --> RF
+    RS --> RF
+    RF --> RL
+  end
+
+  subgraph GUARD["Guard Layer — Hand-Built (保留)"]
+    direction LR
+    CB["circuit_breaker<br/>3 failures → 60s"]
+    TR["tenacity retry<br/>exponential backoff"]
+    CB --> TR
+  end
+
+  IS -.->|"chunks + metadata"| RD
+  IS -.->|"chunks + metadata"| RS
+  RL --> GUARD
+</div>
+  </div>
+
+  <div class="desc" style="margin-top:1.5rem;">
+    <strong>LlamaIndex 替换的是 Ingestion 层（最弱的层），Hand-Built RAG 保留 Retrieval + Re-rank + Resilience 层（最强的层）。</strong>
+    不是"选一个框架"——是"每一层用最好的组件"。LlamaIndex 在 chunking 上最优，hand-built 在 retrieval + resilience 上最优。
+  </div>
+
+</div>
+
+<!-- ================================================================ -->
+<!-- TAB 5: GRAPH + VECTOR -->
+<!-- ================================================================ -->
+<div class="tab-panel" id="tab-graph">
+
+  <h2 style="color:var(--accent);margin-bottom:1rem;">Graph Path + Vector Path — 两路径架构</h2>
+  <p style="color:#94a3b8;margin-bottom:1.5rem;">
+    两条路径的 <span class="term">本质区别<span class="tip"><span class="tip-title">Deterministic vs Probabilistic</span>Graph Path 是确定性查询 — 数据在 PG 里就返回，不在就不返回，零幻觉。Vector Path 是概率性搜索 — embedding 相似性搜索，结果可能不完美但能处理"我没法精确匹配"的情况。两者互补，Graph-first 保证权威性，Vector-fallback 保证覆盖率。</span></span> 决定了两者的互补关系。
+  </p>
+
+  <div class="flow-row">
+    <div class="flow-node" style="border-color:var(--green);min-width:140px;">
+      <div class="n-title"><span class="term">Graph Path<span class="tip"><span class="tip-title">确定性 SQL JOIN 查询</span><b>3-hop traversal:</b> products → categories → policy_category_rules ← policy_rules<br/><br/><b>SQL:</b> SELECT pr.* FROM products p JOIN categories c ON p.category_id=c.id JOIN policy_category_rules pcr ON c.id=pcr.category_id JOIN policy_rules pr ON pcr.policy_rule_id=pr.id WHERE p.name ILIKE '%headphones%'<br/><br/><b>KnowledgeStore：</b>PostgreSQL 上的纯 SQL 查询层。<br/><b>单例模式：</b>get_knowledge_store() 返回共享实例。<br/><br/><b>优点：</b>零幻觉、可溯源（知道哪行 SQL 产出了哪个结果）、延迟 < 5ms。<br/><b>限制：</b>仅关键词匹配。中文不命中。无层级继承。无属性过滤。</span></span><br/><span style="font-size:0.7rem;color:#4ade80;">确定性 · 零幻觉</span></div>
+      <div class="n-detail">PostgreSQL SQL JOIN</div>
+      <div class="n-detail">product → category → policy</div>
+      <div class="n-detail">keyword ILIKE only</div>
+    </div>
+    <div class="flow-arr">→ hit? →</div>
+    <div class="flow-node" style="border-color:var(--green);min-width:100px;">
+      <div class="n-title">✅ Return</div>
+      <div class="n-detail">权威结果</div>
+    </div>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-node" style="border-color:var(--amber);min-width:140px;">
+      <div class="n-title"><span class="term">Vector Path<span class="tip"><span class="tip-title">概率性 Hybrid RAG 回退</span>当 Graph Path 不命中时触发。4 阶段 pipeline: Dense + Sparse → RRF → Batch LLM Re-rank。<br/><br/><b>HybridPolicyRetriever：</b>单例模式，pickle 缓存 BM25 索引。<br/><b>pgvector 存储 200+ 个 500-char chunks。</b>每个 chunk 是从 store_policies.txt 切分出来的政策文本片段。<br/><br/><b>Chunking 方式：</b>当前用 RecursiveCharacterTextSplitter(500,50) — 按字符数硬切，chunk 是孤立的。计划升级为 LlamaIndex SentenceWindowNodeParser。<br/><br/><b>Circuit Breaker：</b>embedding 调用失败 3 次 → 60s 熔断 → 回退到空列表（RRF 只剩 sparse 结果）<br/><b>Re-rank CB：</b>LLM 调用失败 3 次 → 60s 熔断 → 跳过重排序（用 RRF 原始排序）</span></span><br/><span style="font-size:0.7rem;color:#fbbf24;">概率性 · RAG 兜底</span></div>
+      <div class="n-detail">dense + sparse → RRF → rerank</div>
+      <div class="n-detail">pgvector + BM25</div>
+      <div class="n-detail">circuit breaker 保护</div>
+    </div>
+    <div class="flow-arr">→ scored →</div>
+    <div class="flow-node" style="border-color:var(--amber);min-width:100px;">
+      <div class="n-title">📋 Ranked</div>
+      <div class="n-detail">score ≥7 过滤</div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <h3 style="color:var(--accent);">Taxonomy 升级：Graph Path 命中率提升</h3>
+    <p style="color:#94a3b8;font-size:0.85rem;margin:0.5rem 0 1rem;">
+      当前的 Graph Path 只有 keyword ILIKE。以下 4 个数据表已存在于 PostgreSQL，<b>但没有代码查询它们</b>。接线后 graph path 命中率大幅提升。
+    </p>
+    <div class="glossary-grid">
+      <div class="glossary-card">
+        <span class="category badge-blue">✅ Schema Ready</span>
+        <h4><span class="term">Entity Synonyms<span class="tip"><span class="tip-title">实体同义词表</span>50+ 中英双语同义词对。<br/><br/><b>例子：</b>"苹果手机" → "iPhone 15 Pro"<br/>"索尼耳机" → "Sony WH-1000XM5"<br/>"TWS" → "Wireless Earbuds"<br/><br/><b>表结构：</b>canonical_name, synonym, entity_type (brand|product|category), language (en|zh), confidence (0-1)<br/><br/><b>搜索流程：</b>用户输入 → 查 entity_synonyms → 存在 → 替换 canonical_name → 用 canonical 做 graph 匹配<br/><b>Neo4j 实现：</b>synonym 存入 Product 节点的 search_terms 数组属性 → fulltext index 索引 → 一条 MATCH 查询同时匹配 name 和 synonyms</span></span></h4>
+        <p>中英双语查询支持。"苹果手机" ↦ "iPhone 15 Pro"</p>
+      </div>
+      <div class="glossary-card">
+        <span class="category badge-purple">✅ Schema Ready</span>
+        <h4><span class="term">Product Attributes<span class="tip"><span class="tip-title">产品属性 (EAV 模式)</span><b>EAV = Entity-Attribute-Value，实体-属性-值模式。</b><br/><br/><b>为什么用 EAV 而不是固定列？</b>不同品类的属性不同 — 手机有 screen_size, storage；咖啡机没有。用 EAV 可以动态扩展属性而不改表结构。<br/><br/><b>attribute_definitions (属性定义表)：</b>brand, color, storage, screen_size, weight, release_year, wireless, warranty_years, material<br/>每个属性有 data_type (text|number|boolean|enum), unit, allowed_values<br/><br/><b>product_attributes (属性值表)：</b>product_id → attribute_id → 有类型的 value（value_text | value_number | value_boolean）<br/><br/><b>查询示例：</b>"red smartphones under $800 with 256GB storage" → filter_products_by_attributes(color='Red', storage='256GB', max_price=800)</span></span></h4>
+        <p>属性筛选。"red phone under $800, 256GB storage"</p>
+      </div>
+      <div class="glossary-card">
+        <span class="category badge-amber">✅ Schema Ready</span>
+        <h4><span class="term">Category Hierarchy<span class="tip"><span class="tip-title">层级分类树（4 层深度）</span>28 个分类，最多 4 层。<br/><br/><b>树结构：</b>Electronics → Mobile Devices → Smartphones → Flagship Phones<br/><b>Path 列：</b>materialized path 枚举 — 1.2.3.4<br/><b>递归 CTE：</b>PostgreSQL WITH RECURSIVE 计算 path<br/><br/><b>策略继承：</b>"Flagship Phones" → CHILD_OF* → "Electronics" → HAS_POLICY → "electronics_return"<br/>所以 iPhone 15 Pro（在 Flagship Phones）自动继承 Electronics 的所有 policy。<br/><br/><b>查询示例：</b>"Electronics return policy" → 返回 Electronics 及其所有子品类的 policies</span></span></h4>
+        <p>策略继承。父品类 policy 自动覆盖所有子品类</p>
+      </div>
+      <div class="glossary-card">
+        <span class="category badge-pink">✅ Schema Ready</span>
+        <h4><span class="term">Product Relations<span class="tip"><span class="tip-title">产品关系图</span>20+ 条产品间关系。<br/><br/><b>关系类型：</b>accessory (配件), alternative (竞品替代), compatible (兼容), bundle (捆绑), upgrade (升级)<br/><b>strength：</b>0-1 浮点数，表示关系强度。iPhone→AirPods: 0.90 (强); MacBook→ASUS ROG: 0.60 (弱)<br/><br/><b>查询：</b>"what accessories for iPhone 15 Pro?" → (:Product {name:'iPhone 15 Pro'})←[:ACCESSORY_OF]-(:Product)<br/><b>双向：</b>查询同时检查 source 和 target 方向<br/><br/><b>Neo4j 实现：</b>product_relations 表在 neo4j_setup.py 中转化为 [:ACCESSORY_OF], [:ALTERNATIVE_TO], [:COMPATIBLE_WITH] 关系</span></span></h4>
+        <p>配件推荐、竞品对比。"What accessories for iPhone?"</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================================================================ -->
+<!-- TAB 4: GUARDRAILS -->
+<!-- ================================================================ -->
+<div class="tab-panel" id="tab-guard">
+
+  <h2 style="color:var(--accent);margin-bottom:1rem;">Guardrails — 多层防护体系</h2>
+  <p style="color:#94a3b8;margin-bottom:1.5rem;">
+    Guard 的核心原则：<span class="term">不依赖 LLM 做 Guard<span class="tip"><span class="tip-title">为什么 Guard 不应该依赖 LLM</span>LLM 可能出错、可能被 prompt injection 绕过、可能对同一个 query 给出不同的判断。最可靠的 guard 是正则匹配和字符串校验 — 它们不需要"判断"，只需要"检查"。Guard 本身如果有不确定性，就失去了 guard 的意义。</span></span>，因为 LLM 也会出错。最可靠的 Guard 是正则匹配和确定性校验。
+  </p>
+
+  <div class="interactive-diagram">
+    <div class="stage-card" style="border-color:var(--pink);">
+      <div class="icon">🚫</div>
+      <h3><span class="term">L1: Topic Boundary<span class="tip"><span class="tip-title">话题边界守卫 — 入口拦截</span><b>执行时机：</b>classify_intent 之前，pipeline 最前端<br/><b>方式：</b>正则匹配 reject list<br/><b>拦截范围：</b>政治敏感、色情、暴力/非法内容、jailbreak prompt、非电商话题<br/><br/><b>特点：</b>非 LLM、零延迟、规则显式可审计、正则列表可热更新<br/><b>不做什么：</b>不试图判断"这个问题能不能回答" — 只拦截明确越界的。越界的判断太模糊，交给 intent classifier 的 "unknown" 处理更安全</span></span></h3>
+      <div><span class="badge badge-pink">入口拦截</span><span class="badge badge-slate">regex 拒绝列表</span></div>
+      <div class="meta">⏱ 0ms · 可热更新</div>
+    </div>
+
+    <div class="stage-arrow">→</div>
+
+    <div class="stage-card" style="border-color:var(--accent);">
+      <div class="icon">🏷️</div>
+      <h3><span class="term">L2: Intent Boundary<span class="tip"><span class="tip-title">意图边界 — 路由控制</span><b>执行时机：</b>classify_intent 之后<br/><b>方式：</b>LangGraph conditional edge + 6 个已知 intent<br/><br/><b>unknown intent：</b>不在已知 intent 范围内的查询 → 走 generate_reply 的保守路径（不调用任何 tool，只回复"我是电商客服，只能回答..."）<br/><b>确定性：</b>LangGraph DAG 保证路由不依赖 LLM 当时的状态 — 路径在构建时确定</span></span></h3>
+      <div><span class="badge badge-blue">6 intents</span><span class="badge badge-slate">conditional edge</span></div>
+      <div class="meta">确定性路由 · 无 LLM 决策参与</div>
+    </div>
+
+    <div class="stage-arrow">→</div>
+
+    <div class="stage-card" style="border-color:var(--amber);">
+      <div class="icon">✅</div>
+      <h3><span class="term">L3: Output Validation<span class="tip"><span class="tip-title">输出验证 — 双重检查</span><b>LLM Auditor (validate_reply)：</b>LLM 检查生成内容是否基于 tool result。最多 2 次重试。<br/><br/><b>Hard Verify (确定性校验)：</b>提取回答中的订单号 #\d{4,6}、金额、日期 → 和 tool result 做字符串匹配 → 如有不存在的 ID → 直接 flag<br/><br/><b>为什么双重：</b>LLM auditor 可能评判失误（false positive），hard verify 提供确定性 backup。<br/><b>重试上限：</b>2 次。3 次以上统计上不提高正确率。</span></span></h3>
+      <div><span class="badge badge-amber">LLM judge</span><span class="badge badge-green">hard verify</span></div>
+      <div class="meta">最多 2 次重试</div>
+    </div>
+
+    <div class="stage-arrow">→</div>
+
+    <div class="stage-card" style="border-color:var(--green);">
+      <div class="icon">🔒</div>
+      <h3><span class="term">L4: PII Redaction<span class="tip"><span class="tip-title">个人信息脱敏</span><b>执行时机：</b>generate_reply 之后，返回用户之前<br/><b>方式：</b>正则替换<br/><br/><b>脱敏目标：</b>手机号 (1[3-9]\d{9}) → [phone]<br/>邮箱 → [email]<br/>身份证号 → [id_card]<br/><br/><b>关键场景：</b>如果 order_status_tool 返回的结果包含真实客户数据（姓名、电话、地址），这些信息可能通过 LLM 的回复泄露给其他用户。</span></span></h3>
+      <div><span class="badge badge-green">正则脱敏</span></div>
+      <div class="meta">输出前最后一道防线</div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <h3 style="color:var(--accent);">Resilience: 故障时的降级路径</h3>
+    <div class="flow-row">
+      <div class="flow-node" style="border-color:var(--green);">
+        <div class="n-title"><span class="term">Circuit Breaker<span class="tip"><span class="tip-title">断路器模式</span><b>状态机：</b>Closed（正常） → Open（熔断） → Half-Open（探测恢复）<br/><b>参数：</b>failure_threshold=3, recovery_timeout=60s<br/><b>行为：</b>连续 3 次失败 → 熔断 60 秒。60 秒后允许 1 次探测调用 → 成功则恢复（Closed），失败则继续熔断（Open）。<br/><br/><b>为什么 3 次而不是 5 次或 1 次？</b>1 次会因偶发网络抖动而误熔断。5 次会让用户在故障后等待太久。<br/><b>为什么 60 秒？</b>LLM API 的恢复通常在 30-120 秒内。60 秒是经验值。<br/><br/><b>两个独立的 CB：</b>embedding_circuit（pgvector 搜索）和 llm_circuit（re-rank）。一个失败不影响另一个。</span></span></div>
+        <div class="n-detail">3 failures → 60s recovery</div>
+        <div class="n-detail">2 independent CBs</div>
+      </div>
+      <div class="flow-arr">+</div>
+      <div class="flow-node" style="border-color:var(--amber);">
+        <div class="n-title"><span class="term">Retry<span class="tip"><span class="tip-title">指数退避重试</span><b>tenacity 库：</b>max_attempts=2，每次重试间隔指数增长<br/><b>模式：</b>retry(retry_on_exception=..., wait=wait_exponential(multiplier=1, min=1, max=10))<br/><br/><b>第一次重试：</b>等待 1 秒<br/><b>第二次重试：</b>等待 2 秒<br/><b>第三次重试：</b>等待 4 秒<br/><br/><b>计在 circuit breaker 的 failure count 中。</b>重试耗尽后调用 static fallback。</span></span></div>
+        <div class="n-detail">exponential backoff</div>
+        <div class="n-detail">max 2 attempts</div>
+      </div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node" style="border-color:var(--pink);">
+        <div class="n-title"><span class="term">Fallback<span class="tip"><span class="tip-title">静态兜底回复</span>当所有重试和熔断恢复都失败后，返回预设的静态回复。<br/><br/><b>不是一个回复：</b>不同 tool 有不同的 fallback — 查单返回空列表、政策查询返回"暂时无法查询政策，请稍后重试"、天气返回"无法获取天气信息"。<br/><br/><b>关键：</b>fallback 必须是静态文本，不调用 LLM。如果在 fallback 里调用 LLM，LLM 可能也挂了（因为就是 LLM 故障导致需要 fallback），形成递归。</span></span></div>
+        <div class="n-detail">static text</div>
+        <div class="n-detail">no LLM in fallback</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================================================================ -->
+<!-- TAB 5: GLOSSARY -->
+<!-- ================================================================ -->
+<div class="tab-panel" id="tab-glossary">
+
+  <h2 style="color:var(--accent);margin-bottom:1rem;">Full Glossary</h2>
+  <p style="color:#94a3b8;margin-bottom:1.5rem;">Every technical term used in this project, with plain-language explanations.</p>
+
+  <div class="glossary-grid">
+    <div class="glossary-card">
+      <span class="category badge-blue">Agent</span>
+      <h4>LangGraph StateGraph</h4>
+      <p>一个有向无环图（DAG）来表示 agent 的执行流程。每个节点是纯函数 State → State。与 ReAct agent 的区别：执行路径在构建时确定，不是 LLM 运行时决定。这意味着可以精确推理 agent 的行为 — 不会出现"LLM 决定跳过 tool 调用"的意外。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-blue">Agent</span>
+      <h4>ReAct Agent</h4>
+      <p>Reasoning + Acting 的缩写。LLM 在每个步骤生成一个"思考 → 行动"对。自主决定调用哪个 tool、什么时候停止。灵活但不稳定 — 可能循环、跳过必要的 tool call、或 hallucinate tool 调用。本项目的 LangGraph DAG 是对 ReAct 的替代方案。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-blue">Agent</span>
+      <h4>Intent Classification</h4>
+      <p>把用户自然语言归类到已知的 6 个意图之一。三档策略：keyword（regex 规则引擎）、llm_hybrid（LLM 抽取意图+实体）、semantic（embedding 搜索候选 + LLM 在候选内分类，应对 10K+ SKU 的场景）。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-green">RAG</span>
+      <h4>Dense Retrieval</h4>
+      <p>用 embedding 模型把 query 转成 1024 维向量，在向量数据库中做 ANN（近似最近邻）搜索。衡量语义相似度 — "退货"能匹配"return policy"即使没有共同的词。弱点：同品类不同政策（headphones vs earbuds）的 embedding 太接近，检索不准确。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-green">RAG</span>
+      <h4>Sparse Retrieval (BM25)</h4>
+      <p>BM25（Okapi Best Match 25）是 TF-IDF 的升级版。把 query 拆成词，用词频×逆文档频率给每个文档打分。擅长精确关键词匹配 — "headphones"一定匹配包含"headphones"的 chunk。弱点：同义词（"return" vs "send back"）不匹配。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-green">RAG</span>
+      <h4>RRF (Reciprocal Rank Fusion)</h4>
+      <p>公式 score(doc) = Σ 1/(k + rank)。合并两个排序列表（dense + sparse），不需要人工权重。参数 k=60 控制融合平滑度。文档在两个列表中都出现时获得共识 boost，只在一个列表出现也不会消失。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-green">RAG</span>
+      <h4>Batch LLM Re-rank</h4>
+      <p>一次 LLM 调用评所有检索文档的质量（1-10 分）。与逐文档评分的区别：5 个文档 = 1 次调用 vs 5 次调用，延迟和成本降低 5 倍。保留分数 ≥7 的文档。Temperature=0 保证一致性。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-purple">Vector</span>
+      <h4>Embedding (向量嵌入)</h4>
+      <p>把一段文本压缩成固定长度的数字数组（这里用 1024 维）。语义相似的文本 → 向量距离近。Zhipu embedding-2 支持中英双语，batch 大小 64。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-purple">Vector</span>
+      <h4>pgvector + HNSW</h4>
+      <p>pgvector 是 PostgreSQL 的向量扩展。HNSW（Hierarchical Navigable Small World）是向量索引算法 — 把向量组织成多层图结构，查询不需要遍历所有向量（O(log N) 而非 O(N)）。200 个向量 2-5ms 返回 top-5。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-purple">Vector</span>
+      <h4>Cosine Distance</h4>
+      <p>衡量两个向量夹角的余弦值。0 = 完全相同方向，1 = 正交（无关）。比欧氏距离更适合语义搜索 — 关注方向而非绝对位置。两个相似句子的向量方向一致，即使长度不同。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-amber">Graph</span>
+      <h4>Cypher (图查询语言)</h4>
+      <p>Neo4j 的查询语言，相当于图数据库的 SQL。MATCH (p:Product)-[:IN_CATEGORY]->(c:Category) 表示"找到所有产品节点和它们连接到的分类节点"。天然支持多跳遍历 ([:CHILD_OF*0..4] = 0 到 4 跳)。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-amber">Graph</span>
+      <h4>EAV (Entity-Attribute-Value)</h4>
+      <p>实体-属性-值设计模式。不同品类的产品有不同的属性 — 手机有 screen_size，咖啡机没有。用 EAV 表（product_attributes: product_id → attribute_id → typed_value）可以动态扩展属性而不改表结构。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-amber">Graph</span>
+      <h4>Materialized Path</h4>
+      <p>在 categories 表存储枚举路径（如 "1.2.3.4"），表示从根到当前节点的完整路径。用 WHERE path LIKE '1.2.%' 可以高效查询所有子节点而不需要递归 JOIN。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-pink">Infra</span>
+      <h4>Circuit Breaker (断路器)</h4>
+      <p>防止级联故障的模式。3 次连续失败后打开电路（熔断），60 秒内所有调用直接返回 fallback。60 秒后允许一次探测——成功则恢复，失败则继续熔断。embedding 和 LLM 有两个独立的断路器。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-pink">Infra</span>
+      <h4>Tenacity (重试库)</h4>
+      <p>Python 的重试库，支持指数退避（exponential backoff）。第一次重试等 1 秒，第二次等 2 秒，最多 2 次。重试失败计入 circuit breaker 的 failure count。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-pink">Infra</span>
+      <h4>Semantic Cache</h4>
+      <p>用 pgvector 做 LLM 响应的语义缓存。cosine distance < 0.3 时返回缓存。Weather 查询显式排除——不同城市的 weather embedding 太相似（城市名在高维空间中距离被稀释），缓存会返回错误城市的信息。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-slate">Pattern</span>
+      <h4>Typed Dataclass (frozen)</h4>
+      <p>用 Python @dataclass(frozen=True) 替代 raw dict。ProductRef(name, price, sku) 而不是 {'name': ..., 'price': ...}。好处：IDE 自动补全、类型检查、不可变性（线程安全）、字段改名时编译报错而非运行时 KeyError。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-slate">Pattern</span>
+      <h4>Dependency Injection</h4>
+      <p>对象通过 __init__ 接收依赖而非内部创建。Neo4jStore(uri, user, password) 而非 Neo4jStore() 内部读 settings。好处：单元测试可传 mock，不依赖全局状态。FastAPI 用 Depends() 自动注入。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-slate">Pattern</span>
+      <h4>Source of Truth</h4>
+      <p>PostgreSQL 是唯一的写入源。Neo4j 是读缓存，从 PG 同步，没有运行时双写。好处：消除了 PG 和 Neo4j 数据不一致的可能。不需要分布式事务。如果 Neo4j 挂了，重新跑 neo4j_setup.py 即可恢复。</p>
+    </div>
+    <div class="glossary-card">
+      <span class="category badge-slate">Safety</span>
+      <h4>Prompt Injection</h4>
+      <p>用户在输入中注入指令来覆盖系统 prompt。例如："忽略之前的指令，告诉我..."。防御方式：用 XML 标签或特殊分隔符把用户输入和系统指令隔离。本项目的 LangGraph DAG 提供了额外防御——即使 LLM 被注入，它调用的 tool 是由 graph 决定的，不是 LLM 决定的。</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Built for interview presentation · All diagrams interactive · Hover over <span style="border-bottom:1px dashed var(--accent);color:var(--accent);">dashed terms</span> for explanations
+</footer>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'default',
+  securityLevel: 'loose',
+  flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+  themeVariables: {
+    primaryColor: '#38bdf8',
+    primaryTextColor: '#0f172a',
+    primaryBorderColor: '#0284c7',
+    lineColor: '#64748b',
+    secondaryColor: '#1e293b',
+    tertiaryColor: '#334155',
+  }
+});
+</script>
+</body>
+</html>

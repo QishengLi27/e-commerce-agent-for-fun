@@ -70,23 +70,28 @@ def migrate_sqlite_to_postgres():
 
     pg_engine = create_engine(CONNECTION_STRING)
     with pg_engine.connect() as conn:
-        conn.execute(text("""
+        conn.execute(
+            text("""
             CREATE TABLE IF NOT EXISTS orders (
                 order_id TEXT PRIMARY KEY,
                 customer_name TEXT,
                 status TEXT,
                 estimated_delivery TEXT
             )
-        """))
+        """)
+        )
         for row in rows:
-            conn.execute(text("""
+            conn.execute(
+                text("""
                 INSERT INTO orders (order_id, customer_name, status, estimated_delivery)
                 VALUES (:oid, :name, :status, :delivery)
                 ON CONFLICT (order_id) DO UPDATE SET
                     customer_name = EXCLUDED.customer_name,
                     status = EXCLUDED.status,
                     estimated_delivery = EXCLUDED.estimated_delivery
-            """), {"oid": row[0], "name": row[1], "status": row[2], "delivery": row[3]})
+            """),
+                {"oid": row[0], "name": row[1], "status": row[2], "delivery": row[3]},
+            )
         conn.commit()
     print(f"[migrate] Migrated {len(rows)} orders from SQLite to PostgreSQL")
 

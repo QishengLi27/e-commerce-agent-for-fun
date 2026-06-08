@@ -17,7 +17,7 @@ def _extract_city(text: str) -> str:
     """Extract city name from a natural-language query."""
     text = text.strip()
     # Remove common punctuation
-    text = text.strip('?').strip('!').strip('.')
+    text = text.strip("?").strip("!").strip(".")
 
     # Pattern: "weather in/for/at <city>"
     m = re.search(r"weather\s+(?:in|for|at)\s+([A-Za-z\s'-]+)", text, re.IGNORECASE)
@@ -30,7 +30,12 @@ def _extract_city(text: str) -> str:
         return m.group(1).strip()
 
     # Fallback: remove common words and return remainder
-    cleaned = re.sub(r"\b(what|is|the|weather|in|for|at|like|today|now|current|get|show|me|tell)\b", "", text, flags=re.IGNORECASE)
+    cleaned = re.sub(
+        r"\b(what|is|the|weather|in|for|at|like|today|now|current|get|show|me|tell)\b",
+        "",
+        text,
+        flags=re.IGNORECASE,
+    )
     cleaned = cleaned.strip()
     return cleaned if cleaned else text
 

@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 
 # ── Product Search via Vector Embeddings ──────────────────────────────────────
 
+
 def _search_products_semantic(query: str, k: int = 5) -> list[dict]:
     """Search for products semantically related to the query using vector embeddings.
 
@@ -67,6 +68,7 @@ Classify the user's intent:
 - policy: returns, refunds, shipping, warranty, cancellation
 - weather: weather in a city
 - knowledge: product information, categories, pricing
+- product_qa: user asks about a product's features, specs, comparisons, or category
 - unknown: greeting, small talk, or anything else
 
 Respond with ONLY a JSON object:
@@ -135,6 +137,7 @@ def _llm_semantic_cached(query: str, products: list[dict]) -> dict:
 
 # ── KG Validation ─────────────────────────────────────────────────────────────
 
+
 def _validate_matches(llm_matches: list[str]) -> dict:
     """Validate LLM's product picks against the KG."""
     from backend.knowledge.graph_store import get_knowledge_store
@@ -149,12 +152,18 @@ def _validate_matches(llm_matches: list[str]) -> dict:
         if lowered in all_products:
             info = kg.get_product_info(lowered)
             if info:
-                confirmed.append({"name": info["name"], "category": info.get("category_name"),
-                                  "policies": [p["summary"] for p in info.get("policies", [])]})
+                confirmed.append(
+                    {
+                        "name": info["name"],
+                        "category": info.get("category_name"),
+                        "policies": [p["summary"] for p in info.get("policies", [])],
+                    }
+                )
     return {"confirmed_products": confirmed}
 
 
 # ── Classifier ────────────────────────────────────────────────────────────────
+
 
 class SemanticIntentClassifier(BaseIntentClassifier):
     """Vector search + LLM classification with KG validation.
@@ -176,8 +185,12 @@ class SemanticIntentClassifier(BaseIntentClassifier):
         order_ids = _ORDER_ID_RE.findall(lowered)
         policy_hits = [w for w in POLICY_SIGNALS if w in lowered]
         if order_ids and not policy_hits:
-            return {"intent": "order", "confidence": "high", "source": "entity",
-                    "order_id": order_ids[0]}
+            return {
+                "intent": "order",
+                "confidence": "high",
+                "source": "entity",
+                "order_id": order_ids[0],
+            }
 
         # Main path: semantic search → LLM classification → KG validation
         products = _search_products_semantic(query, k=5)

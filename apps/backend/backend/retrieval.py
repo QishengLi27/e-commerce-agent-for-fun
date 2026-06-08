@@ -80,7 +80,9 @@ class HybridPolicyRetriever:
         self._load_or_build_bm25()
 
         self.llm_circuit = CircuitBreaker("rerank-llm", failure_threshold=3, recovery_timeout=60.0)
-        self.embedding_circuit = CircuitBreaker("embeddings", failure_threshold=3, recovery_timeout=60.0)
+        self.embedding_circuit = CircuitBreaker(
+            "embeddings", failure_threshold=3, recovery_timeout=60.0
+        )
 
     def _tokenize(self, text: str) -> list[str]:
         """Simple tokenizer for BM25."""
@@ -118,6 +120,7 @@ class HybridPolicyRetriever:
 
     def _dense_retrieve(self, query: str, k: int = 5) -> list[tuple[Document, float]]:
         """pgvector search. Returns (doc, score) where higher is better."""
+
         def _search():
             return self.vectorstore.similarity_search_with_score(query, k=k)
 

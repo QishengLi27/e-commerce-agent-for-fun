@@ -85,7 +85,6 @@ TEST_CASES = [
         "question": "How long until I get my refund after returning something?",
         "ground_truth": "Refunds are processed within 5-7 business days after receiving the returned item.",
     },
-
     # ── Order queries (no retrieval — tool calls directly) ──
     {
         "question": "What's the status of order 1001?",
@@ -95,7 +94,6 @@ TEST_CASES = [
         "question": "Show me all my orders",
         "ground_truth": None,
     },
-
     # ── Edge cases ──
     {
         "question": "Do you sell laptops?",
@@ -109,6 +107,7 @@ TEST_CASES = [
 
 
 # ─── Pipeline simulation ────────────────────────────────────────────────────────
+
 
 def run_agent_for_eval(user_input: str) -> dict:
     """
@@ -125,7 +124,9 @@ def run_agent_for_eval(user_input: str) -> dict:
         intent = "list_orders"
     elif any(w in text for w in ["order", "status of", "track"]):
         intent = "order"
-    elif any(w in text for w in ["policy", "return", "refund", "shipping", "warranty", "退货", "退款"]):
+    elif any(
+        w in text for w in ["policy", "return", "refund", "shipping", "warranty", "退货", "退款"]
+    ):
         intent = "policy"
     else:
         intent = "unknown"
@@ -143,6 +144,7 @@ def run_agent_for_eval(user_input: str) -> dict:
         tool_result = "\n\n".join(contexts)
     elif intent == "order":
         import re
+
         match = re.search(r"\b(10\d{2,})\b", cleaned)
         oid = match.group(1) if match else "1001"
         tool_result = order_status_tool.invoke({"order_id": oid})
@@ -172,6 +174,7 @@ def run_agent_for_eval(user_input: str) -> dict:
 
 # ─── Prerequisite checks ────────────────────────────────────────────────────────
 
+
 def _check_prerequisites():
     """Verify Postgres is reachable and the policy collection exists."""
     import psycopg2
@@ -199,13 +202,17 @@ def _check_prerequisites():
         cur.close()
         conn.close()
         if count == 0:
-            print("  WARNING: store_policies collection is empty — run: python -m backend.db.vector_setup")
+            print(
+                "  WARNING: store_policies collection is empty — run: python -m backend.db.vector_setup"
+            )
             ok = False
         else:
             print(f"  store_policies: {count} chunks")
     except Exception as e:
         print("  ERROR: Cannot connect to PostgreSQL — is the pgvector container running?")
-        print("    docker run -d --name pgvector -p 5432:5432 -e POSTGRES_PASSWORD=postgres pgvector/pgvector:pg16")
+        print(
+            "    docker run -d --name pgvector -p 5432:5432 -e POSTGRES_PASSWORD=postgres pgvector/pgvector:pg16"
+        )
         print(f"    {e}")
         ok = False
 
@@ -215,6 +222,7 @@ def _check_prerequisites():
 
 
 # ─── Main Evaluation ────────────────────────────────────────────────────────────
+
 
 def main():
     print("=" * 72)
@@ -232,7 +240,7 @@ def main():
     for i, case in enumerate(TEST_CASES):
         case_dict: dict[str, str] = case  # type: ignore[assignment]
         q = case_dict["question"]
-        print(f"  [{i+1}/{len(TEST_CASES)}] {q}")
+        print(f"  [{i + 1}/{len(TEST_CASES)}] {q}")
         result: dict[str, Any] = run_agent_for_eval(q)
         result["ground_truth"] = case_dict.get("ground_truth", "")
         records.append(result)
@@ -309,14 +317,16 @@ def main():
     out_path = Path(__file__).parent / "eval_results.json"
     export = []
     for _, row in df.iterrows():
-        export.append({
-            "question": row.get("user_input", ""),
-            "answer": row.get("response", ""),
-            "contexts": row.get("retrieved_contexts", []),
-            "faithfulness": row.get("faithfulness", None),
-            "answer_relevancy": row.get("answer_relevancy", None),
-            "context_precision": row.get("context_precision", None),
-        })
+        export.append(
+            {
+                "question": row.get("user_input", ""),
+                "answer": row.get("response", ""),
+                "contexts": row.get("retrieved_contexts", []),
+                "faithfulness": row.get("faithfulness", None),
+                "answer_relevancy": row.get("answer_relevancy", None),
+                "context_precision": row.get("context_precision", None),
+            }
+        )
     with open(out_path, "w") as f:
         json.dump(export, f, indent=2, ensure_ascii=False, default=str)
     print(f"\n  Detailed results: {out_path}")

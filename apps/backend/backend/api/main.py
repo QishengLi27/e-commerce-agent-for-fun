@@ -11,6 +11,7 @@ from backend.config import settings
 async def lifespan(app: FastAPI):
     """Initialize the agent graph (async checkpointer) on startup."""
     from backend.graph.agent_graph import init_agent_graph
+
     await init_agent_graph()
     yield
 

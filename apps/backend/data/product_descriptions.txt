@@ -1,0 +1,96 @@
+[product: iPhone 15 Pro]
+category: Smartphones
+brand: Apple
+price: 999.00
+color: Titanium
+storage: 256GB
+screen_size: 6.1
+weight: 0.187
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+iPhone 15 Pro features a 6.1-inch Super Retina XDR display with ProMotion
+technology delivering adaptive refresh rates up to 120Hz. The display reaches
+2000 nits peak brightness outdoors, making it clearly visible in direct sunlight.
+
+The A17 Pro chip is the industry's first 3-nanometer chip, delivering console-level
+gaming performance with hardware-accelerated ray tracing. The 6-core GPU is 20%
+faster than the previous generation, while the 6-core CPU includes 2 performance
+cores and 4 efficiency cores for all-day battery life.
+
+The pro camera system features a 48MP main camera with a quad-pixel sensor that
+defaults to 24MP for optimal detail and light capture. Multiple focal lengths —
+24mm, 28mm, and 35mm — are available at the main camera level. The new 5x Telephoto
+camera at 120mm provides exceptional reach. Night mode, Portrait mode, and Photonic
+Engine computational photography are available across all cameras.
+
+MagSafe wireless charging supports up to 15W with compatible accessories. The
+titanium design is both stronger and lighter than previous models at 187 grams.
+USB-C with USB 3 speeds up to 10Gb/s enables fast data transfer. The Action button
+replaces the mute switch with customizable shortcuts. Battery life lasts up to
+29 hours of video playback. Face ID is faster and more secure with the new
+Secure Enclave. The phone is rated IP68 for water and dust resistance, surviving
+up to 6 meters for 30 minutes.
+
+[product: Google Pixel 8]
+category: Smartphones
+brand: Google
+price: 699.00
+color: Obsidian
+storage: 128GB
+screen_size: 6.2
+release_year: 2023
+wireless: true
+
+Google Pixel 8 features a 6.2-inch Actua OLED display with a smooth 120Hz
+adaptive refresh rate. The display reaches 2000 nits peak brightness for
+excellent outdoor visibility. The Tensor G3 chip powers advanced AI features
+including Magic Eraser, Best Take, and Audio Magic Eraser for photo and video
+enhancements.
+
+The camera system includes a 50MP main sensor with Octa PD autofocus and a
+12MP ultrawide lens with autofocus for Macro Focus. Google's computational
+photography delivers Real Tone, Night Sight, and Astrophotography modes.
+Super Res Zoom provides up to 8x magnification with AI-enhanced clarity.
+
+The Pixel 8 runs Android 14 with 7 years of OS, security, and Feature Drop
+updates guaranteed. The Titan M2 security chip protects sensitive data. Battery
+life lasts over 24 hours with Adaptive Battery, extending to 72 hours with
+Extreme Battery Saver. Fast wireless charging is supported up to 18W with
+Pixel Stand. The phone supports Wi-Fi 7, Bluetooth 5.3, and 5G connectivity.
+Face Unlock and an under-display fingerprint sensor provide biometric security.
+
+[product: MacBook Pro 16]
+category: Laptops
+brand: Apple
+price: 2499.00
+color: Space Gray
+storage: 512GB
+screen_size: 16.2
+weight: 2.15
+release_year: 2023
+wireless: true
+
+MacBook Pro 16 features a 16.2-inch Liquid Retina XDR display with mini-LED
+technology delivering 1000 nits sustained brightness and 1600 nits peak for
+HDR content. ProMotion adaptive refresh rates up to 120Hz ensure fluid scrolling
+and responsiveness. The display supports the P3 wide color gamut and True Tone.
+
+Powered by the M3 Pro chip with a 12-core CPU (6 performance, 6 efficiency)
+and 18-core GPU, the MacBook Pro 16 delivers exceptional performance for
+professional workflows. The 16-core Neural Engine accelerates machine learning
+tasks by up to 40% compared to M1 Pro. Unified memory of 18GB ensures smooth
+multitasking across demanding applications.
+
+Battery life delivers up to 22 hours of video playback, the longest in any
+Mac. MagSafe 3 charging provides a secure magnetic connection with fast
+charging capability. The six-speaker sound system with force-cancelling woofers
+delivers room-filling audio with support for Spatial Audio and Dolby Atmos.
+
+Connectivity includes three Thunderbolt 4 ports, HDMI, SDXC card slot,
+MagSafe 3, and a 3.5mm headphone jack with high-impedance support. Wi-Fi 6E
+and Bluetooth 5.3 provide cutting-edge wireless. The 1080p FaceTime HD camera
+with advanced image signal processor ensures sharp video calls. The backlit
+Magic Keyboard with full-height function keys and Touch ID completes the
+professional package.

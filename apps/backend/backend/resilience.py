@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 # -- Circuit Breaker ----------------------------------------------------------
 
+
 class CircuitBreaker:
     """
     Prevents infinite API calls when a service is down.
@@ -83,6 +84,7 @@ class CircuitBreaker:
 
 # -- Retry Decorator ----------------------------------------------------------
 
+
 def make_retry_decorator(max_attempts: int = 3, min_wait: float = 1.0, max_wait: float = 10.0):
     """Create a tenacity retry decorator for transient API errors."""
     return retry(
@@ -95,6 +97,7 @@ def make_retry_decorator(max_attempts: int = 3, min_wait: float = 1.0, max_wait:
 
 
 # -- Fallbacks ----------------------------------------------------------------
+
 
 class Fallbacks:
     """Static fallback responses when services are unavailable."""
@@ -116,6 +119,7 @@ class Fallbacks:
 
 
 # -- Transient Error Detection ------------------------------------------------
+
 
 def is_transient_error(e: Exception) -> bool:
     """Check if an exception looks like a transient network/API issue."""

@@ -1,0 +1,11 @@
+[
+  {"entity_name": "Apple", "entity_type": "brand", "domain": "electronics", "disambiguation_hint": "Technology company, maker of iPhone, MacBook, iPad"},
+  {"entity_name": "Apple", "entity_type": "generic", "domain": "food", "disambiguation_hint": "Fruit, typically red or green, edible"},
+  {"entity_name": "Amazon", "entity_type": "brand", "domain": "electronics", "disambiguation_hint": "Technology company, AWS, Kindle, Echo"},
+  {"entity_name": "Amazon", "entity_type": "generic", "domain": "nature", "disambiguation_hint": "Rainforest and river in South America"},
+  {"entity_name": "Xiaomi", "entity_type": "brand", "domain": "electronics", "disambiguation_hint": "Chinese electronics company, maker of Mi phones and ecosystem products"},
+  {"entity_name": "Orange", "entity_type": "brand", "domain": "telecom", "disambiguation_hint": "French multinational telecommunications corporation"},
+  {"entity_name": "Orange", "entity_type": "generic", "domain": "food", "disambiguation_hint": "Citrus fruit, typically orange color"},
+  {"entity_name": "Shell", "entity_type": "brand", "domain": "energy", "disambiguation_hint": "Oil and gas company, Shell plc"},
+  {"entity_name": "Shell", "entity_type": "generic", "domain": "nature", "disambiguation_hint": "Hard protective outer layer of marine animals"}
+]

@@ -27,6 +27,7 @@ async def health_check():
     # Check database connectivity via a lightweight operation
     try:
         from sqlalchemy import create_engine, text
+
         engine = create_engine(settings.database_url, connect_args={"connect_timeout": 3})
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
@@ -140,7 +141,11 @@ async def _stream_response(message: str, session_id: str) -> AsyncGenerator[str,
             elif kind == "on_tool_start":
                 tool_input = event["data"].get("input", {})
                 # Redact potentially long inputs for display
-                safe_input = {k: str(v)[:100] for k, v in tool_input.items()} if isinstance(tool_input, dict) else str(tool_input)[:100]
+                safe_input = (
+                    {k: str(v)[:100] for k, v in tool_input.items()}
+                    if isinstance(tool_input, dict)
+                    else str(tool_input)[:100]
+                )
                 yield f"data: {json.dumps({'type': 'tool_start', 'tool': name, 'input': safe_input})}\n\n"
 
             elif kind == "on_tool_end":

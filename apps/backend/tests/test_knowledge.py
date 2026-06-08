@@ -23,6 +23,7 @@ from backend.knowledge.retrievers import (
 
 # ── KnowledgeStore tests ───────────────────────────────────────────────────
 
+
 class TestKnowledgeStore:
     @pytest.fixture(autouse=True)
     def setup(self):
@@ -86,6 +87,7 @@ class TestKnowledgeStore:
 
 
 # ── Retriever tests ────────────────────────────────────────────────────────
+
 
 class TestRetrievers:
     def test_factory_creates_vector(self):

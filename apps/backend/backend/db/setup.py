@@ -76,7 +76,9 @@ def get_all_orders() -> str:
         return "No orders found."
     lines = ["Here are all orders:"]
     for order_id, customer_name, status, estimated_delivery in rows:
-        lines.append(f"- Order {order_id} ({customer_name}): {status}, estimated delivery {estimated_delivery}")
+        lines.append(
+            f"- Order {order_id} ({customer_name}): {status}, estimated delivery {estimated_delivery}"
+        )
     return "\n".join(lines)
 
 

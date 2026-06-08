@@ -28,14 +28,49 @@ logger = logging.getLogger(__name__)
 
 _ORDER_SIGNALS = {"order", "订单", "status of", "track"}
 _KNOWLEDGE_SIGNALS = {
-    "product", "category", "categories", "item info", "price", "tell me about",
-    "what is", "which product",
+    "product",
+    "category",
+    "categories",
+    "item info",
+    "price",
+    "tell me about",
+    "what is",
+    "which product",
 }
 _ORDER_ACTION_SIGNALS = {"cancel", "return", "refund", "money back", "exchange"}
 _STRONG_POLICY_SIGNALS = {"return", "refund", "exchange", "warranty", "cancel", "money back"}
+_PRODUCT_QA_SIGNALS = {
+    "does the",
+    "do the",
+    "can the",
+    "how much",
+    "how many",
+    "feature",
+    "spec",
+    "specification",
+    "battery",
+    "camera",
+    "weight",
+    "size",
+    "screen",
+    "storage",
+    "color",
+    "magsafe",
+    "compare",
+    "vs",
+    "versus",
+    "better",
+    "best",
+    "cheapest",
+    "under",
+    "within budget",
+    "recommend",
+    "difference between",
+}
 
 
 # ── Keyword Rule Engine ───────────────────────────────────────────────────────
+
 
 def _classify_with_entities(query: str, entities: dict) -> dict | None:
     """Classify using entity + keyword co-signals.
@@ -57,44 +92,94 @@ def _classify_with_entities(query: str, entities: dict) -> dict | None:
     if any(phrase in lowered for phrase in LIST_ORDERS_PHRASES):
         return {"intent": "list_orders", "confidence": "high", "source": "keyword"}
 
+    # Product QA signals + product or generic product term
+    # Placed BEFORE policy signals so "does iPhone have MagSafe?" → product_qa, not policy
+    qa_hits = [w for w in _PRODUCT_QA_SIGNALS if w in lowered]
+    generic_terms = {
+        "phone",
+        "laptop",
+        "tablet",
+        "earbud",
+        "headphone",
+        "speaker",
+        "sneaker",
+        "shirt",
+        "watch",
+    }
+    has_generic_product = bool(generic_terms & set(lowered.split()))
+    if qa_hits and (has_product or has_generic_product):
+        return {
+            "intent": "product_qa",
+            "confidence": "high",
+            "source": "entity+keyword",
+            "entities": {"products": entities["products"], "categories": entities["categories"]},
+        }
+
     # Product + policy signal → policy (before order check!)
     if has_product and policy_hits:
         return {
-            "intent": "policy", "confidence": "high", "source": "entity+keyword",
-            "context": {"products": entities["products"], "categories": entities["categories"],
-                        "order_ids": entities["order_ids"], "matched_signals": policy_hits},
+            "intent": "policy",
+            "confidence": "high",
+            "source": "entity+keyword",
+            "context": {
+                "products": entities["products"],
+                "categories": entities["categories"],
+                "order_ids": entities["order_ids"],
+                "matched_signals": policy_hits,
+            },
         }
 
     # Order ID + action signal → policy (user wants to act ON the order)
     if has_order and any(w in lowered for w in _ORDER_ACTION_SIGNALS):
         return {
-            "intent": "policy", "confidence": "high", "source": "entity+keyword",
-            "context": {"order_ids": entities["order_ids"],
-                        "matched_signals": [w for w in _ORDER_ACTION_SIGNALS if w in lowered]},
+            "intent": "policy",
+            "confidence": "high",
+            "source": "entity+keyword",
+            "context": {
+                "order_ids": entities["order_ids"],
+                "matched_signals": [w for w in _ORDER_ACTION_SIGNALS if w in lowered],
+            },
         }
 
     # Single order with ID (no action/product conflict)
     if has_order:
-        return {"intent": "order", "confidence": "high", "source": "entity",
-                "order_id": entities["order_ids"][0]}
+        return {
+            "intent": "order",
+            "confidence": "high",
+            "source": "entity",
+            "order_id": entities["order_ids"][0],
+        }
 
     # Category + policy signal → policy
     if has_category and policy_hits:
         return {
-            "intent": "policy", "confidence": "high", "source": "entity+keyword",
-            "context": {"products": entities["products"], "categories": entities["categories"],
-                        "matched_signals": policy_hits},
+            "intent": "policy",
+            "confidence": "high",
+            "source": "entity+keyword",
+            "context": {
+                "products": entities["products"],
+                "categories": entities["categories"],
+                "matched_signals": policy_hits,
+            },
         }
 
     # Product, no conflicting signals → knowledge
     if has_product and not any(w in lowered for w in _ORDER_SIGNALS):
-        return {"intent": "knowledge", "confidence": "high", "source": "entity",
-                "context": {"products": entities["products"]}}
+        return {
+            "intent": "knowledge",
+            "confidence": "high",
+            "source": "entity",
+            "context": {"products": entities["products"]},
+        }
 
     # Category + knowledge signals → knowledge
     if has_category and any(w in lowered for w in _KNOWLEDGE_SIGNALS):
-        return {"intent": "knowledge", "confidence": "high", "source": "entity+keyword",
-                "context": {"categories": entities["categories"]}}
+        return {
+            "intent": "knowledge",
+            "confidence": "high",
+            "source": "entity+keyword",
+            "context": {"categories": entities["categories"]},
+        }
 
     # Strong policy signal without entity match
     strong_hits = [w for w in _STRONG_POLICY_SIGNALS if w in lowered]
@@ -115,6 +200,7 @@ Classify the user's query into exactly one of these categories:
 - policy: user asks about store policies — returns, refunds, shipping, warranty
 - weather: user asks about weather in a city
 - knowledge: user asks about a specific product or category
+- product_qa: user asks about a product's features, specs, comparisons, or category
 - unknown: greeting, small talk, or anything else
 
 {entity_context}
@@ -176,6 +262,7 @@ def _llm_classify_cached(query: str, entities: dict) -> dict:
 
 
 # ── Classifier ────────────────────────────────────────────────────────────────
+
 
 class KeywordIntentClassifier(BaseIntentClassifier):
     """Entity-aware keyword classifier. Best for catalogs under ~100 products.

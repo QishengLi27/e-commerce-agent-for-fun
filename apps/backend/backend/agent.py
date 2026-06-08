@@ -29,7 +29,12 @@ class AgentManager:
     def __init__(self):
         self.pg_connection = settings.database_url
         self.memory_store = MemoryStore(filepath=settings.memory_filepath, max_history=8)
-        self.tools = [order_status_tool, list_orders_tool, policy_retriever_tool, get_current_weather]
+        self.tools = [
+            order_status_tool,
+            list_orders_tool,
+            policy_retriever_tool,
+            get_current_weather,
+        ]
         self._cache_vectorstore = None
         self._llm = None
         self._llm_circuit = None
@@ -42,6 +47,7 @@ class AgentManager:
         if self._cache_vectorstore is None:
             from langchain_community.vectorstores import PGVector
             from langchain_openai import OpenAIEmbeddings
+
             self._cache_vectorstore = PGVector(
                 connection_string=self.pg_connection,
                 embedding_function=OpenAIEmbeddings(
@@ -58,6 +64,7 @@ class AgentManager:
     def llm(self):
         if self._llm is None:
             from langchain_openai import ChatOpenAI
+
             self._llm = ChatOpenAI(
                 model=settings.openai_model,
                 openai_api_key=settings.openai_api_key,
@@ -91,19 +98,27 @@ class AgentManager:
             # Old run classified as "knowledge" (no tool result) → "I don't know"
             # New run correctly classified as "policy" → need fresh retrieval.
             if intent and cached_intent and intent != cached_intent:
-                logger.info("[cache] Intent mismatch (cached=%s, current=%s) — skipping", cached_intent, intent)
+                logger.info(
+                    "[cache] Intent mismatch (cached=%s, current=%s) — skipping",
+                    cached_intent,
+                    intent,
+                )
                 return None
 
             # Belt-and-suspenders: never return cached weather responses.
             # Weather data is real-time and should always be fetched fresh.
-            if response and any(k in response.lower() for k in ("°c", "temperature", "wind speed", "weather in")):
+            if response and any(
+                k in response.lower() for k in ("°c", "temperature", "wind speed", "weather in")
+            ):
                 logger.info("[cache] Rejecting weather-related cached response")
                 return None
             return response
         return None
 
     def cache_response(self, query: str, response: str, intent: str = ""):
-        self.cache_vectorstore.add_texts([query], metadatas=[{"response": response, "intent": intent}])
+        self.cache_vectorstore.add_texts(
+            [query], metadatas=[{"response": response, "intent": intent}]
+        )
 
     def extract_agent_response(self, result: object) -> str:
         """Extract the final AI message content from agent executor result."""
@@ -187,9 +202,11 @@ class AgentManager:
             return cached
 
         memory_messages = self.memory_store.get_recent_messages()
-        conversation_history = "\n".join(
-            [f"{m['role'].capitalize()}: {m['content']}" for m in memory_messages]
-        ) if memory_messages else "No prior conversation."
+        conversation_history = (
+            "\n".join([f"{m['role'].capitalize()}: {m['content']}" for m in memory_messages])
+            if memory_messages
+            else "No prior conversation."
+        )
 
         def _invoke_agent():
             full_content = f"""You are a helpful e-commerce support agent for an online store.
@@ -206,7 +223,7 @@ Use the exact available tools for order, policy, or weather lookup when needed.
 
 Use the following format for tool use:
 Thought: you should always think about what to do
-Action: the action to take, should be one of {', '.join([tool.name for tool in self.tools])}
+Action: the action to take, should be one of {", ".join([tool.name for tool in self.tools])}
 Action Input: the input to the action
 Observation: the result of the action
 ... (this Thought/Action/Action Input/Observation can repeat N times)
@@ -218,11 +235,7 @@ Conversation history:
 
 Question: {cleaned_input}"""
 
-            return self.agent.invoke(
-                {
-                    "messages": [HumanMessage(content=full_content)]
-                }
-            )
+            return self.agent.invoke({"messages": [HumanMessage(content=full_content)]})
 
         try:
             result = self.llm_circuit.call(_invoke_agent, Fallbacks.llm_unavailable)
@@ -238,15 +251,10 @@ Question: {cleaned_input}"""
         except Exception as e:
             logger.error(f"[agent] Invocation failed: {e}")
             from backend.resilience import is_transient_error
+
             if is_transient_error(e):
-                return (
-                    "I'm experiencing a temporary issue. "
-                    "Please try again in a moment."
-                )
-            return (
-                "I couldn't process your request. "
-                "Please check your question and try again."
-            )
+                return "I'm experiencing a temporary issue. Please try again in a moment."
+            return "I couldn't process your request. Please check your question and try again."
 
     async def stream_agent_response(self, user_input: str, max_agent_calls: int = 5):
         """
@@ -277,9 +285,11 @@ Question: {cleaned_input}"""
             return
 
         memory_messages = self.memory_store.get_recent_messages()
-        conversation_history = "\n".join(
-            [f"{m['role'].capitalize()}: {m['content']}" for m in memory_messages]
-        ) if memory_messages else "No prior conversation."
+        conversation_history = (
+            "\n".join([f"{m['role'].capitalize()}: {m['content']}" for m in memory_messages])
+            if memory_messages
+            else "No prior conversation."
+        )
 
         full_content = f"""You are a helpful e-commerce support agent for an online store.
             You have access to the following tools:
@@ -294,7 +304,7 @@ Question: {cleaned_input}"""
 
             Use the following format for tool use:
             Thought: you should always think about what to do
-            Action: the action to take, should be one of {', '.join([tool.name for tool in self.tools])}
+            Action: the action to take, should be one of {", ".join([tool.name for tool in self.tools])}
             Action Input: the input to the action
             Observation: the result of the action
             ... (this Thought/Action/Action Input/Observation can repeat N times)
@@ -309,12 +319,12 @@ Question: {cleaned_input}"""
 
         def _chunk_to_text(chunk: object) -> str:
             if chunk is None:
-                return ''
+                return ""
             if isinstance(chunk, str):
                 return chunk
             if isinstance(chunk, dict):
-                return str(chunk.get('content') or chunk.get('text') or '')
-            return str(getattr(chunk, 'content', None) or getattr(chunk, 'text', None) or '')
+                return str(chunk.get("content") or chunk.get("text") or "")
+            return str(getattr(chunk, "content", None) or getattr(chunk, "text", None) or "")
 
         try:
             full_response = ""
@@ -353,6 +363,7 @@ Question: {cleaned_input}"""
         except Exception as e:
             logger.error(f"[agent] Streaming failed: {e}")
             from backend.resilience import is_transient_error
+
             if is_transient_error(e):
                 yield "I'm experiencing a temporary issue. Please try again in a moment."
             else:
@@ -372,6 +383,7 @@ llm = agent_manager.llm
 memory_store = agent_manager.memory_store
 
 # -- Convenience Functions -----------------------------------------------------
+
 
 def run_agent_with_cache(user_input: str, max_agent_calls: int = 5):
     return agent_manager.run_agent_with_cache(user_input, max_agent_calls)

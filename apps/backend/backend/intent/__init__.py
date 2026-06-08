@@ -45,20 +45,22 @@ def get_classifier(mode: str | None = None):
 
     if mode == "keyword":
         from backend.intent.keyword import KeywordIntentClassifier
+
         return KeywordIntentClassifier()
 
     elif mode == "llm_hybrid":
         from backend.intent.llm_hybrid import LlmHybridIntentClassifier
+
         return LlmHybridIntentClassifier()
 
     elif mode == "semantic":
         from backend.intent.semantic import SemanticIntentClassifier
+
         return SemanticIntentClassifier()
 
     else:
         raise ValueError(
-            f"Unknown classification mode: {mode}. "
-            f"Expected one of: keyword, llm_hybrid, semantic"
+            f"Unknown classification mode: {mode}. Expected one of: keyword, llm_hybrid, semantic"
         )
 
 
@@ -72,8 +74,11 @@ def classify_intent_hybrid(query: str) -> dict:
     result = classifier.classify(query)
     logger.info(
         "[intent] %s → %s (source=%s, confidence=%s, mode=%s)",
-        query[:60], result["intent"], result["source"],
-        result.get("confidence", "N/A"), _get_mode(),
+        query[:60],
+        result["intent"],
+        result["source"],
+        result.get("confidence", "N/A"),
+        _get_mode(),
     )
     return result
 
@@ -83,6 +88,7 @@ def clear_cache():
     from backend.intent.keyword import clear_cache as clear_keyword
     from backend.intent.llm_hybrid import clear_cache as clear_llm
     from backend.intent.semantic import clear_cache as clear_semantic
+
     clear_keyword()
     clear_llm()
     clear_semantic()

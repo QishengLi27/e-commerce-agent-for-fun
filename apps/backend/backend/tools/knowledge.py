@@ -70,8 +70,7 @@ def category_info_tool(query: str) -> str:
         lines = [f"Products matching '{query}':"]
         for p in products:
             lines.append(
-                f"  - {p['name']} (Category: {p['category_name']}, "
-                f"Price: ${p['price']:.2f})"
+                f"  - {p['name']} (Category: {p['category_name']}, Price: ${p['price']:.2f})"
             )
         return "\n".join(lines)
 

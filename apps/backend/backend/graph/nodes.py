@@ -29,13 +29,15 @@ logger = logging.getLogger(__name__)
 
 # ─── State Type ──────────────────────────────────────────────────────────────
 
+
 class AgentState(TypedDict, total=False):
     """LangGraph state schema."""
+
     messages: Annotated[list, add_messages]
     user_input: str
     intent: str
     order_id: str
-    entity_context: dict   # {"products": [...], "categories": [...], "matched_signals": [...]}
+    entity_context: dict  # {"products": [...], "categories": [...], "matched_signals": [...]}
     tool_result: str
     final_answer: str
     cached: bool
@@ -85,6 +87,7 @@ def sanitize_input(state: AgentState) -> AgentState:
 
 # ─── Node: classify_intent ───────────────────────────────────────────────────
 
+
 def classify_intent(state: AgentState) -> AgentState:
     """
     Hybrid intent classification: keyword fast-path + LLM fallback.
@@ -102,21 +105,33 @@ def classify_intent(state: AgentState) -> AgentState:
     if "entities" in result:
         state["entity_context"] = result["entities"]
         if result.get("context"):
-            state["entity_context"]["matched_signals"] = result["context"].get("matched_signals", [])
+            state["entity_context"]["matched_signals"] = result["context"].get(
+                "matched_signals", []
+            )
 
     if intent == "order":
         state["order_id"] = result.get("order_id", "")
-        logger.info("[graph] Intent: order (source=%s, id=%s)", result.get("source"), state["order_id"])
+        logger.info(
+            "[graph] Intent: order (source=%s, id=%s)", result.get("source"), state["order_id"]
+        )
     else:
-        logger.info("[graph] Intent: %s (source=%s, confidence=%s)", intent, result.get("source"), result.get("confidence"))
+        logger.info(
+            "[graph] Intent: %s (source=%s, confidence=%s)",
+            intent,
+            result.get("source"),
+            result.get("confidence"),
+        )
 
     return state
 
 
 # ─── Router ──────────────────────────────────────────────────────────────────
 
-def route_by_intent(state: AgentState) -> Literal[
-    "order", "list_orders", "policy", "weather", "knowledge", "generate_reply"
+
+def route_by_intent(
+    state: AgentState,
+) -> Literal[
+    "order", "list_orders", "policy", "weather", "knowledge", "product_qa", "generate_reply"
 ]:
     """Conditional edge: decide next node based on intent."""
     if state.get("cached"):
@@ -124,15 +139,27 @@ def route_by_intent(state: AgentState) -> Literal[
         return "generate_reply"
 
     intent = state.get("intent", "unknown")
-    if intent in ("order", "list_orders", "policy", "weather", "knowledge"):
+    if intent in ("order", "list_orders", "policy", "weather", "knowledge", "product_qa"):
         logger.info("[graph] Route: %s", intent)
-        return cast(Literal["order", "list_orders", "policy", "weather", "knowledge", "generate_reply"], intent)
+        return cast(
+            Literal[
+                "order",
+                "list_orders",
+                "policy",
+                "weather",
+                "knowledge",
+                "product_qa",
+                "generate_reply",
+            ],
+            intent,
+        )
 
     logger.info("[graph] Route: unknown -> generate_reply")
     return "generate_reply"
 
 
 # ─── Nodes: Tool Execution ───────────────────────────────────────────────────
+
 
 def order_node(state: AgentState) -> AgentState:
     """Query a single order by ID."""
@@ -210,6 +237,7 @@ def weather_node(state: AgentState) -> AgentState:
 
 # ─── Node: knowledge ──────────────────────────────────────────────────────────
 
+
 def knowledge_node(state: AgentState) -> AgentState:
     """Query knowledge graph for product/category/policy relationships."""
     query = state.get("user_input", "")
@@ -229,7 +257,7 @@ def knowledge_node(state: AgentState) -> AgentState:
             for p in product_info["policies"]:
                 lines.append(f"  - [{p['type'].upper()}] {p['summary']}")
         state["tool_result"] = "\n".join(lines)
-        logger.info("[graph] Knowledge product: %s", product_info['name'])
+        logger.info("[graph] Knowledge product: %s", product_info["name"])
         return state
 
     # Fall back to product search
@@ -237,14 +265,32 @@ def knowledge_node(state: AgentState) -> AgentState:
     if products:
         lines = [f"Products matching '{query}':"]
         for p in products:
-            lines.append(
-                f"  - {p['name']} ({p['category_name']}, ${p['price']:.2f})"
-            )
+            lines.append(f"  - {p['name']} ({p['category_name']}, ${p['price']:.2f})")
         state["tool_result"] = "\n".join(lines)
         logger.info("[graph] Knowledge search: %d results", len(products))
         return state
 
     state["tool_result"] = f"No products or categories found matching '{query}'."
+    return state
+
+
+# ─── Node: product_qa ────────────────────────────────────────────────────────
+
+
+def product_qa_node(state: AgentState) -> AgentState:
+    """Answer product questions using Neo4j graph + LlamaIndex RAG.
+
+    Delegates to the product_qa_tool which orchestrates:
+      - Neo4j for structured graph queries (category, attributes, relations)
+      - LlamaIndex for semantic search over product descriptions
+      - LLM for answer synthesis
+    """
+    from backend.tools.product_qa import product_qa_tool  # lazy import
+
+    query = state.get("user_input", "")
+    result = product_qa_tool.invoke({"query": query})
+    state["tool_result"] = result
+    logger.info("[graph] Product QA result: %s", result[:80])
     return state
 
 
@@ -265,6 +311,7 @@ def _get_tokenizer():
     global _tiktoken_encoder
     if _tiktoken_encoder is None:
         import tiktoken
+
         try:
             _tiktoken_encoder = tiktoken.get_encoding("cl100k_base")
         except Exception:
@@ -366,7 +413,12 @@ def _compress_context(messages: list) -> str:
     lines = _trim_history_to_budget(lines, _HISTORY_TOKEN_BUDGET)
     history_text = "\n".join(lines) + "\n"
     token_count = _count_tokens(history_text)
-    logger.info("[graph] Context compressed: %d messages → %d lines → %d tokens", len(messages), len(lines), token_count)
+    logger.info(
+        "[graph] Context compressed: %d messages → %d lines → %d tokens",
+        len(messages),
+        len(lines),
+        token_count,
+    )
 
     return history_text
 
@@ -551,6 +603,7 @@ def route_after_validation(state: AgentState) -> str:
 
 # ─── Node: update_memory ─────────────────────────────────────────────────────
 
+
 def update_memory(state: AgentState) -> AgentState:
     """Persist assistant reply to checkpoint state and semantic cache."""
     user_input = state.get("user_input", "")
@@ -570,6 +623,8 @@ def update_memory(state: AgentState) -> AgentState:
         logger.info("[graph] Checkpoint updated (weather response not cached)")
     else:
         cache_response(user_input, answer, intent=state.get("intent", ""))
-        logger.info("[graph] Checkpoint updated and response cached (intent=%s)", state.get("intent"))
+        logger.info(
+            "[graph] Checkpoint updated and response cached (intent=%s)", state.get("intent")
+        )
 
     return state

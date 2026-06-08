@@ -1,0 +1,72 @@
+{
+  "rules": [
+    {
+      "name": "standard_return",
+      "policy_type": "return",
+      "summary": "30-day return window for most items",
+      "details": "Our store offers a 30-day return window for most items. You can return products within 30 days of delivery for a full refund or exchange, provided the item is in its original condition with all packaging and accessories. Refunds are processed within 5-7 business days after we receive the returned item."
+    },
+    {
+      "name": "electronics_return",
+      "policy_type": "return",
+      "summary": "14-day return window for electronics and audio products",
+      "details": "Electronics and certain high-value items may have a 14-day return period. To initiate a return, please contact our support team or use the online return portal. Item must be in original condition with all packaging and accessories."
+    },
+    {
+      "name": "free_shipping",
+      "policy_type": "shipping",
+      "summary": "Free standard shipping on orders over $50",
+      "details": "We offer free standard shipping on orders over $50. Standard delivery typically takes 5-7 business days, while expedited options are available for an additional fee. You can track your order status using the tracking number provided in your confirmation email."
+    },
+    {
+      "name": "manufacturer_warranty",
+      "policy_type": "warranty",
+      "summary": "1-year manufacturer warranty on electronics",
+      "details": "All electronics come with a manufacturer's warranty that covers defects in materials and workmanship. The warranty period varies by product but is typically 1 year from the date of purchase. We do not offer extended warranties, but third-party options may be available."
+    },
+    {
+      "name": "fashion_return",
+      "policy_type": "return",
+      "summary": "30-day return for clothing and footwear",
+      "details": "Clothing and footwear can be returned within 30 days of delivery. Items must be unworn, unwashed, and with original tags attached. Intimate apparel and swimwear are final sale for hygiene reasons."
+    },
+    {
+      "name": "kitchen_appliance_return",
+      "policy_type": "return",
+      "summary": "30-day return for small kitchen appliances",
+      "details": "Small kitchen appliances can be returned within 30 days if unused and in original packaging. Large appliances may require a restocking fee of 15%."
+    }
+  ],
+  "category_mapping": {
+    "standard_return": [
+      "Home & Kitchen", "Fashion", "Kitchen Appliances", "Home Decor",
+      "Coffee Makers", "Blenders", "Lighting", "T-Shirts", "Sneakers",
+      "Cases & Covers", "Cables & Chargers", "Screen Protectors", "Peripherals"
+    ],
+    "electronics_return": [
+      "Electronics", "Mobile Devices", "Smartphones", "Tablets", "Flagship Phones",
+      "Audio", "Headphones", "Speakers", "Wireless Earbuds",
+      "Computing", "Laptops", "Desktops", "Gaming Laptops",
+      "Accessories"
+    ],
+    "free_shipping": [
+      "Electronics", "Mobile Devices", "Smartphones", "Tablets", "Flagship Phones",
+      "Audio", "Headphones", "Speakers", "Wireless Earbuds",
+      "Computing", "Laptops", "Desktops", "Gaming Laptops",
+      "Accessories", "Cases & Covers", "Cables & Chargers", "Screen Protectors", "Peripherals",
+      "Home & Kitchen", "Kitchen Appliances", "Home Decor", "Coffee Makers", "Blenders", "Lighting",
+      "Fashion", "Clothing", "T-Shirts", "Footwear", "Sneakers"
+    ],
+    "manufacturer_warranty": [
+      "Electronics", "Mobile Devices", "Smartphones", "Tablets", "Flagship Phones",
+      "Audio", "Headphones", "Speakers", "Wireless Earbuds",
+      "Computing", "Laptops", "Desktops", "Gaming Laptops"
+    ],
+    "fashion_return": [
+      "Fashion", "Clothing", "T-Shirts", "Footwear", "Sneakers"
+    ],
+    "kitchen_appliance_return": [
+      "Home & Kitchen", "Kitchen Appliances", "Coffee Makers", "Blenders"
+    ]
+  }
+}

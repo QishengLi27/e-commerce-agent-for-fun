@@ -18,6 +18,7 @@ from backend.knowledge.graph_store import get_knowledge_store
 
 # ── Interface ──────────────────────────────────────────────────────────────────
 
+
 class PolicyRetriever(ABC):
     """Unified interface for policy retrieval — vector, graph, or hybrid."""
 
@@ -28,6 +29,7 @@ class PolicyRetriever(ABC):
 
 
 # ── Vector Retriever (existing hybrid RAG, unchanged) ──────────────────────────
+
 
 class VectorPolicyRetriever(PolicyRetriever):
     """Delegates to the existing hybrid RAG pipeline (pgvector + BM25 + RRF + re-rank)."""
@@ -44,6 +46,7 @@ class VectorPolicyRetriever(PolicyRetriever):
 
 
 # ── Graph Retriever (PostgreSQL knowledge graph, deterministic) ────────────────
+
 
 class GraphPolicyRetriever(PolicyRetriever):
     """Queries the PostgreSQL knowledge graph for exact policy matches.
@@ -83,6 +86,7 @@ class GraphPolicyRetriever(PolicyRetriever):
 
 # ── Hybrid Retriever (graph first, vector fallback) ────────────────────────────
 
+
 class HybridRetriever(PolicyRetriever):
     """Try graph first for deterministic matches, fall back to vector RAG."""
 
@@ -98,6 +102,7 @@ class HybridRetriever(PolicyRetriever):
 
 
 # ── Factory ────────────────────────────────────────────────────────────────────
+
 
 def create_policy_retriever(mode) -> PolicyRetriever:
     """Factory: returns the right retriever based on RetrievalMode.
@@ -119,6 +124,5 @@ def create_policy_retriever(mode) -> PolicyRetriever:
         return HybridRetriever()
     else:
         raise ValueError(
-            f"Unknown retrieval mode: {mode_str}. "
-            f"Expected one of: vector, graph, hybrid"
+            f"Unknown retrieval mode: {mode_str}. Expected one of: vector, graph, hybrid"
         )

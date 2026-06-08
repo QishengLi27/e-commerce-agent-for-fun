@@ -39,6 +39,7 @@ Step 1 — Classify the user's intent into exactly one category:
 - policy: returns, refunds, shipping, warranty, cancellation
 - weather: weather in a city
 - knowledge: product information, categories, pricing
+- product_qa: user asks about a product's features, specs, comparisons, or category
 - unknown: greeting, small talk, or anything else
 
 Step 2 — Extract mentioned entities:
@@ -56,6 +57,7 @@ User: {query}
 
 
 # ── KG Validation ─────────────────────────────────────────────────────────────
+
 
 def _validate_entities(llm_entities: dict) -> dict:
     """Validate LLM-extracted entities against the knowledge graph.
@@ -111,6 +113,7 @@ def _validate_entities(llm_entities: dict) -> dict:
 
 # ── LLM Classifier ────────────────────────────────────────────────────────────
 
+
 @make_retry_decorator(max_attempts=2)
 def _llm_extract_raw(query: str) -> dict:
     prompt = _LLM_EXTRACT_PROMPT.format(query=query)
@@ -139,11 +142,15 @@ def _llm_extract_cached(query: str) -> dict:
         return result
     except Exception as e:
         logger.warning("[intent:llm_hybrid] LLM failed: %s", e)
-        return {"intent": "unknown", "confidence": "low",
-                "entities": {"products": [], "categories": [], "order_ids": []}}
+        return {
+            "intent": "unknown",
+            "confidence": "low",
+            "entities": {"products": [], "categories": [], "order_ids": []},
+        }
 
 
 # ── Classifier ────────────────────────────────────────────────────────────────
+
 
 class LlmHybridIntentClassifier(BaseIntentClassifier):
     """LLM extracts entities + intent, KG validates.
@@ -166,8 +173,12 @@ class LlmHybridIntentClassifier(BaseIntentClassifier):
         order_ids = _ORDER_ID_RE.findall(lowered)
         policy_hits = [w for w in POLICY_SIGNALS if w in lowered]
         if order_ids and not policy_hits:
-            return {"intent": "order", "confidence": "high", "source": "entity",
-                    "order_id": order_ids[0]}
+            return {
+                "intent": "order",
+                "confidence": "high",
+                "source": "entity",
+                "order_id": order_ids[0],
+            }
 
         # Main path: LLM extracts entities + intent
         llm_result = _llm_extract_cached(query)
@@ -185,7 +196,10 @@ class LlmHybridIntentClassifier(BaseIntentClassifier):
         if validation["candidates"].get("products"):
             result["entity_candidates"] = validation["candidates"]["products"]
             # If nothing confirmed but we have candidates, lower confidence
-            if not validation["confirmed"]["products"] and not validation["confirmed"]["categories"]:
+            if (
+                not validation["confirmed"]["products"]
+                and not validation["confirmed"]["categories"]
+            ):
                 result["confidence"] = "low"
 
         if validation["rejected"]:
@@ -193,8 +207,10 @@ class LlmHybridIntentClassifier(BaseIntentClassifier):
 
         # Enrich with KG context for downstream use
         if validation["confirmed"]["products"]:
-            result["context"] = {"products": validation["confirmed"]["products"],
-                                 "categories": validation["confirmed"]["categories"]}
+            result["context"] = {
+                "products": validation["confirmed"]["products"],
+                "categories": validation["confirmed"]["categories"],
+            }
 
         return result
 

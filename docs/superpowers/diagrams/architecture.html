@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Commerce AI Agent — Architecture Diagrams</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #e2e8f0;
+    --accent: #38bdf8;
+    --border: #334155;
+    --tag: #0f172a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.6;
+  }
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    position: sticky; top: 0; z-index: 10;
+  }
+  header h1 { font-size: 1.8rem; color: var(--accent); margin-bottom: 0.3rem; }
+  header p { color: #94a3b8; font-size: 0.9rem; }
+  nav {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;
+    padding: 1rem; background: #1a2332; border-bottom: 1px solid var(--border);
+    position: sticky; top: 102px; z-index: 10;
+  }
+  nav a {
+    color: #94a3b8; text-decoration: none; padding: 0.4rem 1rem;
+    border-radius: 20px; font-size: 0.85rem; transition: all 0.2s;
+    border: 1px solid var(--border);
+  }
+  nav a:hover, nav a.active { background: var(--accent); color: #000; border-color: var(--accent); }
+  main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 6rem; }
+  section { margin-bottom: 3rem; scroll-margin-top: 160px; }
+  section h2 {
+    font-size: 1.3rem; color: var(--accent);
+    padding: 0.5rem 0; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  section h2 .tag {
+    font-size: 0.7rem; background: var(--accent); color: #000;
+    padding: 0.15rem 0.5rem; border-radius: 3px; font-weight: 600; text-transform: uppercase;
+  }
+  .mermaid {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 1rem 0;
+    display: flex; justify-content: center;
+    overflow-x: auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+  .desc {
+    background: var(--card);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.5rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    color: #94a3b8;
+  }
+  .desc strong { color: var(--accent); }
+  .badge {
+    display: inline-block; padding: 0.15rem 0.5rem; border-radius: 3px;
+    font-size: 0.72rem; font-weight: 600; margin-right: 0.3rem;
+  }
+  .b-ok { background: #065f46; color: #6ee7b7; }
+  .b-warn { background: #78350f; color: #fcd34d; }
+  .b-new { background: #312e81; color: #a5b4fc; }
+  footer { text-align: center; padding: 2rem; color: #475569; font-size: 0.8rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>E-Commerce AI Agent — Architecture</h1>
+  <p>LangGraph + PostgreSQL/pgvector + Neo4j + LlamaIndex</p>
+</header>
+
+<nav>
+  <a href="#overview">Overview</a>
+  <a href="#agent-loop">Agent Loop</a>
+  <a href="#rag-pipeline">RAG Pipeline</a>
+  <a href="#retrieval-flow">Retrieval Flow</a>
+  <a href="#data-arch">Data Architecture</a>
+  <a href="#neo4j-graph">Neo4j Graph</a>
+  <a href="#query-routing">Query Routing</a>
+  <a href="#modular-rag">Modular RAG</a>
+</nav>
+
+<main>
+
+<!-- ============================================================ -->
+<section id="overview">
+  <h2><span class="tag">Overview</span> System Architecture</h2>
+  <div class="desc">
+    <strong>Three layers:</strong> Agent orchestration (LangGraph) → Tool Layer (Graph / Vector paths) → Data Layer (PostgreSQL + Neo4j + pgvector).
+    Graph-first deterministic retrieval with hybrid RAG fallback.
+  </div>
+  <div class="mermaid">
+graph TB
+  U["👤 User Query<br/><i>'Can I return headphones?'</i>"]
+
+  subgraph AGENT["LangGraph Agent"]
+    direction TB
+    S["sanitize_input<br/>typo fix + cache check"]
+    C["classify_intent<br/>keyword → LLM fallback"]
+    R["route_by_intent<br/>conditional edge"]
+    T["tool_node<br/>execute tool"]
+    G["generate_reply<br/>LLM synthesis"]
+    V["validate_reply<br/>LLM auditor"]
+    M["update_memory<br/>persist + cache"]
+
+    S --> C --> R --> T --> G --> V
+    V -->|"❌ unverified_claims<br/>retry (≤2)"| G
+    V -->|"✅ valid"| M
+  end
+
+  subgraph TOOLS["Tool Layer"]
+    direction LR
+    O["order_status_tool"]
+    P["policy_retriever_tool"]
+    W["weather_tool"]
+    K["knowledge_tools"]
+    QA["product_qa_tool <span class='badge b-new'>NEW</span>"]
+  end
+
+  subgraph PATH_GRAPH["Graph Path<br/><i>Deterministic</i>"]
+    KG["KnowledgeStore<br/>PostgreSQL JOINs<br/>product → category → policy"]
+  end
+
+  subgraph PATH_VECTOR["Vector Path<br/><i>Probabilistic</i>"]
+    VEC["HybridPolicyRetriever<br/>dense(pgvector) + sparse(BM25)<br/>→ RRF k=60 → batch LLM rerank"]
+  end
+
+  subgraph DATA["Data Layer"]
+    PG["PostgreSQL<br/><span class='badge b-ok'>source of truth</span>"]
+    PGV["pgvector<br/>HNSW ANN<br/>semantic_cache"]
+    NEO["Neo4j <span class='badge b-new'>NEW</span><br/>graph cache<br/>read-only"]
+  end
+
+  U --> S
+  R -.->|"intent: policy"| P
+  P --> PATH_GRAPH
+  P --> PATH_VECTOR
+  PATH_GRAPH --> PG
+  PATH_VECTOR --> PGV
+  KG -.->|"✓ hit"| G
+  VEC -.->|"fallback"| G
+  QA -.-> NEO
+  QA -.-> PGV
+  PG -.->|"neo4j_setup sync"| NEO
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="agent-loop">
+  <h2><span class="tag">Agent</span> LangGraph StateGraph DAG</h2>
+  <div class="desc">
+    <strong>Each node is a pure function AgentState → AgentState.</strong>
+    Self-correction loop: validate_reply checks if answer is grounded in tool results.
+    Context compression: conversations >10 turns are summarized, capped at 2000 tokens.
+  </div>
+  <div class="mermaid">
+stateDiagram-v2
+  [*] --> sanitize_input
+  sanitize_input --> classify_intent
+
+  classify_intent --> route_by_intent
+  route_by_intent --> order_node : intent=order
+  route_by_intent --> list_orders_node : intent=list_orders
+  route_by_intent --> policy_node : intent=policy
+  route_by_intent --> weather_node : intent=weather
+  route_by_intent --> knowledge_node : intent=knowledge
+  route_by_intent --> product_qa_node : intent=product_qa
+  route_by_intent --> generate_reply : unknown/cached
+
+  order_node --> generate_reply
+  list_orders_node --> generate_reply
+  policy_node --> generate_reply
+  weather_node --> generate_reply
+  knowledge_node --> generate_reply
+  product_qa_node --> generate_reply
+
+  generate_reply --> validate_reply
+  validate_reply --> generate_reply : ❌ unverified_claims\n(retry ≤2)
+  validate_reply --> update_memory : ✅ valid
+  update_memory --> [*]
+
+  note right of sanitize_input
+    - typo correction
+    - semantic cache check
+    - weather excluded from cache
+  end note
+
+  note right of classify_intent
+    keyword (<100) | llm_hybrid (100-10K)
+    | semantic (10K+)
+  end note
+
+  note right of validate_reply
+    LLM-as-judge audits answer
+    Hard check: fabricated IDs/numbers
+    PII redaction before return
+  end note
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="rag-pipeline">
+  <h2><span class="tag">RAG</span> 4-Stage Modular RAG Pipeline</h2>
+  <div class="desc">
+    <strong>The hand-built RAG (retrieval.py) that spans 4 independent stages.</strong>
+    Each stage covers the weakness of the previous. This is the production-grade part of the system —
+    batch LLM rerank (1 call for all docs) is 5x faster than framework defaults.
+  </div>
+  <div class="mermaid">
+flowchart LR
+  Q["👤 User Query<br/>'Can I return these<br/>headphones?'"]
+
+  subgraph S1["Stage 1: Dense Retrieval"]
+    EM["Embedding Model<br/>Zhipu embedding-2<br/>1024-dim vector"]
+    ANN["pgvector HNSW<br/>cosine distance<br/>top-5 results<br/>< 5ms"]
+  end
+
+  subgraph S2["Stage 2: Sparse Retrieval"]
+    TK["Regex Tokenizer<br/>\\b\\w+\\b"]
+    BM["BM25Okapi<br/>TF × IDF scoring<br/>top-5 results<br/>< 1ms"]
+  end
+
+  subgraph S3["Stage 3: RRF Fusion"]
+    RRF["Reciprocal Rank Fusion<br/>score = Σ 1/(60+rank)<br/>k=60 tuned<br/>consensus boost"]
+  end
+
+  subgraph S4["Stage 4: LLM Re-rank"]
+    BATCH["Batch LLM Call<br/>GLM-4-Flash temp=0<br/>Scores 1-10 all docs<br/>at once"]
+    FILT["Score Filter<br/>keep ≥ 7/10<br/>at least 1 result"]
+  end
+
+  OUT["📋 Ranked<br/>Policy Chunks<br/>→ generate_reply"]
+
+  Q --> EM --> ANN --> RRF
+  Q --> TK --> BM --> RRF
+  RRF --> BATCH --> FILT --> OUT
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="retrieval-flow">
+  <h2><span class="tag">Retrieval</span> HybridRetriever Decision Flow</h2>
+  <div class="desc">
+    <strong>Graph-first, vector-fallback.</strong> Deterministic SQL JOIN when possible,
+    hybrid RAG when not. The taxonomy work (Neo4j + entity_synonyms + attributes)
+    makes the graph path succeed more often, reducing reliance on probabilistic fallback.
+  </div>
+  <div class="mermaid">
+flowchart TD
+  Q["User Query"]
+  HYB["HybridRetriever.retrieve()"]
+
+  G{"GraphRetriever<br/>keyword match?"}
+  GP["KnowledgeStore<br/>product → category → policy<br/>SQL JOINs"]
+  GH["✅ Hit!<br/>Deterministic result<br/>Zero hallucination"]
+
+  V{"VectorRetriever<br/>semantic fallback?"}
+  DENSE["pgvector cosine<br/>HNSW ANN<br/>dense top-5"]
+  SPARSE["BM25Okapi<br/>TF-IDF<br/>sparse top-5"]
+  RRF["RRF k=60<br/>fuse both lists"]
+  RERANK["Batch LLM<br/>re-rank 1-10"]
+  FILTER["Score ≥ 7 filter"]
+
+  NONE["❌ No match<br/>'I don't have that<br/>information'"]
+
+  Q --> HYB
+  HYB --> G
+  G -->|"match"| GP --> GH
+  G -->|"no match"| V
+  V -->|"has embeddings"| DENSE --> RRF
+  V -->|"has embeddings"| SPARSE --> RRF
+  RRF --> RERANK --> FILTER
+  FILTER -->|"has results"| GH
+  FILTER -->|"empty"| NONE
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="data-arch">
+  <h2><span class="tag">Data</span> Data Architecture — Source of Truth Pattern</h2>
+  <div class="desc">
+    <strong>PostgreSQL is the single source of truth.</strong> Neo4j is a read-only graph cache,
+    rebuilt from PG on <code>python -m backend.knowledge.neo4j_setup</code>.
+    pgvector stores embeddings. No runtime dual-write, no sync drift.
+  </div>
+  <div class="mermaid">
+flowchart TB
+  subgraph PG["PostgreSQL — Source of Truth"]
+    direction LR
+    CORE["Core Tables<br/>categories, products<br/>policy_rules<br/>orders"]
+    TAX["Taxonomy Tables<br/>attribute_definitions<br/>product_attributes<br/>entity_synonyms<br/>entity_tags<br/>product_relations"]
+    VECPG["pgvector Collections<br/>store_policies<br/>semantic_cache<br/>product_chunks"]
+  end
+
+  subgraph NEO["Neo4j — Read Cache"]
+    direction LR
+    NODES["Nodes<br/>Product, Category<br/>Brand, Attribute<br/>Policy"]
+    RELS["Relationships<br/>IN_CATEGORY, CHILD_OF<br/>HAS_BRAND, ACCESSORY_OF<br/>ALTERNATIVE_TO<br/>HAS_POLICY"]
+    IDX["Indexes<br/>Fulltext: product_search<br/>BTREE: price<br/>Vector: chunk_embeddings"]
+  end
+
+  subgraph INGEST["Data Flow"]
+    SEED["schema.py<br/>seed data"]
+    N4J["neo4j_setup.py<br/>PG → Neo4j sync<br/>batch UNWIND"]
+    VING["vector_setup.py<br/>chunk → embed<br/>→ pgvector"]
+  end
+
+  SEED -->|"1. create tables + seed"| PG
+  PG -->|"2. read all data"| N4J --> NEO
+  VING -->|"3. embed + store"| VECPG
+
+  NEO -.->|"query time<br/>read-only<br/>Cypher traversal"| QR["product_qa_tool<br/>graph queries"]
+  VECPG -.->|"query time<br/>ANN + metadata filter"| QR
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="neo4j-graph">
+  <h2><span class="tag">Graph</span> Neo4j Graph Model</h2>
+  <div class="desc">
+    <strong>Full product catalog as a labeled property graph.</strong>
+    Category hierarchy via CHILD_OF*, policy inheritance via traversal,
+    accessories and alternatives as typed relationships with strength scores.
+  </div>
+  <div class="mermaid">
+graph LR
+  subgraph CATEGORIES["Category Tree"]
+    C1["Electronics<br/><i>level: 1</i>"]
+    C2["Mobile Devices<br/><i>level: 2</i>"]
+    C3["Smartphones<br/><i>level: 3</i>"]
+    C4["Flagship Phones<br/><i>level: 4</i>"]
+    C5["Audio<br/><i>level: 2</i>"]
+    C6["Headphones<br/><i>level: 3</i>"]
+    C7["Wireless Earbuds<br/><i>level: 3</i>"]
+    C1 -->|"CHILD_OF"| C2 -->|"CHILD_OF"| C3 -->|"CHILD_OF"| C4
+    C1 -->|"CHILD_OF"| C5 -->|"CHILD_OF"| C6
+    C5 -->|"CHILD_OF"| C7
+  end
+
+  subgraph PRODUCTS["Products"]
+    P1["iPhone 15 Pro<br/><i>$999</i>"]
+    P2["Samsung Galaxy S24<br/><i>$899</i>"]
+    P3["Google Pixel 8<br/><i>$699</i>"]
+    P4["Sony WH-1000XM5<br/><i>$349</i>"]
+    P5["AirPods Pro 2<br/><i>$249</i>"]
+  end
+
+  subgraph ATTR["Brands & Attributes"]
+    B1["Apple"]
+    B2["Samsung"]
+    B3["Google"]
+    B4["Sony"]
+    A1["storage: 256GB"]
+    A2["color: Titanium"]
+  end
+
+  subgraph POLICIES["Policies<br/><i>inherited via CHILD_OF*</i>"]
+    POL1["electronics_return<br/><i>14-day</i>"]
+    POL2["free_shipping<br/><i>orders >$50</i>"]
+    POL3["manufacturer_warranty<br/><i>1-year</i>"]
+  end
+
+  P1 -->|"IN_CATEGORY"| C4
+  P2 -->|"IN_CATEGORY"| C3
+  P3 -->|"IN_CATEGORY"| C3
+  P4 -->|"IN_CATEGORY"| C6
+  P5 -->|"IN_CATEGORY"| C7
+
+  P1 -->|"HAS_BRAND"| B1
+  P2 -->|"HAS_BRAND"| B2
+  P3 -->|"HAS_BRAND"| B3
+  P4 -->|"HAS_BRAND"| B4
+
+  P1 -->|"ACCESSORY_OF<br/><i>strength:0.90</i>"| P5
+  P2 -->|"ALTERNATIVE_TO<br/><i>strength:0.85</i>"| P1
+  P3 -->|"ALTERNATIVE_TO<br/><i>strength:0.80</i>"| P1
+
+  C1 -->|"HAS_POLICY"| POL1
+  C1 -->|"HAS_POLICY"| POL2
+  C1 -->|"HAS_POLICY"| POL3
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="query-routing">
+  <h2><span class="tag">Routing</span> Query Routing Matrix</h2>
+  <div class="desc">
+    <strong>Each query type hits different framework combinations.</strong>
+    Single product queries use LlamaIndex RAG with Neo4j resolution.
+    Cross-product comparisons use Neo4j candidate search + LlamaIndex per-candidate RAG.
+    Policy queries remain on the existing graph → vector fallback path.
+  </div>
+  <div class="mermaid">
+flowchart TD
+  Q["👤 User Query"]
+
+  Q --> C{"classify_intent<br/>keyword → LLM"}
+
+  C -->|"policy<br/>'Can I return headphones?'"| POL
+  subgraph POL["Policy Path (existing)"]
+    direction LR
+    PG["GraphRetriever<br/>SQL JOIN<br/>product→category→policy"]
+    PV["VectorRetriever<br/>dense+sparse→RRF→rerank"]
+    PG -->|"hit?"| PV
+  end
+
+  C -->|"product_qa<br/>'Does iPhone have MagSafe?'"| SINGLE
+  subgraph SINGLE["Single Product QA"]
+    direction LR
+    N1["Neo4j<br/>resolve_product()<br/>synonym expansion"]
+    L1["LlamaIndex RAG<br/>metadata filter:<br/>product_name='iPhone 15 Pro'"]
+    N1 --> L1
+  end
+
+  C -->|"product_qa<br/>'Best phone under $800?'"| CROSS
+  subgraph CROSS["Cross-Product Comparison"]
+    direction LR
+    N2["Neo4j<br/>search_products()<br/>category + price filter"]
+    L2["LlamaIndex RAG<br/>per-candidate chunks"]
+    S2["LLM<br/>compare + rank + recommend"]
+    N2 --> L2 --> S2
+  end
+
+  C -->|"product_qa<br/>'What category is iPhone in?'"| CAT
+  subgraph CAT["Category / Why"]
+    direction LR
+    N3["Neo4j<br/>get_category_path()<br/>ancestor chain"]
+    L3["LLM<br/>reason from attributes<br/>why in this category"]
+    N3 --> L3
+  end
+</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="modular-rag">
+  <h2><span class="tag">Future</span> Modular RAG — Production Target</h2>
+  <div class="desc">
+    <strong>Target state: each layer independently selects the best component.</strong>
+    Ingestion → LlamaIndex SentenceWindowNodeParser. Retrieval → hand-built RRF hybrid.
+    Re-rank → hand-built batch LLM (5x faster than framework default).
+    Structured reasoning → Neo4j graph. Resilience → self-built circuit breaker.
+    This matches Cohere's and Anthropic's recommended modular RAG architecture.
+  </div>
+  <div class="mermaid">
+flowchart TB
+  subgraph L1["L1: Ingestion"]
+    style L1 fill:#1e293b,stroke:#38bdf8
+    I["LlamaIndex<br/>SentenceWindowNodeParser<br/>window_size=5, overlap=1<br/>metadata-rich chunks"]
+  end
+
+  subgraph L2["L2: Retrieval"]
+    style L2 fill:#1e293b,stroke:#38bdf8
+    direction LR
+    D["dense<br/>pgvector<br/>HNSW ANN"]
+    S["sparse<br/>BM25Okapi<br/>TF-IDF"]
+    F["fusion<br/>RRF k=60<br/>math-only, zero latency"]
+    D --> F
+    S --> F
+  end
+
+  subgraph L3["L3: Re-rank"]
+    style L3 fill:#065f46,stroke:#6ee7b7
+    R["hand-built batch LLM rerank<br/>1 LLM call for all docs<br/>regex parse [N] score<br/><b>5x faster than framework default</b>"]
+  end
+
+  subgraph L4["L4: Structured Reasoning"]
+    style L4 fill:#312e81,stroke:#a5b4fc
+    direction LR
+    N["Neo4j<br/>synonym expansion<br/>attribute filtering<br/>category hierarchy<br/>product relations"]
+    V["metadata-filtered<br/>vector search<br/>single Cypher query<br/>graph + ANN"]
+    N --> V
+  end
+
+  subgraph L5["L5: Resilience"]
+    style L5 fill:#78350f,stroke:#fcd34d
+    CB["self-built circuit breaker<br/>3 failures → 60s recovery<br/>tenacity exponential backoff<br/>static fallback<br/><b>no framework does this well</b>"]
+  end
+
+  subgraph L6["L6: Guardrails"]
+    style L6 fill:#831843,stroke:#f9a8d4
+    direction LR
+    TB["topic boundary guard<br/>regex reject list"]
+    PII["PII redaction<br/>phone/email/ID regex"]
+    HV["hard verify<br/>fabricated IDs vs tool output"]
+    TB --> PII --> HV
+  end
+
+  I --> D
+  I --> S
+  F --> R
+  R --> N
+  V --> CB
+  CB --> HV
+</div>
+</section>
+
+</main>
+
+<footer>
+  Built with Mermaid.js · Open in any browser · No server needed
+</footer>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    securityLevel: 'loose',
+    flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+    themeVariables: {
+      primaryColor: '#38bdf8',
+      primaryTextColor: '#0f172a',
+      primaryBorderColor: '#0284c7',
+      lineColor: '#64748b',
+      secondaryColor: '#1e293b',
+      tertiaryColor: '#334155',
+    }
+  });
+</script>
+</body>
+</html>

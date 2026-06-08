@@ -41,7 +41,11 @@ class KnowledgeStore:
         # Accept either a product name directly or extract from a query
         if self._product_names is None:
             self._load_names()
-        product_name = query if query.lower() in (self._product_names or []) else self._extract_product_name(query)
+        product_name = (
+            query
+            if query.lower() in (self._product_names or [])
+            else self._extract_product_name(query)
+        )
         if not product_name:
             return []
 
@@ -85,7 +89,11 @@ class KnowledgeStore:
         """
         if self._category_names is None:
             self._load_names()
-        category_name = query if query.lower() in (self._category_names or []) else self._extract_category_name(query)
+        category_name = (
+            query
+            if query.lower() in (self._category_names or [])
+            else self._extract_category_name(query)
+        )
         if not category_name:
             return []
 
@@ -132,8 +140,7 @@ class KnowledgeStore:
         conn.close()
 
         return [
-            {"name": r[0], "price": float(r[1]), "sku": r[2], "category_name": r[3]}
-            for r in rows
+            {"name": r[0], "price": float(r[1]), "sku": r[2], "category_name": r[3]} for r in rows
         ]
 
     def get_product_info(self, query: str) -> dict | None:
@@ -144,7 +151,11 @@ class KnowledgeStore:
         # Extract product name from query first
         if self._product_names is None:
             self._load_names()
-        product_name = query if query.lower() in (self._product_names or []) else self._extract_product_name(query)
+        product_name = (
+            query
+            if query.lower() in (self._product_names or [])
+            else self._extract_product_name(query)
+        )
         if not product_name:
             return None
 
@@ -174,8 +185,7 @@ class KnowledgeStore:
         # Also fetch applicable policies
         policies = self.query_product_policies(product_name)
         product["policies"] = [
-            {"name": p["name"], "summary": p["summary"], "type": p["policy_type"]}
-            for p in policies
+            {"name": p["name"], "summary": p["summary"], "type": p["policy_type"]} for p in policies
         ]
 
         cur.close()
