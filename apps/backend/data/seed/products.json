@@ -1,33 +1,836 @@
 [
-  {"name": "iPhone 15 Pro", "category_name": "Flagship Phones", "price": 999.00, "sku": "SKU-IPH15P"},
-  {"name": "Samsung Galaxy S24", "category_name": "Smartphones", "price": 899.00, "sku": "SKU-SGS24"},
-  {"name": "Google Pixel 8", "category_name": "Smartphones", "price": 699.00, "sku": "SKU-GPX8"},
-  {"name": "Xiaomi 14", "category_name": "Smartphones", "price": 599.00, "sku": "SKU-XM14"},
-  {"name": "iPad Air", "category_name": "Tablets", "price": 599.00, "sku": "SKU-IPDAIR"},
-  {"name": "Samsung Galaxy Tab S9", "category_name": "Tablets", "price": 799.00, "sku": "SKU-SGTAB9"},
-  {"name": "Sony WH-1000XM5", "category_name": "Headphones", "price": 349.00, "sku": "SKU-SONYXM5"},
-  {"name": "Bose QuietComfort Ultra", "category_name": "Headphones", "price": 429.00, "sku": "SKU-BOSEQC"},
-  {"name": "AirPods Pro 2", "category_name": "Wireless Earbuds", "price": 249.00, "sku": "SKU-AIRP2"},
-  {"name": "Samsung Galaxy Buds3", "category_name": "Wireless Earbuds", "price": 179.00, "sku": "SKU-SGBUDS3"},
-  {"name": "JBL Flip 6", "category_name": "Speakers", "price": 129.00, "sku": "SKU-JBLF6"},
-  {"name": "Bose SoundLink Flex", "category_name": "Speakers", "price": 149.00, "sku": "SKU-BSLF"},
-  {"name": "MacBook Pro 16", "category_name": "Laptops", "price": 2499.00, "sku": "SKU-MBP16"},
-  {"name": "Dell XPS 15", "category_name": "Laptops", "price": 1899.00, "sku": "SKU-DXPS15"},
-  {"name": "ASUS ROG Strix G16", "category_name": "Gaming Laptops", "price": 1599.00, "sku": "SKU-ASUSROG"},
-  {"name": "Lenovo Legion Pro 7", "category_name": "Gaming Laptops", "price": 1799.00, "sku": "SKU-LENLEG7"},
-  {"name": "Logitech MX Master 3S", "category_name": "Peripherals", "price": 99.00, "sku": "SKU-MXM3S"},
-  {"name": "Apple Magic Keyboard", "category_name": "Peripherals", "price": 99.00, "sku": "SKU-AMK"},
-  {"name": "iPhone 15 Pro Leather Case", "category_name": "Cases & Covers", "price": 59.00, "sku": "SKU-IP15CASE"},
-  {"name": "Samsung Galaxy S24 Silicone Case", "category_name": "Cases & Covers", "price": 29.00, "sku": "SKU-SGS24CASE"},
-  {"name": "Anker USB-C Cable 2m", "category_name": "Cables & Chargers", "price": 15.00, "sku": "SKU-ANKCABLE"},
-  {"name": "Apple 20W USB-C Charger", "category_name": "Cables & Chargers", "price": 19.00, "sku": "SKU-A20W"},
-  {"name": "iPhone 15 Pro Tempered Glass", "category_name": "Screen Protectors", "price": 12.00, "sku": "SKU-IP15SCR"},
-  {"name": "Nespresso Vertuo Plus", "category_name": "Coffee Makers", "price": 199.00, "sku": "SKU-NESPVP"},
-  {"name": "Vitamix 5200 Blender", "category_name": "Blenders", "price": 449.00, "sku": "SKU-VITA5200"},
-  {"name": "Philips Air Fryer", "category_name": "Kitchen Appliances", "price": 129.00, "sku": "SKU-PHAF"},
-  {"name": "Philips Hue White Ambiance", "category_name": "Lighting", "price": 29.00, "sku": "SKU-PHHUE"},
-  {"name": "Dyson Solarcycle Morph", "category_name": "Lighting", "price": 649.00, "sku": "SKU-DYSMORPH"},
-  {"name": "Uniqlo Supima Cotton T-Shirt", "category_name": "T-Shirts", "price": 19.90, "sku": "SKU-UNQT"},
-  {"name": "Nike Air Max 90", "category_name": "Sneakers", "price": 129.00, "sku": "SKU-NKAM90"},
-  {"name": "Adidas Ultraboost 23", "category_name": "Sneakers", "price": 189.00, "sku": "SKU-ADUB23"}
+  {
+    "name": "iPhone 15 Pro",
+    "category_name": "Flagship Phones",
+    "price": 999.0,
+    "sku": "SKU-IPH15P"
+  },
+  {
+    "name": "Samsung Galaxy S24",
+    "category_name": "Smartphones",
+    "price": 899.0,
+    "sku": "SKU-SGS24"
+  },
+  {
+    "name": "Google Pixel 8",
+    "category_name": "Smartphones",
+    "price": 699.0,
+    "sku": "SKU-GPX8"
+  },
+  {
+    "name": "Xiaomi 14",
+    "category_name": "Smartphones",
+    "price": 599.0,
+    "sku": "SKU-XM14"
+  },
+  {
+    "name": "iPad Air",
+    "category_name": "Tablets",
+    "price": 599.0,
+    "sku": "SKU-IPDAIR"
+  },
+  {
+    "name": "Samsung Galaxy Tab S9",
+    "category_name": "Tablets",
+    "price": 799.0,
+    "sku": "SKU-SGTAB9"
+  },
+  {
+    "name": "Sony WH-1000XM5",
+    "category_name": "Headphones",
+    "price": 349.0,
+    "sku": "SKU-SONYXM5"
+  },
+  {
+    "name": "Bose QuietComfort Ultra",
+    "category_name": "Headphones",
+    "price": 429.0,
+    "sku": "SKU-BOSEQC"
+  },
+  {
+    "name": "AirPods Pro 2",
+    "category_name": "Wireless Earbuds",
+    "price": 249.0,
+    "sku": "SKU-AIRP2"
+  },
+  {
+    "name": "Samsung Galaxy Buds3",
+    "category_name": "Wireless Earbuds",
+    "price": 179.0,
+    "sku": "SKU-SGBUDS3"
+  },
+  {
+    "name": "JBL Flip 6",
+    "category_name": "Speakers",
+    "price": 129.0,
+    "sku": "SKU-JBLF6"
+  },
+  {
+    "name": "Bose SoundLink Flex",
+    "category_name": "Speakers",
+    "price": 149.0,
+    "sku": "SKU-BSLF"
+  },
+  {
+    "name": "MacBook Pro 16",
+    "category_name": "Laptops",
+    "price": 2499.0,
+    "sku": "SKU-MBP16"
+  },
+  {
+    "name": "Dell XPS 15",
+    "category_name": "Laptops",
+    "price": 1899.0,
+    "sku": "SKU-DXPS15"
+  },
+  {
+    "name": "ASUS ROG Strix G16",
+    "category_name": "Gaming Laptops",
+    "price": 1599.0,
+    "sku": "SKU-ASUSROG"
+  },
+  {
+    "name": "Lenovo Legion Pro 7",
+    "category_name": "Gaming Laptops",
+    "price": 1799.0,
+    "sku": "SKU-LENLEG7"
+  },
+  {
+    "name": "Logitech MX Master 3S",
+    "category_name": "Peripherals",
+    "price": 99.0,
+    "sku": "SKU-MXM3S"
+  },
+  {
+    "name": "Apple Magic Keyboard",
+    "category_name": "Peripherals",
+    "price": 99.0,
+    "sku": "SKU-AMK"
+  },
+  {
+    "name": "iPhone 15 Pro Leather Case",
+    "category_name": "Cases & Covers",
+    "price": 59.0,
+    "sku": "SKU-IP15CASE"
+  },
+  {
+    "name": "Samsung Galaxy S24 Silicone Case",
+    "category_name": "Cases & Covers",
+    "price": 29.0,
+    "sku": "SKU-SGS24CASE"
+  },
+  {
+    "name": "Anker USB-C Cable 2m",
+    "category_name": "Cables & Chargers",
+    "price": 15.0,
+    "sku": "SKU-ANKCABLE"
+  },
+  {
+    "name": "Apple 20W USB-C Charger",
+    "category_name": "Cables & Chargers",
+    "price": 19.0,
+    "sku": "SKU-A20W"
+  },
+  {
+    "name": "iPhone 15 Pro Tempered Glass",
+    "category_name": "Screen Protectors",
+    "price": 12.0,
+    "sku": "SKU-IP15SCR"
+  },
+  {
+    "name": "Nespresso Vertuo Plus",
+    "category_name": "Coffee Makers",
+    "price": 199.0,
+    "sku": "SKU-NESPVP"
+  },
+  {
+    "name": "Vitamix 5200 Blender",
+    "category_name": "Blenders",
+    "price": 449.0,
+    "sku": "SKU-VITA5200"
+  },
+  {
+    "name": "Philips Air Fryer",
+    "category_name": "Kitchen Appliances",
+    "price": 129.0,
+    "sku": "SKU-PHAF"
+  },
+  {
+    "name": "Philips Hue White Ambiance",
+    "category_name": "Lighting",
+    "price": 29.0,
+    "sku": "SKU-PHHUE"
+  },
+  {
+    "name": "Dyson Solarcycle Morph",
+    "category_name": "Lighting",
+    "price": 649.0,
+    "sku": "SKU-DYSMORPH"
+  },
+  {
+    "name": "Uniqlo Supima Cotton T-Shirt",
+    "category_name": "T-Shirts",
+    "price": 19.9,
+    "sku": "SKU-UNQT"
+  },
+  {
+    "name": "Nike Air Max 90",
+    "category_name": "Sneakers",
+    "price": 129.0,
+    "sku": "SKU-NKAM90"
+  },
+  {
+    "name": "Adidas Ultraboost 23",
+    "category_name": "Sneakers",
+    "price": 189.0,
+    "sku": "SKU-ADUB23"
+  },
+  {
+    "name": "OnePlus 12",
+    "category_name": "Smartphones",
+    "price": 799,
+    "sku": "SKU-ONEPLUS1"
+  },
+  {
+    "name": "OPPO Find X7 Ultra",
+    "category_name": "Smartphones",
+    "price": 899,
+    "sku": "SKU-OPPOFIND"
+  },
+  {
+    "name": "Vivo X100 Pro",
+    "category_name": "Smartphones",
+    "price": 749,
+    "sku": "SKU-VIVOX100"
+  },
+  {
+    "name": "Realme GT 5 Pro",
+    "category_name": "Smartphones",
+    "price": 599,
+    "sku": "SKU-REALMEGT"
+  },
+  {
+    "name": "Nothing Phone 2",
+    "category_name": "Smartphones",
+    "price": 599,
+    "sku": "SKU-NOTHINGP"
+  },
+  {
+    "name": "Motorola Edge 40 Pro",
+    "category_name": "Smartphones",
+    "price": 699,
+    "sku": "SKU-MOTOROLA"
+  },
+  {
+    "name": "Nokia G60",
+    "category_name": "Smartphones",
+    "price": 249,
+    "sku": "SKU-NOKIAG60"
+  },
+  {
+    "name": "Huawei P60 Pro",
+    "category_name": "Smartphones",
+    "price": 899,
+    "sku": "SKU-HUAWEIP6"
+  },
+  {
+    "name": "Honor Magic 6 Pro",
+    "category_name": "Smartphones",
+    "price": 799,
+    "sku": "SKU-HONORMAG"
+  },
+  {
+    "name": "Sony Xperia 1 V",
+    "category_name": "Smartphones",
+    "price": 999,
+    "sku": "SKU-SONYXPER"
+  },
+  {
+    "name": "Asus ROG Phone 8",
+    "category_name": "Smartphones",
+    "price": 1099,
+    "sku": "SKU-ASUSROGP"
+  },
+  {
+    "name": "Samsung Galaxy Z Flip 5",
+    "category_name": "Smartphones",
+    "price": 999,
+    "sku": "SKU-SAMSUNGG"
+  },
+  {
+    "name": "Samsung Galaxy Z Fold 5",
+    "category_name": "Smartphones",
+    "price": 1799,
+    "sku": "SKU-SAMSUNGG"
+  },
+  {
+    "name": "Google Pixel 8 Pro",
+    "category_name": "Smartphones",
+    "price": 999,
+    "sku": "SKU-GOOGLEPI"
+  },
+  {
+    "name": "iPhone 15",
+    "category_name": "Smartphones",
+    "price": 799,
+    "sku": "SKU-IPHONE15"
+  },
+  {
+    "name": "iPad Pro 12.9",
+    "category_name": "Tablets",
+    "price": 1099,
+    "sku": "SKU-IPADPRO1"
+  },
+  {
+    "name": "iPad Mini 6",
+    "category_name": "Tablets",
+    "price": 499,
+    "sku": "SKU-IPADMINI"
+  },
+  {
+    "name": "Samsung Galaxy Tab S9 Ultra",
+    "category_name": "Tablets",
+    "price": 1199,
+    "sku": "SKU-SAMSUNGG"
+  },
+  {
+    "name": "Lenovo Tab P12 Pro",
+    "category_name": "Tablets",
+    "price": 499,
+    "sku": "SKU-LENOVOTA"
+  },
+  {
+    "name": "Xiaomi Pad 6",
+    "category_name": "Tablets",
+    "price": 349,
+    "sku": "SKU-XIAOMIPA"
+  },
+  {
+    "name": "Huawei MatePad Pro",
+    "category_name": "Tablets",
+    "price": 699,
+    "sku": "SKU-HUAWEIMA"
+  },
+  {
+    "name": "Microsoft Surface Pro 9",
+    "category_name": "Tablets",
+    "price": 999,
+    "sku": "SKU-MICROSOF"
+  },
+  {
+    "name": "Amazon Fire HD 10",
+    "category_name": "Tablets",
+    "price": 149,
+    "sku": "SKU-AMAZONFI"
+  },
+  {
+    "name": "Sennheiser Momentum 4",
+    "category_name": "Headphones",
+    "price": 379,
+    "sku": "SKU-SENNHEIS"
+  },
+  {
+    "name": "Audio-Technica ATH-M50x",
+    "category_name": "Headphones",
+    "price": 149,
+    "sku": "SKU-AUDIOTEC"
+  },
+  {
+    "name": "Beats Studio Pro",
+    "category_name": "Headphones",
+    "price": 349,
+    "sku": "SKU-BEATSSTU"
+  },
+  {
+    "name": "Skullcandy Crusher ANC 2",
+    "category_name": "Headphones",
+    "price": 199,
+    "sku": "SKU-SKULLCAN"
+  },
+  {
+    "name": "Marshall Major IV",
+    "category_name": "Headphones",
+    "price": 149,
+    "sku": "SKU-MARSHALL"
+  },
+  {
+    "name": "Bang & Olufsen Beoplay HX",
+    "category_name": "Headphones",
+    "price": 499,
+    "sku": "SKU-BANGOLUF"
+  },
+  {
+    "name": "JBL Tour One M2",
+    "category_name": "Headphones",
+    "price": 299,
+    "sku": "SKU-JBLTOURO"
+  },
+  {
+    "name": "Anker Soundcore Space Q45",
+    "category_name": "Headphones",
+    "price": 149,
+    "sku": "SKU-ANKERSOU"
+  },
+  {
+    "name": "Sonos Era 100",
+    "category_name": "Speakers",
+    "price": 249,
+    "sku": "SKU-SONOSERA"
+  },
+  {
+    "name": "Sony SRS-XB100",
+    "category_name": "Speakers",
+    "price": 59,
+    "sku": "SKU-SONYSRSX"
+  },
+  {
+    "name": "Marshall Emberton II",
+    "category_name": "Speakers",
+    "price": 169,
+    "sku": "SKU-MARSHALL"
+  },
+  {
+    "name": "Anker Soundcore Motion+",
+    "category_name": "Speakers",
+    "price": 99,
+    "sku": "SKU-ANKERSOU"
+  },
+  {
+    "name": "Ultimate Ears WONDERBOOM 3",
+    "category_name": "Speakers",
+    "price": 99,
+    "sku": "SKU-ULTIMATE"
+  },
+  {
+    "name": "Bose Home Speaker 500",
+    "category_name": "Speakers",
+    "price": 349,
+    "sku": "SKU-BOSEHOME"
+  },
+  {
+    "name": "JBL Charge 5",
+    "category_name": "Speakers",
+    "price": 179,
+    "sku": "SKU-JBLCHARG"
+  },
+  {
+    "name": "Harman Kardon Aura Studio 3",
+    "category_name": "Speakers",
+    "price": 299,
+    "sku": "SKU-HARMANKA"
+  },
+  {
+    "name": "Sony WF-1000XM5",
+    "category_name": "Wireless Earbuds",
+    "price": 299,
+    "sku": "SKU-SONYWF10"
+  },
+  {
+    "name": "Sennheiser Momentum True Wireless 4",
+    "category_name": "Wireless Earbuds",
+    "price": 299,
+    "sku": "SKU-SENNHEIS"
+  },
+  {
+    "name": "Beats Fit Pro",
+    "category_name": "Wireless Earbuds",
+    "price": 199,
+    "sku": "SKU-BEATSFIT"
+  },
+  {
+    "name": "Jabra Elite 10",
+    "category_name": "Wireless Earbuds",
+    "price": 249,
+    "sku": "SKU-JABRAELI"
+  },
+  {
+    "name": "Anker Soundcore Liberty 4 NC",
+    "category_name": "Wireless Earbuds",
+    "price": 99,
+    "sku": "SKU-ANKERSOU"
+  },
+  {
+    "name": "Nothing Ear 2",
+    "category_name": "Wireless Earbuds",
+    "price": 149,
+    "sku": "SKU-NOTHINGE"
+  },
+  {
+    "name": "OnePlus Buds Pro 2",
+    "category_name": "Wireless Earbuds",
+    "price": 179,
+    "sku": "SKU-ONEPLUSB"
+  },
+  {
+    "name": "Google Pixel Buds Pro",
+    "category_name": "Wireless Earbuds",
+    "price": 199,
+    "sku": "SKU-GOOGLEPI"
+  },
+  {
+    "name": "MacBook Air 15 M3",
+    "category_name": "Laptops",
+    "price": 1299,
+    "sku": "SKU-MACBOOKA"
+  },
+  {
+    "name": "HP Spectre x360 14",
+    "category_name": "Laptops",
+    "price": 1399,
+    "sku": "SKU-HPSPECTR"
+  },
+  {
+    "name": "Lenovo ThinkPad X1 Carbon Gen 11",
+    "category_name": "Laptops",
+    "price": 1699,
+    "sku": "SKU-LENOVOTH"
+  },
+  {
+    "name": "Asus Zenbook 14 OLED",
+    "category_name": "Laptops",
+    "price": 899,
+    "sku": "SKU-ASUSZENB"
+  },
+  {
+    "name": "Acer Swift 5",
+    "category_name": "Laptops",
+    "price": 999,
+    "sku": "SKU-ACERSWIF"
+  },
+  {
+    "name": "Microsoft Surface Laptop 5",
+    "category_name": "Laptops",
+    "price": 1299,
+    "sku": "SKU-MICROSOF"
+  },
+  {
+    "name": "LG Gram 17",
+    "category_name": "Laptops",
+    "price": 1699,
+    "sku": "SKU-LGGRAM17"
+  },
+  {
+    "name": "Samsung Galaxy Book3 Pro",
+    "category_name": "Laptops",
+    "price": 1199,
+    "sku": "SKU-SAMSUNGG"
+  },
+  {
+    "name": "Apple Mac Studio M2 Ultra",
+    "category_name": "Desktops",
+    "price": 3999,
+    "sku": "SKU-APPLEMAC"
+  },
+  {
+    "name": "Dell XPS 8960",
+    "category_name": "Desktops",
+    "price": 1299,
+    "sku": "SKU-DELLXPS8"
+  },
+  {
+    "name": "HP Envy TE01",
+    "category_name": "Desktops",
+    "price": 799,
+    "sku": "SKU-HPENVYTE"
+  },
+  {
+    "name": "Lenovo ThinkCentre M90q",
+    "category_name": "Desktops",
+    "price": 699,
+    "sku": "SKU-LENOVOTH"
+  },
+  {
+    "name": "Razer DeathAdder V3 Pro",
+    "category_name": "Peripherals",
+    "price": 159,
+    "sku": "SKU-RAZERDEA"
+  },
+  {
+    "name": "Corsair K95 RGB Platinum",
+    "category_name": "Peripherals",
+    "price": 199,
+    "sku": "SKU-CORSAIRK"
+  },
+  {
+    "name": "SteelSeries Apex Pro TKL",
+    "category_name": "Peripherals",
+    "price": 189,
+    "sku": "SKU-STEELSER"
+  },
+  {
+    "name": "HyperX Cloud II Wireless",
+    "category_name": "Peripherals",
+    "price": 149,
+    "sku": "SKU-HYPERXCL"
+  },
+  {
+    "name": "BenQ Zowie XL2566K",
+    "category_name": "Peripherals",
+    "price": 599,
+    "sku": "SKU-BENQZOWI"
+  },
+  {
+    "name": "Dell UltraSharp U2723QE",
+    "category_name": "Peripherals",
+    "price": 599,
+    "sku": "SKU-DELLULTR"
+  },
+  {
+    "name": "Asus ProArt PA279CV",
+    "category_name": "Peripherals",
+    "price": 449,
+    "sku": "SKU-ASUSPROA"
+  },
+  {
+    "name": "Apple Magic Trackpad",
+    "category_name": "Peripherals",
+    "price": 149,
+    "sku": "SKU-APPLEMAG"
+  },
+  {
+    "name": "iPhone 15 Pro Clear Case",
+    "category_name": "Cases & Covers",
+    "price": 49,
+    "sku": "SKU-IPHONE15"
+  },
+  {
+    "name": "iPhone 15 Silicone Case",
+    "category_name": "Cases & Covers",
+    "price": 49,
+    "sku": "SKU-IPHONE15"
+  },
+  {
+    "name": "Samsung Galaxy S24 Ultra Case",
+    "category_name": "Cases & Covers",
+    "price": 39,
+    "sku": "SKU-SAMSUNGG"
+  },
+  {
+    "name": "Spigen Ultra Hybrid for Pixel 8",
+    "category_name": "Cases & Covers",
+    "price": 16,
+    "sku": "SKU-SPIGENUL"
+  },
+  {
+    "name": "OtterBox Defender iPhone 15 Pro",
+    "category_name": "Cases & Covers",
+    "price": 69,
+    "sku": "SKU-OTTERBOX"
+  },
+  {
+    "name": "CASETiFY Impact Case S24",
+    "category_name": "Cases & Covers",
+    "price": 72,
+    "sku": "SKU-CASETIFY"
+  },
+  {
+    "name": "Belkin MagSafe Wallet",
+    "category_name": "Cases & Covers",
+    "price": 39,
+    "sku": "SKU-BELKINMA"
+  },
+  {
+    "name": "Nomad Modern Leather Case iPhone 15",
+    "category_name": "Cases & Covers",
+    "price": 59,
+    "sku": "SKU-NOMADMOD"
+  },
+  {
+    "name": "Anker 737 GaNPrime 120W Charger",
+    "category_name": "Cables & Chargers",
+    "price": 89,
+    "sku": "SKU-ANKER737"
+  },
+  {
+    "name": "Belkin BoostCharge Pro 3-in-1",
+    "category_name": "Cables & Chargers",
+    "price": 149,
+    "sku": "SKU-BELKINBO"
+  },
+  {
+    "name": "Apple 35W Dual USB-C Charger",
+    "category_name": "Cables & Chargers",
+    "price": 59,
+    "sku": "SKU-APPLE35W"
+  },
+  {
+    "name": "Samsung 45W Super Fast Charger",
+    "category_name": "Cables & Chargers",
+    "price": 49,
+    "sku": "SKU-SAMSUNG4"
+  },
+  {
+    "name": "Nomad Kevlar USB-C Cable 3m",
+    "category_name": "Cables & Chargers",
+    "price": 39,
+    "sku": "SKU-NOMADKEV"
+  },
+  {
+    "name": "Mophie Snap+ Wireless Charger",
+    "category_name": "Cables & Chargers",
+    "price": 49,
+    "sku": "SKU-MOPHIESN"
+  },
+  {
+    "name": "Belkin UltraGlass 2 iPhone 15 Pro",
+    "category_name": "Screen Protectors",
+    "price": 44,
+    "sku": "SKU-BELKINUL"
+  },
+  {
+    "name": "Spigen Glas.tR EZ Fit S24 Ultra",
+    "category_name": "Screen Protectors",
+    "price": 18,
+    "sku": "SKU-SPIGENGL"
+  },
+  {
+    "name": "ESR Armorite Screen Protector iPad Pro",
+    "category_name": "Screen Protectors",
+    "price": 22,
+    "sku": "SKU-ESRARMOR"
+  },
+  {
+    "name": "Tech21 Evo Glass Pixel 8",
+    "category_name": "Screen Protectors",
+    "price": 29,
+    "sku": "SKU-TECH21EV"
+  },
+  {
+    "name": "Breville Barista Express",
+    "category_name": "Coffee Makers",
+    "price": 749,
+    "sku": "SKU-BREVILLE"
+  },
+  {
+    "name": "Keurig K-Elite",
+    "category_name": "Coffee Makers",
+    "price": 189,
+    "sku": "SKU-KEURIGKE"
+  },
+  {
+    "name": "Nespresso Creatista Plus",
+    "category_name": "Coffee Makers",
+    "price": 599,
+    "sku": "SKU-NESPRESS"
+  },
+  {
+    "name": "Philips 3200 Series",
+    "category_name": "Coffee Makers",
+    "price": 799,
+    "sku": "SKU-PHILIPS3"
+  },
+  {
+    "name": "DeLonghi Magnifica Evo",
+    "category_name": "Coffee Makers",
+    "price": 899,
+    "sku": "SKU-DELONGHI"
+  },
+  {
+    "name": "Moccamaster KBGV",
+    "category_name": "Coffee Makers",
+    "price": 349,
+    "sku": "SKU-MOCCAMAS"
+  },
+  {
+    "name": "Ninja Professional Plus",
+    "category_name": "Blenders",
+    "price": 119,
+    "sku": "SKU-NINJAPRO"
+  },
+  {
+    "name": "Blendtec Classic 575",
+    "category_name": "Blenders",
+    "price": 399,
+    "sku": "SKU-BLENDTEC"
+  },
+  {
+    "name": "Breville Fresh & Furious",
+    "category_name": "Blenders",
+    "price": 199,
+    "sku": "SKU-BREVILLE"
+  },
+  {
+    "name": "KitchenAid K400",
+    "category_name": "Blenders",
+    "price": 299,
+    "sku": "SKU-KITCHENA"
+  },
+  {
+    "name": "LIFX Beam",
+    "category_name": "Lighting",
+    "price": 199,
+    "sku": "SKU-LIFXBEAM"
+  },
+  {
+    "name": "Yeelight LED Ceiling Light",
+    "category_name": "Lighting",
+    "price": 89,
+    "sku": "SKU-YEELIGHT"
+  },
+  {
+    "name": "Nanoleaf Shapes Hexagons",
+    "category_name": "Lighting",
+    "price": 199,
+    "sku": "SKU-NANOLEAF"
+  },
+  {
+    "name": "IKEA TRADFRI Bulb E27",
+    "category_name": "Lighting",
+    "price": 9,
+    "sku": "SKU-IKEATRAD"
+  },
+  {
+    "name": "Nike Dri-FIT T-Shirt",
+    "category_name": "T-Shirts",
+    "price": 35,
+    "sku": "SKU-NIKEDRIF"
+  },
+  {
+    "name": "Adidas Originals Trefoil Tee",
+    "category_name": "T-Shirts",
+    "price": 30,
+    "sku": "SKU-ADIDASOR"
+  },
+  {
+    "name": "Uniqlo Heattech T-Shirt",
+    "category_name": "T-Shirts",
+    "price": 19.9,
+    "sku": "SKU-UNIQLOHE"
+  },
+  {
+    "name": "Puma Essentials Logo Tee",
+    "category_name": "T-Shirts",
+    "price": 25,
+    "sku": "SKU-PUMAESSE"
+  },
+  {
+    "name": "New Balance 990v6",
+    "category_name": "Sneakers",
+    "price": 199,
+    "sku": "SKU-NEWBALAN"
+  },
+  {
+    "name": "Asics Gel-Kayano 30",
+    "category_name": "Sneakers",
+    "price": 159,
+    "sku": "SKU-ASICSGEL"
+  },
+  {
+    "name": "Converse Chuck Taylor All Star",
+    "category_name": "Sneakers",
+    "price": 65,
+    "sku": "SKU-CONVERSE"
+  },
+  {
+    "name": "Vans Old Skool",
+    "category_name": "Sneakers",
+    "price": 70,
+    "sku": "SKU-VANSOLDS"
+  },
+  {
+    "name": "Puma RS-X",
+    "category_name": "Sneakers",
+    "price": 119,
+    "sku": "SKU-PUMARSX"
+  }
 ]

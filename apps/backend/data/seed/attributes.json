@@ -1,94 +1,3393 @@
 {
   "definitions": [
-    {"name": "brand", "display_name": "Brand", "data_type": "text", "is_filterable": true, "is_facetable": true, "allowed_values": null, "unit": null, "priority": 1},
-    {"name": "color", "display_name": "Color", "data_type": "text", "is_filterable": true, "is_facetable": true, "allowed_values": null, "unit": null, "priority": 2},
-    {"name": "storage", "display_name": "Storage Capacity", "data_type": "text", "is_filterable": true, "is_facetable": true, "allowed_values": "[\"64GB\", \"128GB\", \"256GB\", \"512GB\", \"1TB\"]", "unit": null, "priority": 3},
-    {"name": "screen_size", "display_name": "Screen Size", "data_type": "number", "is_filterable": true, "is_facetable": true, "allowed_values": null, "unit": "inch", "priority": 4},
-    {"name": "weight", "display_name": "Weight", "data_type": "number", "is_filterable": true, "is_facetable": false, "allowed_values": null, "unit": "kg", "priority": 5},
-    {"name": "release_year", "display_name": "Release Year", "data_type": "number", "is_filterable": true, "is_facetable": false, "allowed_values": null, "unit": null, "priority": 6},
-    {"name": "wireless", "display_name": "Wireless", "data_type": "boolean", "is_filterable": true, "is_facetable": true, "allowed_values": null, "unit": null, "priority": 7},
-    {"name": "warranty_years", "display_name": "Warranty Period", "data_type": "number", "is_filterable": true, "is_facetable": false, "allowed_values": null, "unit": "years", "priority": 8},
-    {"name": "material", "display_name": "Material", "data_type": "text", "is_filterable": true, "is_facetable": true, "allowed_values": null, "unit": null, "priority": 9}
+    {
+      "name": "brand",
+      "display_name": "Brand",
+      "data_type": "text",
+      "is_filterable": true,
+      "is_facetable": true,
+      "allowed_values": null,
+      "unit": null,
+      "priority": 1
+    },
+    {
+      "name": "color",
+      "display_name": "Color",
+      "data_type": "text",
+      "is_filterable": true,
+      "is_facetable": true,
+      "allowed_values": null,
+      "unit": null,
+      "priority": 2
+    },
+    {
+      "name": "storage",
+      "display_name": "Storage Capacity",
+      "data_type": "text",
+      "is_filterable": true,
+      "is_facetable": true,
+      "allowed_values": "[\"64GB\", \"128GB\", \"256GB\", \"512GB\", \"1TB\"]",
+      "unit": null,
+      "priority": 3
+    },
+    {
+      "name": "screen_size",
+      "display_name": "Screen Size",
+      "data_type": "number",
+      "is_filterable": true,
+      "is_facetable": true,
+      "allowed_values": null,
+      "unit": "inch",
+      "priority": 4
+    },
+    {
+      "name": "weight",
+      "display_name": "Weight",
+      "data_type": "number",
+      "is_filterable": true,
+      "is_facetable": false,
+      "allowed_values": null,
+      "unit": "kg",
+      "priority": 5
+    },
+    {
+      "name": "release_year",
+      "display_name": "Release Year",
+      "data_type": "number",
+      "is_filterable": true,
+      "is_facetable": false,
+      "allowed_values": null,
+      "unit": null,
+      "priority": 6
+    },
+    {
+      "name": "wireless",
+      "display_name": "Wireless",
+      "data_type": "boolean",
+      "is_filterable": true,
+      "is_facetable": true,
+      "allowed_values": null,
+      "unit": null,
+      "priority": 7
+    },
+    {
+      "name": "warranty_years",
+      "display_name": "Warranty Period",
+      "data_type": "number",
+      "is_filterable": true,
+      "is_facetable": false,
+      "allowed_values": null,
+      "unit": "years",
+      "priority": 8
+    },
+    {
+      "name": "material",
+      "display_name": "Material",
+      "data_type": "text",
+      "is_filterable": true,
+      "is_facetable": true,
+      "allowed_values": null,
+      "unit": null,
+      "priority": 9
+    }
   ],
   "product_attributes": [
-    {"product_name": "iPhone 15 Pro", "attribute_name": "brand", "value_text": "Apple", "value_number": null, "value_boolean": null},
-    {"product_name": "iPhone 15 Pro", "attribute_name": "color", "value_text": "Titanium", "value_number": null, "value_boolean": null},
-    {"product_name": "iPhone 15 Pro", "attribute_name": "storage", "value_text": "256GB", "value_number": null, "value_boolean": null},
-    {"product_name": "iPhone 15 Pro", "attribute_name": "screen_size", "value_text": null, "value_number": 6.1, "value_boolean": null},
-    {"product_name": "iPhone 15 Pro", "attribute_name": "weight", "value_text": null, "value_number": 0.187, "value_boolean": null},
-    {"product_name": "iPhone 15 Pro", "attribute_name": "release_year", "value_text": null, "value_number": 2023, "value_boolean": null},
-    {"product_name": "iPhone 15 Pro", "attribute_name": "wireless", "value_text": null, "value_number": null, "value_boolean": true},
-    {"product_name": "iPhone 15 Pro", "attribute_name": "warranty_years", "value_text": null, "value_number": 1, "value_boolean": null},
-    {"product_name": "Samsung Galaxy S24", "attribute_name": "brand", "value_text": "Samsung", "value_number": null, "value_boolean": null},
-    {"product_name": "Samsung Galaxy S24", "attribute_name": "color", "value_text": "Phantom Black", "value_number": null, "value_boolean": null},
-    {"product_name": "Samsung Galaxy S24", "attribute_name": "storage", "value_text": "128GB", "value_number": null, "value_boolean": null},
-    {"product_name": "Samsung Galaxy S24", "attribute_name": "screen_size", "value_text": null, "value_number": 6.2, "value_boolean": null},
-    {"product_name": "Samsung Galaxy S24", "attribute_name": "weight", "value_text": null, "value_number": 0.167, "value_boolean": null},
-    {"product_name": "Samsung Galaxy S24", "attribute_name": "release_year", "value_text": null, "value_number": 2024, "value_boolean": null},
-    {"product_name": "Samsung Galaxy S24", "attribute_name": "wireless", "value_text": null, "value_number": null, "value_boolean": true},
-    {"product_name": "Samsung Galaxy S24", "attribute_name": "warranty_years", "value_text": null, "value_number": 1, "value_boolean": null},
-    {"product_name": "Google Pixel 8", "attribute_name": "brand", "value_text": "Google", "value_number": null, "value_boolean": null},
-    {"product_name": "Google Pixel 8", "attribute_name": "color", "value_text": "Obsidian", "value_number": null, "value_boolean": null},
-    {"product_name": "Google Pixel 8", "attribute_name": "storage", "value_text": "128GB", "value_number": null, "value_boolean": null},
-    {"product_name": "Google Pixel 8", "attribute_name": "screen_size", "value_text": null, "value_number": 6.2, "value_boolean": null},
-    {"product_name": "Google Pixel 8", "attribute_name": "release_year", "value_text": null, "value_number": 2023, "value_boolean": null},
-    {"product_name": "Google Pixel 8", "attribute_name": "wireless", "value_text": null, "value_number": null, "value_boolean": true},
-    {"product_name": "iPad Air", "attribute_name": "brand", "value_text": "Apple", "value_number": null, "value_boolean": null},
-    {"product_name": "iPad Air", "attribute_name": "color", "value_text": "Blue", "value_number": null, "value_boolean": null},
-    {"product_name": "iPad Air", "attribute_name": "storage", "value_text": "256GB", "value_number": null, "value_boolean": null},
-    {"product_name": "iPad Air", "attribute_name": "screen_size", "value_text": null, "value_number": 10.9, "value_boolean": null},
-    {"product_name": "iPad Air", "attribute_name": "release_year", "value_text": null, "value_number": 2024, "value_boolean": null},
-    {"product_name": "iPad Air", "attribute_name": "wireless", "value_text": null, "value_number": null, "value_boolean": true},
-    {"product_name": "Sony WH-1000XM5", "attribute_name": "brand", "value_text": "Sony", "value_number": null, "value_boolean": null},
-    {"product_name": "Sony WH-1000XM5", "attribute_name": "color", "value_text": "Black", "value_number": null, "value_boolean": null},
-    {"product_name": "Sony WH-1000XM5", "attribute_name": "weight", "value_text": null, "value_number": 0.25, "value_boolean": null},
-    {"product_name": "Sony WH-1000XM5", "attribute_name": "release_year", "value_text": null, "value_number": 2022, "value_boolean": null},
-    {"product_name": "Sony WH-1000XM5", "attribute_name": "wireless", "value_text": null, "value_number": null, "value_boolean": true},
-    {"product_name": "AirPods Pro 2", "attribute_name": "brand", "value_text": "Apple", "value_number": null, "value_boolean": null},
-    {"product_name": "AirPods Pro 2", "attribute_name": "color", "value_text": "White", "value_number": null, "value_boolean": null},
-    {"product_name": "AirPods Pro 2", "attribute_name": "weight", "value_text": null, "value_number": 0.005, "value_boolean": null},
-    {"product_name": "AirPods Pro 2", "attribute_name": "release_year", "value_text": null, "value_number": 2022, "value_boolean": null},
-    {"product_name": "AirPods Pro 2", "attribute_name": "wireless", "value_text": null, "value_number": null, "value_boolean": true},
-    {"product_name": "MacBook Pro 16", "attribute_name": "brand", "value_text": "Apple", "value_number": null, "value_boolean": null},
-    {"product_name": "MacBook Pro 16", "attribute_name": "color", "value_text": "Space Gray", "value_number": null, "value_boolean": null},
-    {"product_name": "MacBook Pro 16", "attribute_name": "storage", "value_text": "512GB", "value_number": null, "value_boolean": null},
-    {"product_name": "MacBook Pro 16", "attribute_name": "screen_size", "value_text": null, "value_number": 16.2, "value_boolean": null},
-    {"product_name": "MacBook Pro 16", "attribute_name": "weight", "value_text": null, "value_number": 2.15, "value_boolean": null},
-    {"product_name": "MacBook Pro 16", "attribute_name": "release_year", "value_text": null, "value_number": 2023, "value_boolean": null},
-    {"product_name": "MacBook Pro 16", "attribute_name": "wireless", "value_text": null, "value_number": null, "value_boolean": true},
-    {"product_name": "ASUS ROG Strix G16", "attribute_name": "brand", "value_text": "ASUS", "value_number": null, "value_boolean": null},
-    {"product_name": "ASUS ROG Strix G16", "attribute_name": "color", "value_text": "Black", "value_number": null, "value_boolean": null},
-    {"product_name": "ASUS ROG Strix G16", "attribute_name": "storage", "value_text": "1TB", "value_number": null, "value_boolean": null},
-    {"product_name": "ASUS ROG Strix G16", "attribute_name": "screen_size", "value_text": null, "value_number": 16.0, "value_boolean": null},
-    {"product_name": "ASUS ROG Strix G16", "attribute_name": "release_year", "value_text": null, "value_number": 2023, "value_boolean": null},
-    {"product_name": "Logitech MX Master 3S", "attribute_name": "brand", "value_text": "Logitech", "value_number": null, "value_boolean": null},
-    {"product_name": "Logitech MX Master 3S", "attribute_name": "color", "value_text": "Graphite", "value_number": null, "value_boolean": null},
-    {"product_name": "Logitech MX Master 3S", "attribute_name": "release_year", "value_text": null, "value_number": 2022, "value_boolean": null},
-    {"product_name": "Logitech MX Master 3S", "attribute_name": "wireless", "value_text": null, "value_number": null, "value_boolean": true},
-    {"product_name": "iPhone 15 Pro Leather Case", "attribute_name": "brand", "value_text": "Apple", "value_number": null, "value_boolean": null},
-    {"product_name": "iPhone 15 Pro Leather Case", "attribute_name": "color", "value_text": "Brown", "value_number": null, "value_boolean": null},
-    {"product_name": "iPhone 15 Pro Leather Case", "attribute_name": "material", "value_text": "Leather", "value_number": null, "value_boolean": null},
-    {"product_name": "Anker USB-C Cable 2m", "attribute_name": "brand", "value_text": "Anker", "value_number": null, "value_boolean": null},
-    {"product_name": "Anker USB-C Cable 2m", "attribute_name": "color", "value_text": "White", "value_number": null, "value_boolean": null},
-    {"product_name": "Anker USB-C Cable 2m", "attribute_name": "material", "value_text": "Nylon", "value_number": null, "value_boolean": null},
-    {"product_name": "Nespresso Vertuo Plus", "attribute_name": "brand", "value_text": "Nespresso", "value_number": null, "value_boolean": null},
-    {"product_name": "Nespresso Vertuo Plus", "attribute_name": "color", "value_text": "Black", "value_number": null, "value_boolean": null},
-    {"product_name": "Nespresso Vertuo Plus", "attribute_name": "release_year", "value_text": null, "value_number": 2023, "value_boolean": null},
-    {"product_name": "Nespresso Vertuo Plus", "attribute_name": "warranty_years", "value_text": null, "value_number": 2, "value_boolean": null},
-    {"product_name": "Vitamix 5200 Blender", "attribute_name": "brand", "value_text": "Vitamix", "value_number": null, "value_boolean": null},
-    {"product_name": "Vitamix 5200 Blender", "attribute_name": "color", "value_text": "Red", "value_number": null, "value_boolean": null},
-    {"product_name": "Vitamix 5200 Blender", "attribute_name": "warranty_years", "value_text": null, "value_number": 7, "value_boolean": null},
-    {"product_name": "Philips Hue White Ambiance", "attribute_name": "brand", "value_text": "Philips", "value_number": null, "value_boolean": null},
-    {"product_name": "Philips Hue White Ambiance", "attribute_name": "color", "value_text": "White", "value_number": null, "value_boolean": null},
-    {"product_name": "Philips Hue White Ambiance", "attribute_name": "wireless", "value_text": null, "value_number": null, "value_boolean": true},
-    {"product_name": "Uniqlo Supima Cotton T-Shirt", "attribute_name": "brand", "value_text": "Uniqlo", "value_number": null, "value_boolean": null},
-    {"product_name": "Uniqlo Supima Cotton T-Shirt", "attribute_name": "color", "value_text": "White", "value_number": null, "value_boolean": null},
-    {"product_name": "Uniqlo Supima Cotton T-Shirt", "attribute_name": "material", "value_text": "Cotton", "value_number": null, "value_boolean": null},
-    {"product_name": "Nike Air Max 90", "attribute_name": "brand", "value_text": "Nike", "value_number": null, "value_boolean": null},
-    {"product_name": "Nike Air Max 90", "attribute_name": "color", "value_text": "Black", "value_number": null, "value_boolean": null},
-    {"product_name": "Nike Air Max 90", "attribute_name": "material", "value_text": "Leather & Mesh", "value_number": null, "value_boolean": null},
-    {"product_name": "Adidas Ultraboost 23", "attribute_name": "brand", "value_text": "Adidas", "value_number": null, "value_boolean": null},
-    {"product_name": "Adidas Ultraboost 23", "attribute_name": "color", "value_text": "Core Black", "value_number": null, "value_boolean": null},
-    {"product_name": "Adidas Ultraboost 23", "attribute_name": "material", "value_text": "Primeknit", "value_number": null, "value_boolean": null}
+    {
+      "product_name": "iPhone 15 Pro",
+      "attribute_name": "brand",
+      "value_text": "Apple",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15 Pro",
+      "attribute_name": "color",
+      "value_text": "Titanium",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15 Pro",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15 Pro",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15 Pro",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.187,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15 Pro",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15 Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "iPhone 15 Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy S24",
+      "attribute_name": "brand",
+      "value_text": "Samsung",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy S24",
+      "attribute_name": "color",
+      "value_text": "Phantom Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy S24",
+      "attribute_name": "storage",
+      "value_text": "128GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy S24",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy S24",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.167,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy S24",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2024,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy S24",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Samsung Galaxy S24",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8",
+      "attribute_name": "brand",
+      "value_text": "Google",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8",
+      "attribute_name": "color",
+      "value_text": "Obsidian",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8",
+      "attribute_name": "storage",
+      "value_text": "128GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "iPad Air",
+      "attribute_name": "brand",
+      "value_text": "Apple",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Air",
+      "attribute_name": "color",
+      "value_text": "Blue",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Air",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Air",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 10.9,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Air",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2024,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Air",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Sony WH-1000XM5",
+      "attribute_name": "brand",
+      "value_text": "Sony",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony WH-1000XM5",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony WH-1000XM5",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.25,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony WH-1000XM5",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2022,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony WH-1000XM5",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "AirPods Pro 2",
+      "attribute_name": "brand",
+      "value_text": "Apple",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "AirPods Pro 2",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "AirPods Pro 2",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.005,
+      "value_boolean": null
+    },
+    {
+      "product_name": "AirPods Pro 2",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2022,
+      "value_boolean": null
+    },
+    {
+      "product_name": "AirPods Pro 2",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "MacBook Pro 16",
+      "attribute_name": "brand",
+      "value_text": "Apple",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Pro 16",
+      "attribute_name": "color",
+      "value_text": "Space Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Pro 16",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Pro 16",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 16.2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Pro 16",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 2.15,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Pro 16",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Pro 16",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "ASUS ROG Strix G16",
+      "attribute_name": "brand",
+      "value_text": "ASUS",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "ASUS ROG Strix G16",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "ASUS ROG Strix G16",
+      "attribute_name": "storage",
+      "value_text": "1TB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "ASUS ROG Strix G16",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 16.0,
+      "value_boolean": null
+    },
+    {
+      "product_name": "ASUS ROG Strix G16",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Logitech MX Master 3S",
+      "attribute_name": "brand",
+      "value_text": "Logitech",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Logitech MX Master 3S",
+      "attribute_name": "color",
+      "value_text": "Graphite",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Logitech MX Master 3S",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2022,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Logitech MX Master 3S",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "iPhone 15 Pro Leather Case",
+      "attribute_name": "brand",
+      "value_text": "Apple",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15 Pro Leather Case",
+      "attribute_name": "color",
+      "value_text": "Brown",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15 Pro Leather Case",
+      "attribute_name": "material",
+      "value_text": "Leather",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Anker USB-C Cable 2m",
+      "attribute_name": "brand",
+      "value_text": "Anker",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Anker USB-C Cable 2m",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Anker USB-C Cable 2m",
+      "attribute_name": "material",
+      "value_text": "Nylon",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nespresso Vertuo Plus",
+      "attribute_name": "brand",
+      "value_text": "Nespresso",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nespresso Vertuo Plus",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nespresso Vertuo Plus",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nespresso Vertuo Plus",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Vitamix 5200 Blender",
+      "attribute_name": "brand",
+      "value_text": "Vitamix",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Vitamix 5200 Blender",
+      "attribute_name": "color",
+      "value_text": "Red",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Vitamix 5200 Blender",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 7,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Philips Hue White Ambiance",
+      "attribute_name": "brand",
+      "value_text": "Philips",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Philips Hue White Ambiance",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Philips Hue White Ambiance",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Uniqlo Supima Cotton T-Shirt",
+      "attribute_name": "brand",
+      "value_text": "Uniqlo",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Uniqlo Supima Cotton T-Shirt",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Uniqlo Supima Cotton T-Shirt",
+      "attribute_name": "material",
+      "value_text": "Cotton",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nike Air Max 90",
+      "attribute_name": "brand",
+      "value_text": "Nike",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nike Air Max 90",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nike Air Max 90",
+      "attribute_name": "material",
+      "value_text": "Leather & Mesh",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Adidas Ultraboost 23",
+      "attribute_name": "brand",
+      "value_text": "Adidas",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Adidas Ultraboost 23",
+      "attribute_name": "color",
+      "value_text": "Core Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Adidas Ultraboost 23",
+      "attribute_name": "material",
+      "value_text": "Primeknit",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OnePlus 12",
+      "attribute_name": "color",
+      "value_text": "Silver",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OnePlus 12",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OnePlus 12",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.7,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OnePlus 12",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.21,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OnePlus 12",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2024,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OnePlus 12",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "OnePlus 12",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OPPO Find X7 Ultra",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OPPO Find X7 Ultra",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OPPO Find X7 Ultra",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.82,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OPPO Find X7 Ultra",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.22,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OPPO Find X7 Ultra",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2024,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OPPO Find X7 Ultra",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "OPPO Find X7 Ultra",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Vivo X100 Pro",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Vivo X100 Pro",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Vivo X100 Pro",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.78,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Vivo X100 Pro",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.22,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Vivo X100 Pro",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2024,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Vivo X100 Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Vivo X100 Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Realme GT 5 Pro",
+      "attribute_name": "color",
+      "value_text": "Orange",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Realme GT 5 Pro",
+      "attribute_name": "storage",
+      "value_text": "128GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Realme GT 5 Pro",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.78,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Realme GT 5 Pro",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.22,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Realme GT 5 Pro",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Realme GT 5 Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Realme GT 5 Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nothing Phone 2",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nothing Phone 2",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nothing Phone 2",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.7,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nothing Phone 2",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nothing Phone 2",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nothing Phone 2",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Nothing Phone 2",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Motorola Edge 40 Pro",
+      "attribute_name": "color",
+      "value_text": "Blue",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Motorola Edge 40 Pro",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Motorola Edge 40 Pro",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.67,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Motorola Edge 40 Pro",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Motorola Edge 40 Pro",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Motorola Edge 40 Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Motorola Edge 40 Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nokia G60",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nokia G60",
+      "attribute_name": "storage",
+      "value_text": "128GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nokia G60",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.58,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nokia G60",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.19,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nokia G60",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2022,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nokia G60",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Nokia G60",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei P60 Pro",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei P60 Pro",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei P60 Pro",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.67,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei P60 Pro",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei P60 Pro",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei P60 Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Huawei P60 Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Honor Magic 6 Pro",
+      "attribute_name": "color",
+      "value_text": "Green",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Honor Magic 6 Pro",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Honor Magic 6 Pro",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.8,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Honor Magic 6 Pro",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.22,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Honor Magic 6 Pro",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2024,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Honor Magic 6 Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Honor Magic 6 Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony Xperia 1 V",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony Xperia 1 V",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony Xperia 1 V",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.5,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony Xperia 1 V",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.19,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony Xperia 1 V",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony Xperia 1 V",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Sony Xperia 1 V",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus ROG Phone 8",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus ROG Phone 8",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus ROG Phone 8",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.78,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus ROG Phone 8",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.23,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus ROG Phone 8",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2024,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus ROG Phone 8",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Asus ROG Phone 8",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Flip 5",
+      "attribute_name": "color",
+      "value_text": "Purple",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Flip 5",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Flip 5",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.7,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Flip 5",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.19,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Flip 5",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Flip 5",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Samsung Galaxy Z Flip 5",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Fold 5",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Fold 5",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Fold 5",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 7.6,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Fold 5",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.25,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Fold 5",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Z Fold 5",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Samsung Galaxy Z Fold 5",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8 Pro",
+      "attribute_name": "color",
+      "value_text": "Blue",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8 Pro",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8 Pro",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.7,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8 Pro",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.21,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8 Pro",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel 8 Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Google Pixel 8 Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15",
+      "attribute_name": "color",
+      "value_text": "Pink",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15",
+      "attribute_name": "storage",
+      "value_text": "128GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 6.1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.17,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "iPhone 15",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Pro 12.9",
+      "attribute_name": "color",
+      "value_text": "Silver",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Pro 12.9",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Pro 12.9",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 12.9,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Pro 12.9",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.68,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Pro 12.9",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2022,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Pro 12.9",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "iPad Pro 12.9",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Mini 6",
+      "attribute_name": "color",
+      "value_text": "Purple",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Mini 6",
+      "attribute_name": "storage",
+      "value_text": "64GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Mini 6",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 8.3,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Mini 6",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.29,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Mini 6",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2021,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPad Mini 6",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "iPad Mini 6",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Tab S9 Ultra",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Tab S9 Ultra",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Tab S9 Ultra",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 14.6,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Tab S9 Ultra",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.73,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Tab S9 Ultra",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Tab S9 Ultra",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Samsung Galaxy Tab S9 Ultra",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo Tab P12 Pro",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo Tab P12 Pro",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo Tab P12 Pro",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 12.6,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo Tab P12 Pro",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.56,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo Tab P12 Pro",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo Tab P12 Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Lenovo Tab P12 Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Xiaomi Pad 6",
+      "attribute_name": "color",
+      "value_text": "Blue",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Xiaomi Pad 6",
+      "attribute_name": "storage",
+      "value_text": "128GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Xiaomi Pad 6",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 11.0,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Xiaomi Pad 6",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.49,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Xiaomi Pad 6",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Xiaomi Pad 6",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Xiaomi Pad 6",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei MatePad Pro",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei MatePad Pro",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei MatePad Pro",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 11.0,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei MatePad Pro",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.45,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei MatePad Pro",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Huawei MatePad Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Huawei MatePad Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Pro 9",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Pro 9",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Pro 9",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 13.0,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Pro 9",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.88,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Pro 9",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2022,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Pro 9",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Microsoft Surface Pro 9",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Amazon Fire HD 10",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Amazon Fire HD 10",
+      "attribute_name": "storage",
+      "value_text": "32GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Amazon Fire HD 10",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 10.1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Amazon Fire HD 10",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 0.47,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Amazon Fire HD 10",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Amazon Fire HD 10",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Amazon Fire HD 10",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sennheiser Momentum 4",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sennheiser Momentum 4",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Sennheiser Momentum 4",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Audio-Technica ATH-M50x",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Audio-Technica ATH-M50x",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": false
+    },
+    {
+      "product_name": "Audio-Technica ATH-M50x",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Beats Studio Pro",
+      "attribute_name": "color",
+      "value_text": "Sand",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Beats Studio Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Beats Studio Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Skullcandy Crusher ANC 2",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Skullcandy Crusher ANC 2",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Skullcandy Crusher ANC 2",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Marshall Major IV",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Marshall Major IV",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Marshall Major IV",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Bang & Olufsen Beoplay HX",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Bang & Olufsen Beoplay HX",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Bang & Olufsen Beoplay HX",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "JBL Tour One M2",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "JBL Tour One M2",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "JBL Tour One M2",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Anker Soundcore Space Q45",
+      "attribute_name": "color",
+      "value_text": "Blue",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Anker Soundcore Space Q45",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Anker Soundcore Space Q45",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sonos Era 100",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sonos Era 100",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Sonos Era 100",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony SRS-XB100",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony SRS-XB100",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Sony SRS-XB100",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Marshall Emberton II",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Marshall Emberton II",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Marshall Emberton II",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Anker Soundcore Motion+",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Anker Soundcore Motion+",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Anker Soundcore Motion+",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Ultimate Ears WONDERBOOM 3",
+      "attribute_name": "color",
+      "value_text": "Blue",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Ultimate Ears WONDERBOOM 3",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Ultimate Ears WONDERBOOM 3",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Bose Home Speaker 500",
+      "attribute_name": "color",
+      "value_text": "Silver",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Bose Home Speaker 500",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Bose Home Speaker 500",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "JBL Charge 5",
+      "attribute_name": "color",
+      "value_text": "Red",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "JBL Charge 5",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "JBL Charge 5",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Harman Kardon Aura Studio 3",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Harman Kardon Aura Studio 3",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Harman Kardon Aura Studio 3",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony WF-1000XM5",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sony WF-1000XM5",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Sony WF-1000XM5",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sennheiser Momentum True Wireless 4",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Sennheiser Momentum True Wireless 4",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Sennheiser Momentum True Wireless 4",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Beats Fit Pro",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Beats Fit Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Beats Fit Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Jabra Elite 10",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Jabra Elite 10",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Jabra Elite 10",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Anker Soundcore Liberty 4 NC",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Anker Soundcore Liberty 4 NC",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Anker Soundcore Liberty 4 NC",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nothing Ear 2",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nothing Ear 2",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Nothing Ear 2",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OnePlus Buds Pro 2",
+      "attribute_name": "color",
+      "value_text": "Green",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OnePlus Buds Pro 2",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "OnePlus Buds Pro 2",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel Buds Pro",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Google Pixel Buds Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Google Pixel Buds Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Air 15 M3",
+      "attribute_name": "color",
+      "value_text": "Silver",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Air 15 M3",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Air 15 M3",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 15.3,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Air 15 M3",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 1.51,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Air 15 M3",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2024,
+      "value_boolean": null
+    },
+    {
+      "product_name": "MacBook Air 15 M3",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "MacBook Air 15 M3",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HP Spectre x360 14",
+      "attribute_name": "color",
+      "value_text": "Blue",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HP Spectre x360 14",
+      "attribute_name": "storage",
+      "value_text": "1TB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HP Spectre x360 14",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 13.5,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HP Spectre x360 14",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 1.36,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HP Spectre x360 14",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HP Spectre x360 14",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "HP Spectre x360 14",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo ThinkPad X1 Carbon Gen 11",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo ThinkPad X1 Carbon Gen 11",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo ThinkPad X1 Carbon Gen 11",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 14.0,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo ThinkPad X1 Carbon Gen 11",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 1.12,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo ThinkPad X1 Carbon Gen 11",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo ThinkPad X1 Carbon Gen 11",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Lenovo ThinkPad X1 Carbon Gen 11",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus Zenbook 14 OLED",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus Zenbook 14 OLED",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus Zenbook 14 OLED",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 14.0,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus Zenbook 14 OLED",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 1.28,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus Zenbook 14 OLED",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus Zenbook 14 OLED",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Asus Zenbook 14 OLED",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Acer Swift 5",
+      "attribute_name": "color",
+      "value_text": "Green",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Acer Swift 5",
+      "attribute_name": "storage",
+      "value_text": "1TB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Acer Swift 5",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 14.0,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Acer Swift 5",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 1.05,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Acer Swift 5",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2022,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Acer Swift 5",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Acer Swift 5",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Laptop 5",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Laptop 5",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Laptop 5",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 13.5,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Laptop 5",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 1.27,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Laptop 5",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2022,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Microsoft Surface Laptop 5",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Microsoft Surface Laptop 5",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "LG Gram 17",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "LG Gram 17",
+      "attribute_name": "storage",
+      "value_text": "1TB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "LG Gram 17",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 17.0,
+      "value_boolean": null
+    },
+    {
+      "product_name": "LG Gram 17",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 1.35,
+      "value_boolean": null
+    },
+    {
+      "product_name": "LG Gram 17",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "LG Gram 17",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "LG Gram 17",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Book3 Pro",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Book3 Pro",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Book3 Pro",
+      "attribute_name": "screen_size",
+      "value_text": null,
+      "value_number": 14.0,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Book3 Pro",
+      "attribute_name": "weight",
+      "value_text": null,
+      "value_number": 1.17,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Book3 Pro",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy Book3 Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Samsung Galaxy Book3 Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Apple Mac Studio M2 Ultra",
+      "attribute_name": "color",
+      "value_text": "Silver",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Apple Mac Studio M2 Ultra",
+      "attribute_name": "storage",
+      "value_text": "1TB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Apple Mac Studio M2 Ultra",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Apple Mac Studio M2 Ultra",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Apple Mac Studio M2 Ultra",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Dell XPS 8960",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Dell XPS 8960",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Dell XPS 8960",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Dell XPS 8960",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Dell XPS 8960",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HP Envy TE01",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HP Envy TE01",
+      "attribute_name": "storage",
+      "value_text": "512GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HP Envy TE01",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2022,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HP Envy TE01",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "HP Envy TE01",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo ThinkCentre M90q",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo ThinkCentre M90q",
+      "attribute_name": "storage",
+      "value_text": "256GB",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo ThinkCentre M90q",
+      "attribute_name": "release_year",
+      "value_text": null,
+      "value_number": 2023,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Lenovo ThinkCentre M90q",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Lenovo ThinkCentre M90q",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Razer DeathAdder V3 Pro",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Razer DeathAdder V3 Pro",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Razer DeathAdder V3 Pro",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Corsair K95 RGB Platinum",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Corsair K95 RGB Platinum",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": false
+    },
+    {
+      "product_name": "Corsair K95 RGB Platinum",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "SteelSeries Apex Pro TKL",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "SteelSeries Apex Pro TKL",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": false
+    },
+    {
+      "product_name": "SteelSeries Apex Pro TKL",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HyperX Cloud II Wireless",
+      "attribute_name": "color",
+      "value_text": "Red",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "HyperX Cloud II Wireless",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "HyperX Cloud II Wireless",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "BenQ Zowie XL2566K",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "BenQ Zowie XL2566K",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": false
+    },
+    {
+      "product_name": "BenQ Zowie XL2566K",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 3,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Dell UltraSharp U2723QE",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Dell UltraSharp U2723QE",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": false
+    },
+    {
+      "product_name": "Dell UltraSharp U2723QE",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 3,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus ProArt PA279CV",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asus ProArt PA279CV",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": false
+    },
+    {
+      "product_name": "Asus ProArt PA279CV",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 3,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Apple Magic Trackpad",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Apple Magic Trackpad",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Apple Magic Trackpad",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15 Pro Clear Case",
+      "attribute_name": "color",
+      "value_text": "Clear",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "iPhone 15 Silicone Case",
+      "attribute_name": "color",
+      "value_text": "Pink",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung Galaxy S24 Ultra Case",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Spigen Ultra Hybrid for Pixel 8",
+      "attribute_name": "color",
+      "value_text": "Clear",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "OtterBox Defender iPhone 15 Pro",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "CASETiFY Impact Case S24",
+      "attribute_name": "color",
+      "value_text": "Pink",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Belkin MagSafe Wallet",
+      "attribute_name": "color",
+      "value_text": "Brown",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nomad Modern Leather Case iPhone 15",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Anker 737 GaNPrime 120W Charger",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Belkin BoostCharge Pro 3-in-1",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Apple 35W Dual USB-C Charger",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Samsung 45W Super Fast Charger",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nomad Kevlar USB-C Cable 3m",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Mophie Snap+ Wireless Charger",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Belkin UltraGlass 2 iPhone 15 Pro",
+      "attribute_name": "color",
+      "value_text": "Clear",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Spigen Glas.tR EZ Fit S24 Ultra",
+      "attribute_name": "color",
+      "value_text": "Clear",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "ESR Armorite Screen Protector iPad Pro",
+      "attribute_name": "color",
+      "value_text": "Clear",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Tech21 Evo Glass Pixel 8",
+      "attribute_name": "color",
+      "value_text": "Clear",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Breville Barista Express",
+      "attribute_name": "color",
+      "value_text": "Silver",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Breville Barista Express",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Keurig K-Elite",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Keurig K-Elite",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nespresso Creatista Plus",
+      "attribute_name": "color",
+      "value_text": "Silver",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nespresso Creatista Plus",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Philips 3200 Series",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Philips 3200 Series",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "DeLonghi Magnifica Evo",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "DeLonghi Magnifica Evo",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Moccamaster KBGV",
+      "attribute_name": "color",
+      "value_text": "Yellow",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Moccamaster KBGV",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 5,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Ninja Professional Plus",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Ninja Professional Plus",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Blendtec Classic 575",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Blendtec Classic 575",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 8,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Breville Fresh & Furious",
+      "attribute_name": "color",
+      "value_text": "Silver",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Breville Fresh & Furious",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "KitchenAid K400",
+      "attribute_name": "color",
+      "value_text": "Red",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "KitchenAid K400",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "LIFX Beam",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "LIFX Beam",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "LIFX Beam",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Yeelight LED Ceiling Light",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Yeelight LED Ceiling Light",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Yeelight LED Ceiling Light",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 1,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nanoleaf Shapes Hexagons",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nanoleaf Shapes Hexagons",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "Nanoleaf Shapes Hexagons",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "IKEA TRADFRI Bulb E27",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "IKEA TRADFRI Bulb E27",
+      "attribute_name": "wireless",
+      "value_text": null,
+      "value_number": null,
+      "value_boolean": true
+    },
+    {
+      "product_name": "IKEA TRADFRI Bulb E27",
+      "attribute_name": "warranty_years",
+      "value_text": null,
+      "value_number": 2,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Nike Dri-FIT T-Shirt",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Adidas Originals Trefoil Tee",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Uniqlo Heattech T-Shirt",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Puma Essentials Logo Tee",
+      "attribute_name": "color",
+      "value_text": "Navy",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "New Balance 990v6",
+      "attribute_name": "color",
+      "value_text": "Gray",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Asics Gel-Kayano 30",
+      "attribute_name": "color",
+      "value_text": "Blue",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Converse Chuck Taylor All Star",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Vans Old Skool",
+      "attribute_name": "color",
+      "value_text": "Black",
+      "value_number": null,
+      "value_boolean": null
+    },
+    {
+      "product_name": "Puma RS-X",
+      "attribute_name": "color",
+      "value_text": "White",
+      "value_number": null,
+      "value_boolean": null
+    }
   ]
 }
