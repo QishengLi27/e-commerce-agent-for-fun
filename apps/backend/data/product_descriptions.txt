@@ -1,5 +1,5 @@
 [product: iPhone 15 Pro]
-category: Smartphones
+category: Flagship Phones
 brand: Apple
 price: 999.00
 color: Titanium
@@ -10,28 +10,31 @@ release_year: 2023
 wireless: true
 warranty_years: 1
 
-iPhone 15 Pro features a 6.1-inch Super Retina XDR display with ProMotion
-technology delivering adaptive refresh rates up to 120Hz. The display reaches
-2000 nits peak brightness outdoors, making it clearly visible in direct sunlight.
+iPhone 15 Pro features a 6.1-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
 
-The A17 Pro chip is the industry's first 3-nanometer chip, delivering console-level
-gaming performance with hardware-accelerated ray tracing. The 6-core GPU is 20%
-faster than the previous generation, while the 6-core CPU includes 2 performance
-cores and 4 efficiency cores for all-day battery life.
+Available in Titanium with 256GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
 
-The pro camera system features a 48MP main camera with a quad-pixel sensor that
-defaults to 24MP for optimal detail and light capture. Multiple focal lengths —
-24mm, 28mm, and 35mm — are available at the main camera level. The new 5x Telephoto
-camera at 120mm provides exceptional reach. Night mode, Portrait mode, and Photonic
-Engine computational photography are available across all cameras.
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
 
-MagSafe wireless charging supports up to 15W with compatible accessories. The
-titanium design is both stronger and lighter than previous models at 187 grams.
-USB-C with USB 3 speeds up to 10Gb/s enables fast data transfer. The Action button
-replaces the mute switch with customizable shortcuts. Battery life lasts up to
-29 hours of video playback. Face ID is faster and more secure with the new
-Secure Enclave. The phone is rated IP68 for water and dust resistance, surviving
-up to 6 meters for 30 minutes.
+Powered by the latest Apple chipset built on a 4-nanometer process, the iPhone 15 Pro delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+
+[product: Samsung Galaxy S24]
+category: Smartphones
+brand: Samsung
+price: 899.00
+color: Phantom Black
+storage: 128GB
+screen_size: 6.2
+weight: 0.167
+release_year: 2024
+wireless: true
+warranty_years: 1
+
+Powered by the latest Samsung chipset built on a 4-nanometer process, the Samsung Galaxy S24 delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+Available in Phantom Black with 128GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
 
 [product: Google Pixel 8]
 category: Smartphones
@@ -43,23 +46,141 @@ screen_size: 6.2
 release_year: 2023
 wireless: true
 
-Google Pixel 8 features a 6.2-inch Actua OLED display with a smooth 120Hz
-adaptive refresh rate. The display reaches 2000 nits peak brightness for
-excellent outdoor visibility. The Tensor G3 chip powers advanced AI features
-including Magic Eraser, Best Take, and Audio Magic Eraser for photo and video
-enhancements.
+Google Pixel 8 features a 6.2-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
 
-The camera system includes a 50MP main sensor with Octa PD autofocus and a
-12MP ultrawide lens with autofocus for Macro Focus. Google's computational
-photography delivers Real Tone, Night Sight, and Astrophotography modes.
-Super Res Zoom provides up to 8x magnification with AI-enhanced clarity.
+Available in Obsidian with 128GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
 
-The Pixel 8 runs Android 14 with 7 years of OS, security, and Feature Drop
-updates guaranteed. The Titan M2 security chip protects sensitive data. Battery
-life lasts over 24 hours with Adaptive Battery, extending to 72 hours with
-Extreme Battery Saver. Fast wireless charging is supported up to 18W with
-Pixel Stand. The phone supports Wi-Fi 7, Bluetooth 5.3, and 5G connectivity.
-Face Unlock and an under-display fingerprint sensor provide biometric security.
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+Powered by the latest Google chipset built on a 4-nanometer process, the Google Pixel 8 delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+
+[product: Xiaomi 14]
+category: Smartphones
+brand: Xiaomi
+price: 599.00
+wireless: 
+
+Xiaomi 14 features a 6.5-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
+
+Available in Black with 128GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+
+[product: iPad Air]
+category: Tablets
+brand: Apple
+price: 599.00
+color: Blue
+storage: 256GB
+screen_size: 10.9
+release_year: 2024
+wireless: true
+
+Powered by a high-performance processor with dedicated graphics cores, this tablet handles multitasking, video editing, and gaming with ease. The 256GB of storage provides ample space for apps, documents, and media libraries.
+
+iPad Air features a stunning 10.9-inch display with vibrant color accuracy and high resolution, perfect for creative work and media consumption. The slim bezels maximize screen real estate while keeping the device portable and comfortable to hold.
+
+
+[product: Samsung Galaxy Tab S9]
+category: Tablets
+brand: Samsung
+price: 799.00
+wireless: 
+
+Powered by a high-performance processor with dedicated graphics cores, this tablet handles multitasking, video editing, and gaming with ease. The 128GB of storage provides ample space for apps, documents, and media libraries.
+
+Battery life delivers up to 10 hours of continuous use, and wireless charging keeps your workspace cable-free.
+
+Samsung Galaxy Tab S9 features a stunning 11.0-inch display with vibrant color accuracy and high resolution, perfect for creative work and media consumption. The slim bezels maximize screen real estate while keeping the device portable and comfortable to hold.
+
+Finished in Gray with a premium aluminum unibody construction. Quad-speaker audio with Dolby Atmos support creates an immersive soundstage for movies and music. The front-facing camera supports Center Stage, keeping you in frame during video calls.
+
+
+[product: Sony WH-1000XM5]
+category: Headphones
+brand: Sony
+price: 349.00
+color: Black
+weight: 0.25
+release_year: 2022
+wireless: true
+
+Bluetooth 5.3 ensures a stable wireless connection with support for high-resolution audio codecs. Multipoint connectivity lets you switch seamlessly between your phone and laptop.
+
+Sony WH-1000XM5 delivers exceptional sound quality with custom-tuned drivers that produce deep bass, clear mids, and crisp highs. The wide soundstage creates an immersive listening experience for music, movies, and gaming.
+
+Memory foam ear cushions and an adjustable headband distribute weight evenly for all-day comfort. The ear cups fold flat for compact storage in the included carrying case.
+
+Active noise cancellation adapts to your environment in real time, blocking out distractions on planes, trains, and busy offices. Transparency mode lets you hear announcements and conversations without removing the headphones.
+
+
+[product: Bose QuietComfort Ultra]
+category: Headphones
+brand: Bose
+price: 429.00
+wireless: 
+
+Bluetooth 5.3 ensures a stable wireless connection with support for high-resolution audio codecs. Multipoint connectivity lets you switch seamlessly between your phone and laptop.
+
+Bose QuietComfort Ultra delivers exceptional sound quality with custom-tuned drivers that produce deep bass, clear mids, and crisp highs. The wide soundstage creates an immersive listening experience for music, movies, and gaming.
+
+Memory foam ear cushions and an adjustable headband distribute weight evenly for all-day comfort. The ear cups fold flat for compact storage in the included carrying case.
+
+
+[product: AirPods Pro 2]
+category: Wireless Earbuds
+brand: Apple
+price: 249.00
+color: White
+weight: 0.005
+release_year: 2022
+wireless: true
+
+AirPods Pro 2 features a refined ergonomic design that stays secure and comfortable during workouts, commutes, and long listening sessions. Multiple ear tip sizes ensure a personalized fit with excellent passive noise isolation.
+
+Battery life delivers up to 8 hours of listening with ANC enabled, extending to 30 hours with the wireless charging case. A 5-minute quick charge provides 1 hour of playback for those last-minute departures.
+
+Active noise cancellation blocks out environmental distractions, while adaptive transparency mode lets important sounds through when you need awareness. The six-microphone array delivers crystal-clear call quality even in windy conditions.
+
+
+[product: Samsung Galaxy Buds3]
+category: Wireless Earbuds
+brand: Samsung
+price: 179.00
+wireless: 
+
+Custom high-excursion drivers produce rich, detailed sound with deep bass and sparkling treble. Spatial audio with dynamic head tracking creates a theater-like experience for movies and supported music tracks.
+
+Active noise cancellation blocks out environmental distractions, while adaptive transparency mode lets important sounds through when you need awareness. The six-microphone array delivers crystal-clear call quality even in windy conditions.
+
+
+[product: JBL Flip 6]
+category: Speakers
+brand: JBL
+price: 129.00
+wireless: 
+
+The rugged IP67 waterproof and dustproof design makes it perfect for pool parties, beach trips, and outdoor adventures. The durable exterior withstands drops and bumps while maintaining its premium look.
+
+JBL Flip 6 delivers room-filling sound with surprisingly deep bass for its compact size. Custom-designed drivers and passive radiators produce balanced audio across the entire frequency range.
+
+Bluetooth 5.3 provides a stable wireless connection up to 30 meters, with support for stereo pairing when you connect two units. Built-in microphone enables hands-free calling and voice assistant access.
+
+Battery life provides up to 20 hours of continuous playback on a single charge. Quick charge technology delivers 2 hours of playtime from just 10 minutes of charging.
+
+
+[product: Bose SoundLink Flex]
+category: Speakers
+brand: Bose
+price: 149.00
+wireless: 
+
+Bose SoundLink Flex delivers room-filling sound with surprisingly deep bass for its compact size. Custom-designed drivers and passive radiators produce balanced audio across the entire frequency range.
+
+The rugged IP67 waterproof and dustproof design makes it perfect for pool parties, beach trips, and outdoor adventures. The durable exterior withstands drops and bumps while maintaining its premium look.
+
+Bluetooth 5.3 provides a stable wireless connection up to 30 meters, with support for stereo pairing when you connect two units. Built-in microphone enables hands-free calling and voice assistant access.
+
 
 [product: MacBook Pro 16]
 category: Laptops
@@ -72,25 +193,1952 @@ weight: 2.15
 release_year: 2023
 wireless: true
 
-MacBook Pro 16 features a 16.2-inch Liquid Retina XDR display with mini-LED
-technology delivering 1000 nits sustained brightness and 1600 nits peak for
-HDR content. ProMotion adaptive refresh rates up to 120Hz ensure fluid scrolling
-and responsiveness. The display supports the P3 wide color gamut and True Tone.
+The aluminum unibody construction in Space Gray provides durability without excess weight. An array of microphones ensures clear video calls, while the enhanced speakers deliver surprisingly rich audio for a laptop this thin.
 
-Powered by the M3 Pro chip with a 12-core CPU (6 performance, 6 efficiency)
-and 18-core GPU, the MacBook Pro 16 delivers exceptional performance for
-professional workflows. The 16-core Neural Engine accelerates machine learning
-tasks by up to 40% compared to M1 Pro. Unified memory of 18GB ensures smooth
-multitasking across demanding applications.
+The precision-engineered keyboard offers a satisfying typing experience with excellent key travel and backlighting for low-light environments. The large glass trackpad supports multi-finger gestures for intuitive navigation.
 
-Battery life delivers up to 22 hours of video playback, the longest in any
-Mac. MagSafe 3 charging provides a secure magnetic connection with fast
-charging capability. The six-speaker sound system with force-cancelling woofers
-delivers room-filling audio with support for Spatial Audio and Dolby Atmos.
+All-day battery life keeps you productive without hunting for outlets. Wi-Fi 6E and Bluetooth 5.3 provide cutting-edge wireless connectivity.
 
-Connectivity includes three Thunderbolt 4 ports, HDMI, SDXC card slot,
-MagSafe 3, and a 3.5mm headphone jack with high-impedance support. Wi-Fi 6E
-and Bluetooth 5.3 provide cutting-edge wireless. The 1080p FaceTime HD camera
-with advanced image signal processor ensures sharp video calls. The backlit
-Magic Keyboard with full-height function keys and Touch ID completes the
-professional package.
+MacBook Pro 16 features a brilliant 16.2-inch display with high resolution and accurate color reproduction, ideal for creative professionals and content creators. The slim bezels maximize screen space while keeping the chassis compact.
+
+
+[product: Dell XPS 15]
+category: Laptops
+brand: Dell
+price: 1899.00
+wireless: 
+
+Dell XPS 15 features a brilliant 14.0-inch display with high resolution and accurate color reproduction, ideal for creative professionals and content creators. The slim bezels maximize screen space while keeping the chassis compact.
+
+The aluminum unibody construction in Silver provides durability without excess weight. An array of microphones ensures clear video calls, while the enhanced speakers deliver surprisingly rich audio for a laptop this thin.
+
+The precision-engineered keyboard offers a satisfying typing experience with excellent key travel and backlighting for low-light environments. The large glass trackpad supports multi-finger gestures for intuitive navigation.
+
+All-day battery life keeps you productive without hunting for outlets. Wi-Fi 6E and Bluetooth 5.3 provide cutting-edge wireless connectivity.
+
+
+[product: ASUS ROG Strix G16]
+category: Gaming Laptops
+brand: ASUS
+price: 1599.00
+color: Black
+storage: 1TB
+screen_size: 16.0
+release_year: 2023
+wireless: 
+
+ASUS ROG Strix G16 features a brilliant 16.0-inch display with high resolution and accurate color reproduction, ideal for creative professionals and content creators. The slim bezels maximize screen space while keeping the chassis compact.
+
+Powered by the latest generation processor with integrated graphics, this laptop handles demanding workloads from video editing to software development. The 1TB SSD delivers fast boot times and snappy application launches.
+
+The aluminum unibody construction in Black provides durability without excess weight. An array of microphones ensures clear video calls, while the enhanced speakers deliver surprisingly rich audio for a laptop this thin.
+
+
+[product: Lenovo Legion Pro 7]
+category: Gaming Laptops
+brand: Lenovo
+price: 1799.00
+wireless: 
+
+The precision-engineered keyboard offers a satisfying typing experience with excellent key travel and backlighting for low-light environments. The large glass trackpad supports multi-finger gestures for intuitive navigation.
+
+All-day battery life keeps you productive without hunting for outlets. Wi-Fi 6E and Bluetooth 5.3 provide cutting-edge wireless connectivity.
+
+The aluminum unibody construction in Silver provides durability without excess weight. An array of microphones ensures clear video calls, while the enhanced speakers deliver surprisingly rich audio for a laptop this thin.
+
+
+[product: Logitech MX Master 3S]
+category: Peripherals
+brand: Logitech
+price: 99.00
+color: Graphite
+release_year: 2022
+wireless: true
+
+Logitech MX Master 3S features a precision optical sensor with adjustable DPI up to 30,000 for pixel-perfect tracking on any surface. The ultralightweight design reduces hand fatigue during fast-paced gaming sessions.
+
+Wireless technology delivers a 1ms report rate with zero perceptible latency. The included charging dock keeps the mouse powered between sessions, and a single charge lasts up to 80 hours.
+
+Programmable buttons and onboard memory let you save custom profiles directly to the mouse. The PTFE mouse feet glide smoothly across mousepads and desks for consistent aim.
+
+
+[product: Apple Magic Keyboard]
+category: Peripherals
+brand: Apple
+price: 99.00
+wireless: 
+
+N-key rollover and anti-ghosting technology ensure every keystroke registers accurately, even when multiple keys are pressed simultaneously. The detachable wrist rest reduces fatigue during extended use.
+
+Dedicated macro keys and media controls provide quick access to frequently used commands and volume adjustment. The aircraft-grade aluminum frame ensures durability and stability during intense gaming sessions.
+
+
+[product: iPhone 15 Pro Leather Case]
+category: Cases & Covers
+brand: Apple
+price: 59.00
+color: Brown
+wireless: 
+material: Leather
+
+Made from premium materials that resist yellowing and fingerprints, maintaining a clean appearance over time. The scratch-resistant coating keeps the case looking new even after months of daily use.
+
+iPhone 15 Pro Leather Case provides military-grade drop protection with shock-absorbing corners and raised edges that protect the screen and camera from scratches. The slim profile adds minimal bulk while maintaining a comfortable grip.
+
+
+[product: Samsung Galaxy S24 Silicone Case]
+category: Cases & Covers
+brand: Samsung
+price: 29.00
+wireless: 
+
+Samsung Galaxy S24 Silicone Case provides military-grade drop protection with shock-absorbing corners and raised edges that protect the screen and camera from scratches. The slim profile adds minimal bulk while maintaining a comfortable grip.
+
+The precise cutouts ensure full access to all buttons, ports, and speakers without removing the case. The responsive button covers provide tactile feedback that matches the phone's original buttons.
+
+
+[product: Anker USB-C Cable 2m]
+category: Cables & Chargers
+brand: Anker
+price: 15.00
+color: White
+wireless: 
+material: Nylon
+
+Universal USB-C compatibility works with a wide range of devices from major brands. Built-in overcurrent and overvoltage protection safeguards your electronics during charging.
+
+Anker USB-C Cable 2m supports fast charging up to 65W, powering laptops, tablets, and phones at maximum speed. The advanced GaN technology delivers high wattage in a compact form factor that runs cooler than traditional chargers.
+
+The durable braided cable resists fraying and tangling while maintaining flexibility for easy packing. Reinforced strain relief at the connectors prevents breakage from repeated bending.
+
+
+[product: Apple 20W USB-C Charger]
+category: Cables & Chargers
+brand: Apple
+price: 19.00
+wireless: 
+
+Apple 20W USB-C Charger supports fast charging up to 140W, powering laptops, tablets, and phones at maximum speed. The advanced GaN technology delivers high wattage in a compact form factor that runs cooler than traditional chargers.
+
+Universal USB-C compatibility works with a wide range of devices from major brands. Built-in overcurrent and overvoltage protection safeguards your electronics during charging.
+
+
+[product: iPhone 15 Pro Tempered Glass]
+category: Screen Protectors
+brand: iPhone
+price: 12.00
+wireless: 
+
+The ultra-thin design maintains touchscreen sensitivity and clarity without adding bulk. The rounded edges provide a smooth feel and prevent chipping over time.
+
+An easy-align installation tray ensures bubble-free application in seconds. The adhesive layer leaves no residue if you ever need to remove or replace the protector.
+
+iPhone 15 Pro Tempered Glass features 9H hardness tempered glass that resists scratches from keys, coins, and daily wear. The oleophobic coating repels fingerprints and smudges for a crystal-clear view.
+
+
+[product: Nespresso Vertuo Plus]
+category: Coffee Makers
+brand: Nespresso
+price: 199.00
+color: Black
+release_year: 2023
+wireless: 
+warranty_years: 2
+
+The milk frother creates velvety microfoam for lattes and cappuccinos, with adjustable temperature and texture settings. The removable brew group and drip tray make cleaning simple and straightforward.
+
+Nespresso Vertuo Plus delivers café-quality beverages at home with precise temperature control and consistent extraction. The intuitive interface makes it easy to customize strength, volume, and milk ratios to your taste.
+
+
+[product: Vitamix 5200 Blender]
+category: Blenders
+brand: Vitamix
+price: 449.00
+color: Red
+wireless: 
+warranty_years: 7
+
+Built to last with a 7-year warranty covering the motor and base. The stable base includes suction feet that prevent walking during heavy blending tasks.
+
+Variable speed control and preset programs handle everything from smoothies and soups to nut butters and dough. The pulse function provides precise control for chunky salsas and pestos.
+
+The large-capacity pitcher is made from BPA-free, impact-resistant material that withstands thermal shock. The self-cleaning cycle makes cleanup as easy as adding water and a drop of soap.
+
+Vitamix 5200 Blender features a powerful motor that pulverizes ice, frozen fruit, and tough vegetables in seconds. The stainless steel blades maintain their sharp edge through years of daily use.
+
+
+[product: Philips Air Fryer]
+category: Kitchen Appliances
+brand: Philips
+price: 129.00
+wireless: 
+
+The integrated conical burr grinder freshly grinds beans for each cup, preserving aromatic oils that pre-ground coffee loses. Adjustable grind settings let you dial in the perfect extraction for any roast.
+
+Philips Air Fryer delivers café-quality beverages at home with precise temperature control and consistent extraction. The intuitive interface makes it easy to customize strength, volume, and milk ratios to your taste.
+
+Built with premium materials and backed by a 1-year warranty for peace of mind. The compact footprint fits comfortably on most kitchen counters without dominating the space.
+
+
+[product: Philips Hue White Ambiance]
+category: Lighting
+brand: Philips
+price: 29.00
+color: White
+wireless: true
+
+Energy-efficient LED technology consumes up to 80% less power than incandescent bulbs while lasting up to 25,000 hours. The instant-on design provides full brightness immediately without warm-up time.
+
+Smart home integration allows voice control and automation through popular platforms. Schedule lighting scenes that gradually brighten in the morning and dim in the evening for better sleep.
+
+Philips Hue White Ambiance delivers adjustable white light from warm candlelight to cool daylight, matching your mood and activity. The high color rendering index ensures colors appear natural and vibrant under the light.
+
+
+[product: Dyson Solarcycle Morph]
+category: Lighting
+brand: Dyson
+price: 649.00
+wireless: 
+
+Dyson Solarcycle Morph delivers adjustable white light from warm candlelight to cool daylight, matching your mood and activity. The high color rendering index ensures colors appear natural and vibrant under the light.
+
+Smart home integration allows voice control and automation through popular platforms. Schedule lighting scenes that gradually brighten in the morning and dim in the evening for better sleep.
+
+
+[product: Uniqlo Supima Cotton T-Shirt]
+category: T-Shirts
+brand: Uniqlo
+price: 19.90
+color: White
+wireless: 
+material: Cotton
+
+Uniqlo Supima Cotton T-Shirt is crafted from 100% organic cotton for exceptional softness and breathability. The premium fabric feels luxurious against the skin while regulating temperature in warm and cool conditions.
+
+Pre-shrunk fabric minimizes size changes after laundering. The colorfast dye resists fading, keeping the White shade vibrant wash after wash.
+
+
+[product: Nike Air Max 90]
+category: Sneakers
+brand: Nike
+price: 129.00
+color: Black
+wireless: 
+material: Leather & Mesh
+
+The durable rubber outsole features a traction pattern that grips confidently on pavement, gym floors, and light trails. Flex grooves in the forefoot promote natural movement and toe-off efficiency.
+
+A padded collar and tongue cushion the ankle while the heel counter provides stability during lateral movements. The removable insole accommodates custom orthotics for personalized support.
+
+The Black colorway transitions seamlessly from workouts to casual outings. Reflective details enhance visibility during early morning or evening runs.
+
+Nike Air Max 90 combines style and performance with responsive cushioning that absorbs impact during runs and daily wear. The engineered mesh upper provides targeted breathability where you need it most.
+
+
+[product: Adidas Ultraboost 23]
+category: Sneakers
+brand: Adidas
+price: 189.00
+color: Core Black
+wireless: 
+material: Primeknit
+
+The Core Black colorway transitions seamlessly from workouts to casual outings. Reflective details enhance visibility during early morning or evening runs.
+
+A padded collar and tongue cushion the ankle while the heel counter provides stability during lateral movements. The removable insole accommodates custom orthotics for personalized support.
+
+The durable rubber outsole features a traction pattern that grips confidently on pavement, gym floors, and light trails. Flex grooves in the forefoot promote natural movement and toe-off efficiency.
+
+
+[product: OnePlus 12]
+category: Smartphones
+brand: OnePlus
+price: 799.00
+color: Silver
+storage: 256GB
+screen_size: 6.7
+weight: 0.21
+release_year: 2024
+wireless: true
+warranty_years: 1
+
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+OnePlus 12 features a 6.7-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
+
+Available in Silver with 256GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+Battery life lasts a full day of typical usage with intelligent power management. Fast wireless charging up to 15W is supported, along with reverse wireless charging for earbuds and watches.
+
+
+[product: OPPO Find X7 Ultra]
+category: Smartphones
+brand: OPPO
+price: 899.00
+color: Black
+storage: 512GB
+screen_size: 6.82
+weight: 0.22
+release_year: 2024
+wireless: true
+warranty_years: 1
+
+Available in Black with 512GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+Battery life lasts a full day of typical usage with intelligent power management. Fast wireless charging up to 15W is supported, along with reverse wireless charging for earbuds and watches.
+
+Powered by the latest OPPO chipset built on a 4-nanometer process, the OPPO Find X7 Ultra delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+
+[product: Vivo X100 Pro]
+category: Smartphones
+brand: Vivo
+price: 749.00
+color: White
+storage: 256GB
+screen_size: 6.78
+weight: 0.22
+release_year: 2024
+wireless: true
+warranty_years: 1
+
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+Battery life lasts a full day of typical usage with intelligent power management. Fast wireless charging up to 15W is supported, along with reverse wireless charging for earbuds and watches.
+
+
+[product: Realme GT 5 Pro]
+category: Smartphones
+brand: Realme
+price: 599.00
+color: Orange
+storage: 128GB
+screen_size: 6.78
+weight: 0.22
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Battery life lasts a full day of typical usage with intelligent power management. Fast wireless charging up to 15W is supported, along with reverse wireless charging for earbuds and watches.
+
+Realme GT 5 Pro features a 6.78-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
+
+
+[product: Nothing Phone 2]
+category: Smartphones
+brand: Nothing
+price: 599.00
+color: Gray
+storage: 256GB
+screen_size: 6.7
+weight: 0.2
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+Powered by the latest Nothing chipset built on a 4-nanometer process, the Nothing Phone 2 delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+Available in Gray with 256GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+Nothing Phone 2 features a 6.7-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
+
+
+[product: Motorola Edge 40 Pro]
+category: Smartphones
+brand: Motorola
+price: 699.00
+color: Blue
+storage: 256GB
+screen_size: 6.67
+weight: 0.2
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+Powered by the latest Motorola chipset built on a 4-nanometer process, the Motorola Edge 40 Pro delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+Motorola Edge 40 Pro features a 6.67-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
+
+Battery life lasts a full day of typical usage with intelligent power management. Fast wireless charging up to 15W is supported, along with reverse wireless charging for earbuds and watches.
+
+
+[product: Nokia G60]
+category: Smartphones
+brand: Nokia
+price: 249.00
+color: Black
+storage: 128GB
+screen_size: 6.58
+weight: 0.19
+release_year: 2022
+wireless: true
+warranty_years: 1
+
+Available in Black with 128GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+Nokia G60 features a 6.58-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
+
+
+[product: Huawei P60 Pro]
+category: Smartphones
+brand: Huawei
+price: 899.00
+color: White
+storage: 256GB
+screen_size: 6.67
+weight: 0.2
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+Battery life lasts a full day of typical usage with intelligent power management. Fast wireless charging up to 15W is supported, along with reverse wireless charging for earbuds and watches.
+
+Huawei P60 Pro features a 6.67-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
+
+Available in White with 256GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+
+[product: Honor Magic 6 Pro]
+category: Smartphones
+brand: Honor
+price: 799.00
+color: Green
+storage: 512GB
+screen_size: 6.8
+weight: 0.22
+release_year: 2024
+wireless: true
+warranty_years: 1
+
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+Powered by the latest Honor chipset built on a 4-nanometer process, the Honor Magic 6 Pro delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+Honor Magic 6 Pro features a 6.8-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
+
+
+[product: Sony Xperia 1 V]
+category: Smartphones
+brand: Sony
+price: 999.00
+color: Black
+storage: 256GB
+screen_size: 6.5
+weight: 0.19
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Available in Black with 256GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+Sony Xperia 1 V features a 6.5-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
+
+
+[product: Asus ROG Phone 8]
+category: Smartphones
+brand: Asus
+price: 1099.00
+color: Black
+storage: 512GB
+screen_size: 6.78
+weight: 0.23
+release_year: 2024
+wireless: true
+warranty_years: 2
+
+Battery life lasts a full day of typical usage with intelligent power management. Fast wireless charging up to 15W is supported, along with reverse wireless charging for earbuds and watches.
+
+Asus ROG Phone 8 features a 6.78-inch OLED display with adaptive 120Hz refresh rate for fluid scrolling and responsive touch. The peak brightness reaches 2000 nits for excellent outdoor visibility, and the always-on display shows notifications at a glance without waking the full screen.
+
+
+[product: Samsung Galaxy Z Flip 5]
+category: Smartphones
+brand: Samsung
+price: 999.00
+color: Purple
+storage: 256GB
+screen_size: 6.7
+weight: 0.19
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Powered by the latest Samsung chipset built on a 4-nanometer process, the Samsung Galaxy Z Flip 5 delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+Available in Purple with 256GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+Battery life lasts a full day of typical usage with intelligent power management. Fast wireless charging up to 15W is supported, along with reverse wireless charging for earbuds and watches.
+
+
+[product: Samsung Galaxy Z Fold 5]
+category: Smartphones
+brand: Samsung
+price: 1799.00
+color: Black
+storage: 512GB
+screen_size: 7.6
+weight: 0.25
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Powered by the latest Samsung chipset built on a 4-nanometer process, the Samsung Galaxy Z Fold 5 delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+Battery life lasts a full day of typical usage with intelligent power management. Fast wireless charging up to 15W is supported, along with reverse wireless charging for earbuds and watches.
+
+Available in Black with 512GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+
+[product: Google Pixel 8 Pro]
+category: Smartphones
+brand: Google
+price: 999.00
+color: Blue
+storage: 256GB
+screen_size: 6.7
+weight: 0.21
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Available in Blue with 256GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+Powered by the latest Google chipset built on a 4-nanometer process, the Google Pixel 8 Pro delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+
+[product: iPhone 15]
+category: Smartphones
+brand: iPhone
+price: 799.00
+color: Pink
+storage: 128GB
+screen_size: 6.1
+weight: 0.17
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+The camera system includes a high-resolution main sensor with optical image stabilization and computational photography. Night mode captures detailed low-light shots, while portrait mode produces natural background blur with precise edge detection. Video recording supports 4K at 60fps with Dolby Vision HDR.
+
+Battery life lasts a full day of typical usage with intelligent power management. Fast wireless charging up to 15W is supported, along with reverse wireless charging for earbuds and watches.
+
+Available in Pink with 128GB of internal storage. The device is rated IP68 for water and dust resistance, surviving submersion up to 6 meters for 30 minutes. Face recognition and an under-display fingerprint sensor provide dual biometric security.
+
+Powered by the latest iPhone chipset built on a 4-nanometer process, the iPhone 15 delivers flagship performance with improved power efficiency. The advanced neural engine accelerates machine learning tasks, enabling real-time photo enhancement, language translation, and on-device voice recognition.
+
+
+[product: iPad Pro 12.9]
+category: Tablets
+brand: iPad
+price: 1099.00
+color: Silver
+storage: 256GB
+screen_size: 12.9
+weight: 0.68
+release_year: 2022
+wireless: true
+warranty_years: 1
+
+Finished in Silver with a premium aluminum unibody construction. Quad-speaker audio with Dolby Atmos support creates an immersive soundstage for movies and music. The front-facing camera supports Center Stage, keeping you in frame during video calls.
+
+Battery life delivers up to 10 hours of continuous use, and wireless charging keeps your workspace cable-free.
+
+iPad Pro 12.9 features a stunning 12.9-inch display with vibrant color accuracy and high resolution, perfect for creative work and media consumption. The slim bezels maximize screen real estate while keeping the device portable and comfortable to hold.
+
+
+[product: iPad Mini 6]
+category: Tablets
+brand: iPad
+price: 499.00
+color: Purple
+storage: 64GB
+screen_size: 8.3
+weight: 0.29
+release_year: 2021
+wireless: true
+warranty_years: 1
+
+Powered by a high-performance processor with dedicated graphics cores, this tablet handles multitasking, video editing, and gaming with ease. The 64GB of storage provides ample space for apps, documents, and media libraries.
+
+iPad Mini 6 features a stunning 8.3-inch display with vibrant color accuracy and high resolution, perfect for creative work and media consumption. The slim bezels maximize screen real estate while keeping the device portable and comfortable to hold.
+
+
+[product: Samsung Galaxy Tab S9 Ultra]
+category: Tablets
+brand: Samsung
+price: 1199.00
+color: Gray
+storage: 512GB
+screen_size: 14.6
+weight: 0.73
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Samsung Galaxy Tab S9 Ultra features a stunning 14.6-inch display with vibrant color accuracy and high resolution, perfect for creative work and media consumption. The slim bezels maximize screen real estate while keeping the device portable and comfortable to hold.
+
+Powered by a high-performance processor with dedicated graphics cores, this tablet handles multitasking, video editing, and gaming with ease. The 512GB of storage provides ample space for apps, documents, and media libraries.
+
+The tablet supports pressure-sensitive stylus input for drawing and note-taking, with low latency that feels as natural as pen on paper. Split-screen multitasking lets you run two apps side by side, boosting productivity on the go.
+
+
+[product: Lenovo Tab P12 Pro]
+category: Tablets
+brand: Lenovo
+price: 499.00
+color: Gray
+storage: 256GB
+screen_size: 12.6
+weight: 0.56
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Lenovo Tab P12 Pro features a stunning 12.6-inch display with vibrant color accuracy and high resolution, perfect for creative work and media consumption. The slim bezels maximize screen real estate while keeping the device portable and comfortable to hold.
+
+Finished in Gray with a premium aluminum unibody construction. Quad-speaker audio with Dolby Atmos support creates an immersive soundstage for movies and music. The front-facing camera supports Center Stage, keeping you in frame during video calls.
+
+
+[product: Xiaomi Pad 6]
+category: Tablets
+brand: Xiaomi
+price: 349.00
+color: Blue
+storage: 128GB
+screen_size: 11.0
+weight: 0.49
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Xiaomi Pad 6 features a stunning 11.0-inch display with vibrant color accuracy and high resolution, perfect for creative work and media consumption. The slim bezels maximize screen real estate while keeping the device portable and comfortable to hold.
+
+Powered by a high-performance processor with dedicated graphics cores, this tablet handles multitasking, video editing, and gaming with ease. The 128GB of storage provides ample space for apps, documents, and media libraries.
+
+Finished in Blue with a premium aluminum unibody construction. Quad-speaker audio with Dolby Atmos support creates an immersive soundstage for movies and music. The front-facing camera supports Center Stage, keeping you in frame during video calls.
+
+The tablet supports pressure-sensitive stylus input for drawing and note-taking, with low latency that feels as natural as pen on paper. Split-screen multitasking lets you run two apps side by side, boosting productivity on the go.
+
+
+[product: Huawei MatePad Pro]
+category: Tablets
+brand: Huawei
+price: 699.00
+color: White
+storage: 256GB
+screen_size: 11.0
+weight: 0.45
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Huawei MatePad Pro features a stunning 11.0-inch display with vibrant color accuracy and high resolution, perfect for creative work and media consumption. The slim bezels maximize screen real estate while keeping the device portable and comfortable to hold.
+
+Powered by a high-performance processor with dedicated graphics cores, this tablet handles multitasking, video editing, and gaming with ease. The 256GB of storage provides ample space for apps, documents, and media libraries.
+
+Battery life delivers up to 10 hours of continuous use, and wireless charging keeps your workspace cable-free.
+
+
+[product: Microsoft Surface Pro 9]
+category: Tablets
+brand: Microsoft
+price: 999.00
+color: Black
+storage: 256GB
+screen_size: 13.0
+weight: 0.88
+release_year: 2022
+wireless: true
+warranty_years: 1
+
+Battery life delivers up to 10 hours of continuous use, and wireless charging keeps your workspace cable-free.
+
+Powered by a high-performance processor with dedicated graphics cores, this tablet handles multitasking, video editing, and gaming with ease. The 256GB of storage provides ample space for apps, documents, and media libraries.
+
+The tablet supports pressure-sensitive stylus input for drawing and note-taking, with low latency that feels as natural as pen on paper. Split-screen multitasking lets you run two apps side by side, boosting productivity on the go.
+
+Microsoft Surface Pro 9 features a stunning 13.0-inch display with vibrant color accuracy and high resolution, perfect for creative work and media consumption. The slim bezels maximize screen real estate while keeping the device portable and comfortable to hold.
+
+
+[product: Amazon Fire HD 10]
+category: Tablets
+brand: Amazon
+price: 149.00
+color: Black
+storage: 32GB
+screen_size: 10.1
+weight: 0.47
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Finished in Black with a premium aluminum unibody construction. Quad-speaker audio with Dolby Atmos support creates an immersive soundstage for movies and music. The front-facing camera supports Center Stage, keeping you in frame during video calls.
+
+Battery life delivers up to 10 hours of continuous use, and wireless charging keeps your workspace cable-free.
+
+Amazon Fire HD 10 features a stunning 10.1-inch display with vibrant color accuracy and high resolution, perfect for creative work and media consumption. The slim bezels maximize screen real estate while keeping the device portable and comfortable to hold.
+
+Powered by a high-performance processor with dedicated graphics cores, this tablet handles multitasking, video editing, and gaming with ease. The 32GB of storage provides ample space for apps, documents, and media libraries.
+
+
+[product: Sennheiser Momentum 4]
+category: Headphones
+brand: Sennheiser
+price: 379.00
+color: Black
+wireless: true
+warranty_years: 2
+
+Active noise cancellation adapts to your environment in real time, blocking out distractions on planes, trains, and busy offices. Transparency mode lets you hear announcements and conversations without removing the headphones.
+
+Sennheiser Momentum 4 delivers exceptional sound quality with custom-tuned drivers that produce deep bass, clear mids, and crisp highs. The wide soundstage creates an immersive listening experience for music, movies, and gaming.
+
+Bluetooth 5.3 ensures a stable wireless connection with support for high-resolution audio codecs. Multipoint connectivity lets you switch seamlessly between your phone and laptop.
+
+
+[product: Audio-Technica ATH-M50x]
+category: Headphones
+brand: Audio-Technica
+price: 149.00
+color: Black
+wireless: false
+warranty_years: 2
+
+Memory foam ear cushions and an adjustable headband distribute weight evenly for all-day comfort. The ear cups fold flat for compact storage in the included carrying case.
+
+The closed-back design provides excellent passive noise isolation, letting you focus on your music without distraction.
+
+The detachable cable features an inline microphone and remote for call and playback control. The gold-plated 3.5mm connector ensures reliable audio transmission.
+
+Audio-Technica ATH-M50x delivers exceptional sound quality with custom-tuned drivers that produce deep bass, clear mids, and crisp highs. The wide soundstage creates an immersive listening experience for music, movies, and gaming.
+
+
+[product: Beats Studio Pro]
+category: Headphones
+brand: Beats
+price: 349.00
+color: Sand
+wireless: true
+warranty_years: 1
+
+Beats Studio Pro delivers exceptional sound quality with custom-tuned drivers that produce deep bass, clear mids, and crisp highs. The wide soundstage creates an immersive listening experience for music, movies, and gaming.
+
+Bluetooth 5.3 ensures a stable wireless connection with support for high-resolution audio codecs. Multipoint connectivity lets you switch seamlessly between your phone and laptop.
+
+Memory foam ear cushions and an adjustable headband distribute weight evenly for all-day comfort. The ear cups fold flat for compact storage in the included carrying case.
+
+
+[product: Skullcandy Crusher ANC 2]
+category: Headphones
+brand: Skullcandy
+price: 199.00
+color: Black
+wireless: true
+warranty_years: 1
+
+Memory foam ear cushions and an adjustable headband distribute weight evenly for all-day comfort. The ear cups fold flat for compact storage in the included carrying case.
+
+Bluetooth 5.3 ensures a stable wireless connection with support for high-resolution audio codecs. Multipoint connectivity lets you switch seamlessly between your phone and laptop.
+
+
+[product: Marshall Major IV]
+category: Headphones
+brand: Marshall
+price: 149.00
+color: Black
+wireless: true
+warranty_years: 1
+
+Marshall Major IV delivers exceptional sound quality with custom-tuned drivers that produce deep bass, clear mids, and crisp highs. The wide soundstage creates an immersive listening experience for music, movies, and gaming.
+
+Memory foam ear cushions and an adjustable headband distribute weight evenly for all-day comfort. The ear cups fold flat for compact storage in the included carrying case.
+
+Bluetooth 5.3 ensures a stable wireless connection with support for high-resolution audio codecs. Multipoint connectivity lets you switch seamlessly between your phone and laptop.
+
+
+[product: Bang & Olufsen Beoplay HX]
+category: Headphones
+brand: Bang
+price: 499.00
+color: Gray
+wireless: true
+warranty_years: 2
+
+Memory foam ear cushions and an adjustable headband distribute weight evenly for all-day comfort. The ear cups fold flat for compact storage in the included carrying case.
+
+Bang & Olufsen Beoplay HX delivers exceptional sound quality with custom-tuned drivers that produce deep bass, clear mids, and crisp highs. The wide soundstage creates an immersive listening experience for music, movies, and gaming.
+
+
+[product: JBL Tour One M2]
+category: Headphones
+brand: JBL
+price: 299.00
+color: Black
+wireless: true
+warranty_years: 1
+
+Active noise cancellation adapts to your environment in real time, blocking out distractions on planes, trains, and busy offices. Transparency mode lets you hear announcements and conversations without removing the headphones.
+
+Memory foam ear cushions and an adjustable headband distribute weight evenly for all-day comfort. The ear cups fold flat for compact storage in the included carrying case.
+
+Bluetooth 5.3 ensures a stable wireless connection with support for high-resolution audio codecs. Multipoint connectivity lets you switch seamlessly between your phone and laptop.
+
+
+[product: Anker Soundcore Space Q45]
+category: Headphones
+brand: Anker
+price: 149.00
+color: Blue
+wireless: true
+warranty_years: 1
+
+Anker Soundcore Space Q45 delivers exceptional sound quality with custom-tuned drivers that produce deep bass, clear mids, and crisp highs. The wide soundstage creates an immersive listening experience for music, movies, and gaming.
+
+Active noise cancellation adapts to your environment in real time, blocking out distractions on planes, trains, and busy offices. Transparency mode lets you hear announcements and conversations without removing the headphones.
+
+
+[product: Sonos Era 100]
+category: Speakers
+brand: Sonos
+price: 249.00
+color: White
+wireless: true
+warranty_years: 1
+
+Sonos Era 100 delivers room-filling sound with surprisingly deep bass for its compact size. Custom-designed drivers and passive radiators produce balanced audio across the entire frequency range.
+
+Battery life provides up to 20 hours of continuous playback on a single charge. Quick charge technology delivers 2 hours of playtime from just 10 minutes of charging.
+
+The rugged IP67 waterproof and dustproof design makes it perfect for pool parties, beach trips, and outdoor adventures. The durable exterior withstands drops and bumps while maintaining its premium look.
+
+Bluetooth 5.3 provides a stable wireless connection up to 30 meters, with support for stereo pairing when you connect two units. Built-in microphone enables hands-free calling and voice assistant access.
+
+
+[product: Sony SRS-XB100]
+category: Speakers
+brand: Sony
+price: 59.00
+color: Black
+wireless: true
+warranty_years: 1
+
+Bluetooth 5.3 provides a stable wireless connection up to 30 meters, with support for stereo pairing when you connect two units. Built-in microphone enables hands-free calling and voice assistant access.
+
+Battery life provides up to 20 hours of continuous playback on a single charge. Quick charge technology delivers 2 hours of playtime from just 10 minutes of charging.
+
+
+[product: Marshall Emberton II]
+category: Speakers
+brand: Marshall
+price: 169.00
+color: Black
+wireless: true
+warranty_years: 1
+
+Battery life provides up to 20 hours of continuous playback on a single charge. Quick charge technology delivers 2 hours of playtime from just 10 minutes of charging.
+
+Marshall Emberton II delivers room-filling sound with surprisingly deep bass for its compact size. Custom-designed drivers and passive radiators produce balanced audio across the entire frequency range.
+
+Bluetooth 5.3 provides a stable wireless connection up to 30 meters, with support for stereo pairing when you connect two units. Built-in microphone enables hands-free calling and voice assistant access.
+
+
+[product: Anker Soundcore Motion+]
+category: Speakers
+brand: Anker
+price: 99.00
+color: Black
+wireless: true
+warranty_years: 1
+
+Bluetooth 5.3 provides a stable wireless connection up to 30 meters, with support for stereo pairing when you connect two units. Built-in microphone enables hands-free calling and voice assistant access.
+
+Battery life provides up to 20 hours of continuous playback on a single charge. Quick charge technology delivers 2 hours of playtime from just 10 minutes of charging.
+
+
+[product: Ultimate Ears WONDERBOOM 3]
+category: Speakers
+brand: Ultimate
+price: 99.00
+color: Blue
+wireless: true
+warranty_years: 2
+
+Battery life provides up to 20 hours of continuous playback on a single charge. Quick charge technology delivers 2 hours of playtime from just 10 minutes of charging.
+
+Bluetooth 5.3 provides a stable wireless connection up to 30 meters, with support for stereo pairing when you connect two units. Built-in microphone enables hands-free calling and voice assistant access.
+
+
+[product: Bose Home Speaker 500]
+category: Speakers
+brand: Bose
+price: 349.00
+color: Silver
+wireless: true
+warranty_years: 1
+
+The rugged IP67 waterproof and dustproof design makes it perfect for pool parties, beach trips, and outdoor adventures. The durable exterior withstands drops and bumps while maintaining its premium look.
+
+Bluetooth 5.3 provides a stable wireless connection up to 30 meters, with support for stereo pairing when you connect two units. Built-in microphone enables hands-free calling and voice assistant access.
+
+Battery life provides up to 20 hours of continuous playback on a single charge. Quick charge technology delivers 2 hours of playtime from just 10 minutes of charging.
+
+
+[product: JBL Charge 5]
+category: Speakers
+brand: JBL
+price: 179.00
+color: Red
+wireless: true
+warranty_years: 1
+
+Bluetooth 5.3 provides a stable wireless connection up to 30 meters, with support for stereo pairing when you connect two units. Built-in microphone enables hands-free calling and voice assistant access.
+
+Battery life provides up to 20 hours of continuous playback on a single charge. Quick charge technology delivers 2 hours of playtime from just 10 minutes of charging.
+
+
+[product: Harman Kardon Aura Studio 3]
+category: Speakers
+brand: Harman
+price: 299.00
+color: Black
+wireless: true
+warranty_years: 1
+
+Harman Kardon Aura Studio 3 delivers room-filling sound with surprisingly deep bass for its compact size. Custom-designed drivers and passive radiators produce balanced audio across the entire frequency range.
+
+The rugged IP67 waterproof and dustproof design makes it perfect for pool parties, beach trips, and outdoor adventures. The durable exterior withstands drops and bumps while maintaining its premium look.
+
+
+[product: Sony WF-1000XM5]
+category: Wireless Earbuds
+brand: Sony
+price: 299.00
+color: Black
+wireless: true
+warranty_years: 1
+
+Sony WF-1000XM5 features a refined ergonomic design that stays secure and comfortable during workouts, commutes, and long listening sessions. Multiple ear tip sizes ensure a personalized fit with excellent passive noise isolation.
+
+Custom high-excursion drivers produce rich, detailed sound with deep bass and sparkling treble. Spatial audio with dynamic head tracking creates a theater-like experience for movies and supported music tracks.
+
+Active noise cancellation blocks out environmental distractions, while adaptive transparency mode lets important sounds through when you need awareness. The six-microphone array delivers crystal-clear call quality even in windy conditions.
+
+Battery life delivers up to 8 hours of listening with ANC enabled, extending to 30 hours with the wireless charging case. A 5-minute quick charge provides 1 hour of playback for those last-minute departures.
+
+
+[product: Sennheiser Momentum True Wireless 4]
+category: Wireless Earbuds
+brand: Sennheiser
+price: 299.00
+color: Black
+wireless: true
+warranty_years: 2
+
+Battery life delivers up to 8 hours of listening with ANC enabled, extending to 30 hours with the wireless charging case. A 5-minute quick charge provides 1 hour of playback for those last-minute departures.
+
+Custom high-excursion drivers produce rich, detailed sound with deep bass and sparkling treble. Spatial audio with dynamic head tracking creates a theater-like experience for movies and supported music tracks.
+
+
+[product: Beats Fit Pro]
+category: Wireless Earbuds
+brand: Beats
+price: 199.00
+color: Black
+wireless: true
+warranty_years: 1
+
+Active noise cancellation blocks out environmental distractions, while adaptive transparency mode lets important sounds through when you need awareness. The six-microphone array delivers crystal-clear call quality even in windy conditions.
+
+Beats Fit Pro features a refined ergonomic design that stays secure and comfortable during workouts, commutes, and long listening sessions. Multiple ear tip sizes ensure a personalized fit with excellent passive noise isolation.
+
+Custom high-excursion drivers produce rich, detailed sound with deep bass and sparkling treble. Spatial audio with dynamic head tracking creates a theater-like experience for movies and supported music tracks.
+
+Battery life delivers up to 8 hours of listening with ANC enabled, extending to 30 hours with the wireless charging case. A 5-minute quick charge provides 1 hour of playback for those last-minute departures.
+
+
+[product: Jabra Elite 10]
+category: Wireless Earbuds
+brand: Jabra
+price: 249.00
+color: Gray
+wireless: true
+warranty_years: 2
+
+Jabra Elite 10 features a refined ergonomic design that stays secure and comfortable during workouts, commutes, and long listening sessions. Multiple ear tip sizes ensure a personalized fit with excellent passive noise isolation.
+
+Custom high-excursion drivers produce rich, detailed sound with deep bass and sparkling treble. Spatial audio with dynamic head tracking creates a theater-like experience for movies and supported music tracks.
+
+
+[product: Anker Soundcore Liberty 4 NC]
+category: Wireless Earbuds
+brand: Anker
+price: 99.00
+color: White
+wireless: true
+warranty_years: 1
+
+Battery life delivers up to 8 hours of listening with ANC enabled, extending to 30 hours with the wireless charging case. A 5-minute quick charge provides 1 hour of playback for those last-minute departures.
+
+Anker Soundcore Liberty 4 NC features a refined ergonomic design that stays secure and comfortable during workouts, commutes, and long listening sessions. Multiple ear tip sizes ensure a personalized fit with excellent passive noise isolation.
+
+
+[product: Nothing Ear 2]
+category: Wireless Earbuds
+brand: Nothing
+price: 149.00
+color: White
+wireless: true
+warranty_years: 1
+
+Active noise cancellation blocks out environmental distractions, while adaptive transparency mode lets important sounds through when you need awareness. The six-microphone array delivers crystal-clear call quality even in windy conditions.
+
+Custom high-excursion drivers produce rich, detailed sound with deep bass and sparkling treble. Spatial audio with dynamic head tracking creates a theater-like experience for movies and supported music tracks.
+
+Nothing Ear 2 features a refined ergonomic design that stays secure and comfortable during workouts, commutes, and long listening sessions. Multiple ear tip sizes ensure a personalized fit with excellent passive noise isolation.
+
+Battery life delivers up to 8 hours of listening with ANC enabled, extending to 30 hours with the wireless charging case. A 5-minute quick charge provides 1 hour of playback for those last-minute departures.
+
+
+[product: OnePlus Buds Pro 2]
+category: Wireless Earbuds
+brand: OnePlus
+price: 179.00
+color: Green
+wireless: true
+warranty_years: 1
+
+Custom high-excursion drivers produce rich, detailed sound with deep bass and sparkling treble. Spatial audio with dynamic head tracking creates a theater-like experience for movies and supported music tracks.
+
+Active noise cancellation blocks out environmental distractions, while adaptive transparency mode lets important sounds through when you need awareness. The six-microphone array delivers crystal-clear call quality even in windy conditions.
+
+OnePlus Buds Pro 2 features a refined ergonomic design that stays secure and comfortable during workouts, commutes, and long listening sessions. Multiple ear tip sizes ensure a personalized fit with excellent passive noise isolation.
+
+
+[product: Google Pixel Buds Pro]
+category: Wireless Earbuds
+brand: Google
+price: 199.00
+color: Gray
+wireless: true
+warranty_years: 1
+
+Custom high-excursion drivers produce rich, detailed sound with deep bass and sparkling treble. Spatial audio with dynamic head tracking creates a theater-like experience for movies and supported music tracks.
+
+Google Pixel Buds Pro features a refined ergonomic design that stays secure and comfortable during workouts, commutes, and long listening sessions. Multiple ear tip sizes ensure a personalized fit with excellent passive noise isolation.
+
+Active noise cancellation blocks out environmental distractions, while adaptive transparency mode lets important sounds through when you need awareness. The six-microphone array delivers crystal-clear call quality even in windy conditions.
+
+Battery life delivers up to 8 hours of listening with ANC enabled, extending to 30 hours with the wireless charging case. A 5-minute quick charge provides 1 hour of playback for those last-minute departures.
+
+
+[product: MacBook Air 15 M3]
+category: Laptops
+brand: MacBook
+price: 1299.00
+color: Silver
+storage: 512GB
+screen_size: 15.3
+weight: 1.51
+release_year: 2024
+wireless: true
+warranty_years: 1
+
+The precision-engineered keyboard offers a satisfying typing experience with excellent key travel and backlighting for low-light environments. The large glass trackpad supports multi-finger gestures for intuitive navigation.
+
+All-day battery life keeps you productive without hunting for outlets. Wi-Fi 6E and Bluetooth 5.3 provide cutting-edge wireless connectivity.
+
+
+[product: HP Spectre x360 14]
+category: Laptops
+brand: HP
+price: 1399.00
+color: Blue
+storage: 1TB
+screen_size: 13.5
+weight: 1.36
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+HP Spectre x360 14 features a brilliant 13.5-inch display with high resolution and accurate color reproduction, ideal for creative professionals and content creators. The slim bezels maximize screen space while keeping the chassis compact.
+
+The aluminum unibody construction in Blue provides durability without excess weight. An array of microphones ensures clear video calls, while the enhanced speakers deliver surprisingly rich audio for a laptop this thin.
+
+Powered by the latest generation processor with integrated graphics, this laptop handles demanding workloads from video editing to software development. The 1TB SSD delivers fast boot times and snappy application launches.
+
+
+[product: Lenovo ThinkPad X1 Carbon Gen 11]
+category: Laptops
+brand: Lenovo
+price: 1699.00
+color: Black
+storage: 512GB
+screen_size: 14.0
+weight: 1.12
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+The aluminum unibody construction in Black provides durability without excess weight. An array of microphones ensures clear video calls, while the enhanced speakers deliver surprisingly rich audio for a laptop this thin.
+
+Lenovo ThinkPad X1 Carbon Gen 11 features a brilliant 14.0-inch display with high resolution and accurate color reproduction, ideal for creative professionals and content creators. The slim bezels maximize screen space while keeping the chassis compact.
+
+All-day battery life keeps you productive without hunting for outlets. Wi-Fi 6E and Bluetooth 5.3 provide cutting-edge wireless connectivity.
+
+The precision-engineered keyboard offers a satisfying typing experience with excellent key travel and backlighting for low-light environments. The large glass trackpad supports multi-finger gestures for intuitive navigation.
+
+
+[product: Asus Zenbook 14 OLED]
+category: Laptops
+brand: Asus
+price: 899.00
+color: Gray
+storage: 512GB
+screen_size: 14.0
+weight: 1.28
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+The precision-engineered keyboard offers a satisfying typing experience with excellent key travel and backlighting for low-light environments. The large glass trackpad supports multi-finger gestures for intuitive navigation.
+
+Powered by the latest generation processor with integrated graphics, this laptop handles demanding workloads from video editing to software development. The 512GB SSD delivers fast boot times and snappy application launches.
+
+All-day battery life keeps you productive without hunting for outlets. Wi-Fi 6E and Bluetooth 5.3 provide cutting-edge wireless connectivity.
+
+Asus Zenbook 14 OLED features a brilliant 14.0-inch display with high resolution and accurate color reproduction, ideal for creative professionals and content creators. The slim bezels maximize screen space while keeping the chassis compact.
+
+
+[product: Acer Swift 5]
+category: Laptops
+brand: Acer
+price: 999.00
+color: Green
+storage: 1TB
+screen_size: 14.0
+weight: 1.05
+release_year: 2022
+wireless: true
+warranty_years: 1
+
+The precision-engineered keyboard offers a satisfying typing experience with excellent key travel and backlighting for low-light environments. The large glass trackpad supports multi-finger gestures for intuitive navigation.
+
+The aluminum unibody construction in Green provides durability without excess weight. An array of microphones ensures clear video calls, while the enhanced speakers deliver surprisingly rich audio for a laptop this thin.
+
+
+[product: Microsoft Surface Laptop 5]
+category: Laptops
+brand: Microsoft
+price: 1299.00
+color: Black
+storage: 512GB
+screen_size: 13.5
+weight: 1.27
+release_year: 2022
+wireless: true
+warranty_years: 1
+
+All-day battery life keeps you productive without hunting for outlets. Wi-Fi 6E and Bluetooth 5.3 provide cutting-edge wireless connectivity.
+
+The precision-engineered keyboard offers a satisfying typing experience with excellent key travel and backlighting for low-light environments. The large glass trackpad supports multi-finger gestures for intuitive navigation.
+
+
+[product: LG Gram 17]
+category: Laptops
+brand: LG
+price: 1699.00
+color: White
+storage: 1TB
+screen_size: 17.0
+weight: 1.35
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+The aluminum unibody construction in White provides durability without excess weight. An array of microphones ensures clear video calls, while the enhanced speakers deliver surprisingly rich audio for a laptop this thin.
+
+LG Gram 17 features a brilliant 17.0-inch display with high resolution and accurate color reproduction, ideal for creative professionals and content creators. The slim bezels maximize screen space while keeping the chassis compact.
+
+The precision-engineered keyboard offers a satisfying typing experience with excellent key travel and backlighting for low-light environments. The large glass trackpad supports multi-finger gestures for intuitive navigation.
+
+Powered by the latest generation processor with integrated graphics, this laptop handles demanding workloads from video editing to software development. The 1TB SSD delivers fast boot times and snappy application launches.
+
+
+[product: Samsung Galaxy Book3 Pro]
+category: Laptops
+brand: Samsung
+price: 1199.00
+color: Gray
+storage: 512GB
+screen_size: 14.0
+weight: 1.17
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Samsung Galaxy Book3 Pro features a brilliant 14.0-inch display with high resolution and accurate color reproduction, ideal for creative professionals and content creators. The slim bezels maximize screen space while keeping the chassis compact.
+
+Powered by the latest generation processor with integrated graphics, this laptop handles demanding workloads from video editing to software development. The 512GB SSD delivers fast boot times and snappy application launches.
+
+All-day battery life keeps you productive without hunting for outlets. Wi-Fi 6E and Bluetooth 5.3 provide cutting-edge wireless connectivity.
+
+The aluminum unibody construction in Gray provides durability without excess weight. An array of microphones ensures clear video calls, while the enhanced speakers deliver surprisingly rich audio for a laptop this thin.
+
+
+[product: Apple Mac Studio M2 Ultra]
+category: Desktops
+brand: Apple
+price: 3999.00
+color: Silver
+storage: 1TB
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+1TB of ultrafast SSD storage provides blazing read and write speeds for large file transfers and rapid application loading. The unified memory architecture eliminates bottlenecks between CPU and GPU for seamless multitasking.
+
+A comprehensive selection of ports includes Thunderbolt 4, USB-A, HDMI, and Ethernet for flexible connectivity. Built-in Wi-Fi 6E and Bluetooth 5.3 provide high-speed wireless connectivity.
+
+
+[product: Dell XPS 8960]
+category: Desktops
+brand: Dell
+price: 1299.00
+color: Black
+storage: 512GB
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+512GB of ultrafast SSD storage provides blazing read and write speeds for large file transfers and rapid application loading. The unified memory architecture eliminates bottlenecks between CPU and GPU for seamless multitasking.
+
+Advanced thermal management keeps performance consistent under sustained workloads. The efficient cooling system operates quietly even during intensive tasks, making it suitable for studio and office environments.
+
+A comprehensive selection of ports includes Thunderbolt 4, USB-A, HDMI, and Ethernet for flexible connectivity. Built-in Wi-Fi 6E and Bluetooth 5.3 provide high-speed wireless connectivity.
+
+
+[product: HP Envy TE01]
+category: Desktops
+brand: HP
+price: 799.00
+color: Black
+storage: 512GB
+release_year: 2022
+wireless: true
+warranty_years: 1
+
+Advanced thermal management keeps performance consistent under sustained workloads. The efficient cooling system operates quietly even during intensive tasks, making it suitable for studio and office environments.
+
+A comprehensive selection of ports includes Thunderbolt 4, USB-A, HDMI, and Ethernet for flexible connectivity. Built-in Wi-Fi 6E and Bluetooth 5.3 provide high-speed wireless connectivity.
+
+
+[product: Lenovo ThinkCentre M90q]
+category: Desktops
+brand: Lenovo
+price: 699.00
+color: Black
+storage: 256GB
+release_year: 2023
+wireless: true
+warranty_years: 1
+
+Advanced thermal management keeps performance consistent under sustained workloads. The efficient cooling system operates quietly even during intensive tasks, making it suitable for studio and office environments.
+
+Lenovo ThinkCentre M90q delivers workstation-grade performance in a compact form factor. The powerful multi-core processor handles complex simulations, 8K video editing, and software compilation with ease.
+
+A comprehensive selection of ports includes Thunderbolt 4, USB-A, HDMI, and Ethernet for flexible connectivity. Built-in Wi-Fi 6E and Bluetooth 5.3 provide high-speed wireless connectivity.
+
+
+[product: Razer DeathAdder V3 Pro]
+category: Peripherals
+brand: Razer
+price: 159.00
+color: White
+wireless: true
+warranty_years: 2
+
+Wireless connectivity provides freedom of movement with a stable, low-latency connection. The rechargeable battery delivers weeks of use between charges.
+
+Razer DeathAdder V3 Pro combines precision engineering with ergonomic design for professional-grade performance. The high-quality materials ensure durability and reliability for daily use.
+
+Compatible with Windows, macOS, and major gaming platforms for versatile use across your devices.
+
+
+[product: Corsair K95 RGB Platinum]
+category: Peripherals
+brand: Corsair
+price: 199.00
+color: Black
+wireless: false
+warranty_years: 2
+
+Corsair K95 RGB Platinum features mechanical switches with tactile feedback and satisfying actuation for competitive gaming and fast typing. Per-key RGB lighting with customizable effects lets you personalize your setup.
+
+Dedicated macro keys and media controls provide quick access to frequently used commands and volume adjustment. The aircraft-grade aluminum frame ensures durability and stability during intense gaming sessions.
+
+N-key rollover and anti-ghosting technology ensure every keystroke registers accurately, even when multiple keys are pressed simultaneously. The detachable wrist rest reduces fatigue during extended use.
+
+
+[product: SteelSeries Apex Pro TKL]
+category: Peripherals
+brand: SteelSeries
+price: 189.00
+color: Black
+wireless: false
+warranty_years: 2
+
+N-key rollover and anti-ghosting technology ensure every keystroke registers accurately, even when multiple keys are pressed simultaneously. The detachable wrist rest reduces fatigue during extended use.
+
+Dedicated macro keys and media controls provide quick access to frequently used commands and volume adjustment. The aircraft-grade aluminum frame ensures durability and stability during intense gaming sessions.
+
+SteelSeries Apex Pro TKL features mechanical switches with tactile feedback and satisfying actuation for competitive gaming and fast typing. Per-key RGB lighting with customizable effects lets you personalize your setup.
+
+
+[product: HyperX Cloud II Wireless]
+category: Peripherals
+brand: HyperX
+price: 149.00
+color: Red
+wireless: true
+warranty_years: 2
+
+HyperX Cloud II Wireless delivers immersive 7.1 surround sound that helps you pinpoint enemy positions in competitive games. The 53mm drivers produce clear highs and powerful bass for an engaging audio experience.
+
+Memory foam ear cushions and an adjustable headband provide lasting comfort during marathon gaming sessions. The durable aluminum frame withstands the rigors of daily use and travel.
+
+
+[product: BenQ Zowie XL2566K]
+category: Peripherals
+brand: BenQ
+price: 599.00
+color: Black
+wireless: false
+warranty_years: 3
+
+The braided cable resists tangling and fraying for long-lasting durability.
+
+BenQ Zowie XL2566K combines precision engineering with ergonomic design for professional-grade performance. The high-quality materials ensure durability and reliability for daily use.
+
+
+[product: Dell UltraSharp U2723QE]
+category: Peripherals
+brand: Dell
+price: 599.00
+color: Black
+wireless: false
+warranty_years: 3
+
+Dell UltraSharp U2723QE delivers stunning visuals with factory-calibrated color accuracy and wide gamut coverage, making it ideal for photo and video editing. The high resolution reveals fine details in complex documents and creative projects.
+
+Multiple input options including USB-C with power delivery, DisplayPort, and HDMI support flexible connectivity with laptops and desktops. The integrated USB hub declutters your workspace by connecting peripherals directly to the monitor.
+
+The ergonomic stand provides height adjustment, tilt, swivel, and pivot capabilities for comfortable all-day use. The virtually borderless design enables seamless multi-monitor setups for enhanced productivity.
+
+
+[product: Asus ProArt PA279CV]
+category: Peripherals
+brand: Asus
+price: 449.00
+color: Black
+wireless: false
+warranty_years: 3
+
+Asus ProArt PA279CV delivers stunning visuals with factory-calibrated color accuracy and wide gamut coverage, making it ideal for photo and video editing. The high resolution reveals fine details in complex documents and creative projects.
+
+The ergonomic stand provides height adjustment, tilt, swivel, and pivot capabilities for comfortable all-day use. The virtually borderless design enables seamless multi-monitor setups for enhanced productivity.
+
+Multiple input options including USB-C with power delivery, DisplayPort, and HDMI support flexible connectivity with laptops and desktops. The integrated USB hub declutters your workspace by connecting peripherals directly to the monitor.
+
+
+[product: Apple Magic Trackpad]
+category: Peripherals
+brand: Apple
+price: 149.00
+color: White
+wireless: true
+warranty_years: 1
+
+Compatible with Windows, macOS, and major gaming platforms for versatile use across your devices.
+
+Apple Magic Trackpad combines precision engineering with ergonomic design for professional-grade performance. The high-quality materials ensure durability and reliability for daily use.
+
+
+[product: iPhone 15 Pro Clear Case]
+category: Cases & Covers
+brand: iPhone
+price: 49.00
+color: Clear
+wireless: 
+
+Made from premium materials that resist yellowing and fingerprints, maintaining a clean appearance over time. The scratch-resistant coating keeps the case looking new even after months of daily use.
+
+The precise cutouts ensure full access to all buttons, ports, and speakers without removing the case. The responsive button covers provide tactile feedback that matches the phone's original buttons.
+
+iPhone 15 Pro Clear Case provides military-grade drop protection with shock-absorbing corners and raised edges that protect the screen and camera from scratches. The slim profile adds minimal bulk while maintaining a comfortable grip.
+
+
+[product: iPhone 15 Silicone Case]
+category: Cases & Covers
+brand: iPhone
+price: 49.00
+color: Pink
+wireless: 
+
+iPhone 15 Silicone Case provides military-grade drop protection with shock-absorbing corners and raised edges that protect the screen and camera from scratches. The slim profile adds minimal bulk while maintaining a comfortable grip.
+
+Made from premium materials that resist yellowing and fingerprints, maintaining a clean appearance over time. The scratch-resistant coating keeps the case looking new even after months of daily use.
+
+
+[product: Samsung Galaxy S24 Ultra Case]
+category: Cases & Covers
+brand: Samsung
+price: 39.00
+color: Black
+wireless: 
+
+Samsung Galaxy S24 Ultra Case provides military-grade drop protection with shock-absorbing corners and raised edges that protect the screen and camera from scratches. The slim profile adds minimal bulk while maintaining a comfortable grip.
+
+Made from premium materials that resist yellowing and fingerprints, maintaining a clean appearance over time. The scratch-resistant coating keeps the case looking new even after months of daily use.
+
+The precise cutouts ensure full access to all buttons, ports, and speakers without removing the case. The responsive button covers provide tactile feedback that matches the phone's original buttons.
+
+
+[product: Spigen Ultra Hybrid for Pixel 8]
+category: Cases & Covers
+brand: Spigen
+price: 16.00
+color: Clear
+wireless: 
+
+Made from premium materials that resist yellowing and fingerprints, maintaining a clean appearance over time. The scratch-resistant coating keeps the case looking new even after months of daily use.
+
+Spigen Ultra Hybrid for Pixel 8 provides military-grade drop protection with shock-absorbing corners and raised edges that protect the screen and camera from scratches. The slim profile adds minimal bulk while maintaining a comfortable grip.
+
+The precise cutouts ensure full access to all buttons, ports, and speakers without removing the case. The responsive button covers provide tactile feedback that matches the phone's original buttons.
+
+
+[product: OtterBox Defender iPhone 15 Pro]
+category: Cases & Covers
+brand: OtterBox
+price: 69.00
+color: Black
+wireless: 
+
+Made from premium materials that resist yellowing and fingerprints, maintaining a clean appearance over time. The scratch-resistant coating keeps the case looking new even after months of daily use.
+
+OtterBox Defender iPhone 15 Pro provides military-grade drop protection with shock-absorbing corners and raised edges that protect the screen and camera from scratches. The slim profile adds minimal bulk while maintaining a comfortable grip.
+
+
+[product: CASETiFY Impact Case S24]
+category: Cases & Covers
+brand: CASETiFY
+price: 72.00
+color: Pink
+wireless: 
+
+CASETiFY Impact Case S24 provides military-grade drop protection with shock-absorbing corners and raised edges that protect the screen and camera from scratches. The slim profile adds minimal bulk while maintaining a comfortable grip.
+
+The precise cutouts ensure full access to all buttons, ports, and speakers without removing the case. The responsive button covers provide tactile feedback that matches the phone's original buttons.
+
+Made from premium materials that resist yellowing and fingerprints, maintaining a clean appearance over time. The scratch-resistant coating keeps the case looking new even after months of daily use.
+
+
+[product: Belkin MagSafe Wallet]
+category: Cases & Covers
+brand: Belkin
+price: 39.00
+color: Brown
+wireless: 
+
+Built-in MagSafe magnets ensure perfect alignment with wireless chargers, wallets, and mounts. The magnetic array is strong enough to hold accessories securely without adding bulk.
+
+The precise cutouts ensure full access to all buttons, ports, and speakers without removing the case. The responsive button covers provide tactile feedback that matches the phone's original buttons.
+
+
+[product: Nomad Modern Leather Case iPhone 15]
+category: Cases & Covers
+brand: Nomad
+price: 59.00
+color: Black
+wireless: 
+
+Nomad Modern Leather Case iPhone 15 provides military-grade drop protection with shock-absorbing corners and raised edges that protect the screen and camera from scratches. The slim profile adds minimal bulk while maintaining a comfortable grip.
+
+Made from premium materials that resist yellowing and fingerprints, maintaining a clean appearance over time. The scratch-resistant coating keeps the case looking new even after months of daily use.
+
+The precise cutouts ensure full access to all buttons, ports, and speakers without removing the case. The responsive button covers provide tactile feedback that matches the phone's original buttons.
+
+
+[product: Anker 737 GaNPrime 120W Charger]
+category: Cables & Chargers
+brand: Anker
+price: 89.00
+color: Black
+wireless: 
+
+The durable braided cable resists fraying and tangling while maintaining flexibility for easy packing. Reinforced strain relief at the connectors prevents breakage from repeated bending.
+
+Universal USB-C compatibility works with a wide range of devices from major brands. Built-in overcurrent and overvoltage protection safeguards your electronics during charging.
+
+
+[product: Belkin BoostCharge Pro 3-in-1]
+category: Cables & Chargers
+brand: Belkin
+price: 149.00
+color: White
+wireless: 
+
+The durable braided cable resists fraying and tangling while maintaining flexibility for easy packing. Reinforced strain relief at the connectors prevents breakage from repeated bending.
+
+Universal USB-C compatibility works with a wide range of devices from major brands. Built-in overcurrent and overvoltage protection safeguards your electronics during charging.
+
+
+[product: Apple 35W Dual USB-C Charger]
+category: Cables & Chargers
+brand: Apple
+price: 59.00
+color: White
+wireless: 
+
+Universal USB-C compatibility works with a wide range of devices from major brands. Built-in overcurrent and overvoltage protection safeguards your electronics during charging.
+
+The durable braided cable resists fraying and tangling while maintaining flexibility for easy packing. Reinforced strain relief at the connectors prevents breakage from repeated bending.
+
+Apple 35W Dual USB-C Charger supports fast charging up to 120W, powering laptops, tablets, and phones at maximum speed. The advanced GaN technology delivers high wattage in a compact form factor that runs cooler than traditional chargers.
+
+
+[product: Samsung 45W Super Fast Charger]
+category: Cables & Chargers
+brand: Samsung
+price: 49.00
+color: Black
+wireless: 
+
+Samsung 45W Super Fast Charger supports fast charging up to 20W, powering laptops, tablets, and phones at maximum speed. The advanced GaN technology delivers high wattage in a compact form factor that runs cooler than traditional chargers.
+
+The durable braided cable resists fraying and tangling while maintaining flexibility for easy packing. Reinforced strain relief at the connectors prevents breakage from repeated bending.
+
+Universal USB-C compatibility works with a wide range of devices from major brands. Built-in overcurrent and overvoltage protection safeguards your electronics during charging.
+
+
+[product: Nomad Kevlar USB-C Cable 3m]
+category: Cables & Chargers
+brand: Nomad
+price: 39.00
+color: Black
+wireless: 
+
+The durable braided cable resists fraying and tangling while maintaining flexibility for easy packing. Reinforced strain relief at the connectors prevents breakage from repeated bending.
+
+Universal USB-C compatibility works with a wide range of devices from major brands. Built-in overcurrent and overvoltage protection safeguards your electronics during charging.
+
+Nomad Kevlar USB-C Cable 3m supports fast charging up to 20W, powering laptops, tablets, and phones at maximum speed. The advanced GaN technology delivers high wattage in a compact form factor that runs cooler than traditional chargers.
+
+
+[product: Mophie Snap+ Wireless Charger]
+category: Cables & Chargers
+brand: Mophie
+price: 49.00
+color: Black
+wireless: 
+
+The durable braided cable resists fraying and tangling while maintaining flexibility for easy packing. Reinforced strain relief at the connectors prevents breakage from repeated bending.
+
+Mophie Snap+ Wireless Charger supports fast charging up to 100W, powering laptops, tablets, and phones at maximum speed. The advanced GaN technology delivers high wattage in a compact form factor that runs cooler than traditional chargers.
+
+
+[product: Belkin UltraGlass 2 iPhone 15 Pro]
+category: Screen Protectors
+brand: Belkin
+price: 44.00
+color: Clear
+wireless: 
+
+Belkin UltraGlass 2 iPhone 15 Pro features 9H hardness tempered glass that resists scratches from keys, coins, and daily wear. The oleophobic coating repels fingerprints and smudges for a crystal-clear view.
+
+The ultra-thin design maintains touchscreen sensitivity and clarity without adding bulk. The rounded edges provide a smooth feel and prevent chipping over time.
+
+An easy-align installation tray ensures bubble-free application in seconds. The adhesive layer leaves no residue if you ever need to remove or replace the protector.
+
+
+[product: Spigen Glas.tR EZ Fit S24 Ultra]
+category: Screen Protectors
+brand: Spigen
+price: 18.00
+color: Clear
+wireless: 
+
+The ultra-thin design maintains touchscreen sensitivity and clarity without adding bulk. The rounded edges provide a smooth feel and prevent chipping over time.
+
+An easy-align installation tray ensures bubble-free application in seconds. The adhesive layer leaves no residue if you ever need to remove or replace the protector.
+
+
+[product: ESR Armorite Screen Protector iPad Pro]
+category: Screen Protectors
+brand: ESR
+price: 22.00
+color: Clear
+wireless: 
+
+An easy-align installation tray ensures bubble-free application in seconds. The adhesive layer leaves no residue if you ever need to remove or replace the protector.
+
+The ultra-thin design maintains touchscreen sensitivity and clarity without adding bulk. The rounded edges provide a smooth feel and prevent chipping over time.
+
+
+[product: Tech21 Evo Glass Pixel 8]
+category: Screen Protectors
+brand: Tech21
+price: 29.00
+color: Clear
+wireless: 
+
+An easy-align installation tray ensures bubble-free application in seconds. The adhesive layer leaves no residue if you ever need to remove or replace the protector.
+
+Tech21 Evo Glass Pixel 8 features 9H hardness tempered glass that resists scratches from keys, coins, and daily wear. The oleophobic coating repels fingerprints and smudges for a crystal-clear view.
+
+The ultra-thin design maintains touchscreen sensitivity and clarity without adding bulk. The rounded edges provide a smooth feel and prevent chipping over time.
+
+
+[product: Breville Barista Express]
+category: Coffee Makers
+brand: Breville
+price: 749.00
+color: Silver
+wireless: 
+warranty_years: 1
+
+The milk frother creates velvety microfoam for lattes and cappuccinos, with adjustable temperature and texture settings. The removable brew group and drip tray make cleaning simple and straightforward.
+
+Built with premium materials and backed by a 1-year warranty for peace of mind. The compact footprint fits comfortably on most kitchen counters without dominating the space.
+
+The integrated conical burr grinder freshly grinds beans for each cup, preserving aromatic oils that pre-ground coffee loses. Adjustable grind settings let you dial in the perfect extraction for any roast.
+
+Breville Barista Express delivers café-quality beverages at home with precise temperature control and consistent extraction. The intuitive interface makes it easy to customize strength, volume, and milk ratios to your taste.
+
+
+[product: Keurig K-Elite]
+category: Coffee Makers
+brand: Keurig
+price: 189.00
+color: Gray
+wireless: 
+warranty_years: 1
+
+The milk frother creates velvety microfoam for lattes and cappuccinos, with adjustable temperature and texture settings. The removable brew group and drip tray make cleaning simple and straightforward.
+
+Built with premium materials and backed by a 1-year warranty for peace of mind. The compact footprint fits comfortably on most kitchen counters without dominating the space.
+
+Keurig K-Elite delivers café-quality beverages at home with precise temperature control and consistent extraction. The intuitive interface makes it easy to customize strength, volume, and milk ratios to your taste.
+
+
+[product: Nespresso Creatista Plus]
+category: Coffee Makers
+brand: Nespresso
+price: 599.00
+color: Silver
+wireless: 
+warranty_years: 2
+
+Built with premium materials and backed by a 2-year warranty for peace of mind. The compact footprint fits comfortably on most kitchen counters without dominating the space.
+
+The milk frother creates velvety microfoam for lattes and cappuccinos, with adjustable temperature and texture settings. The removable brew group and drip tray make cleaning simple and straightforward.
+
+
+[product: Philips 3200 Series]
+category: Coffee Makers
+brand: Philips
+price: 799.00
+color: Black
+wireless: 
+warranty_years: 2
+
+The integrated conical burr grinder freshly grinds beans for each cup, preserving aromatic oils that pre-ground coffee loses. Adjustable grind settings let you dial in the perfect extraction for any roast.
+
+The milk frother creates velvety microfoam for lattes and cappuccinos, with adjustable temperature and texture settings. The removable brew group and drip tray make cleaning simple and straightforward.
+
+Built with premium materials and backed by a 2-year warranty for peace of mind. The compact footprint fits comfortably on most kitchen counters without dominating the space.
+
+
+[product: DeLonghi Magnifica Evo]
+category: Coffee Makers
+brand: DeLonghi
+price: 899.00
+color: Black
+wireless: 
+warranty_years: 1
+
+DeLonghi Magnifica Evo delivers café-quality beverages at home with precise temperature control and consistent extraction. The intuitive interface makes it easy to customize strength, volume, and milk ratios to your taste.
+
+The integrated conical burr grinder freshly grinds beans for each cup, preserving aromatic oils that pre-ground coffee loses. Adjustable grind settings let you dial in the perfect extraction for any roast.
+
+The milk frother creates velvety microfoam for lattes and cappuccinos, with adjustable temperature and texture settings. The removable brew group and drip tray make cleaning simple and straightforward.
+
+
+[product: Moccamaster KBGV]
+category: Coffee Makers
+brand: Moccamaster
+price: 349.00
+color: Yellow
+wireless: 
+warranty_years: 5
+
+Built with premium materials and backed by a 5-year warranty for peace of mind. The compact footprint fits comfortably on most kitchen counters without dominating the space.
+
+The milk frother creates velvety microfoam for lattes and cappuccinos, with adjustable temperature and texture settings. The removable brew group and drip tray make cleaning simple and straightforward.
+
+
+[product: Ninja Professional Plus]
+category: Blenders
+brand: Ninja
+price: 119.00
+color: Black
+wireless: 
+warranty_years: 1
+
+The large-capacity pitcher is made from BPA-free, impact-resistant material that withstands thermal shock. The self-cleaning cycle makes cleanup as easy as adding water and a drop of soap.
+
+Variable speed control and preset programs handle everything from smoothies and soups to nut butters and dough. The pulse function provides precise control for chunky salsas and pestos.
+
+Built to last with a 1-year warranty covering the motor and base. The stable base includes suction feet that prevent walking during heavy blending tasks.
+
+Ninja Professional Plus features a powerful motor that pulverizes ice, frozen fruit, and tough vegetables in seconds. The stainless steel blades maintain their sharp edge through years of daily use.
+
+
+[product: Blendtec Classic 575]
+category: Blenders
+brand: Blendtec
+price: 399.00
+color: Black
+wireless: 
+warranty_years: 8
+
+Variable speed control and preset programs handle everything from smoothies and soups to nut butters and dough. The pulse function provides precise control for chunky salsas and pestos.
+
+The large-capacity pitcher is made from BPA-free, impact-resistant material that withstands thermal shock. The self-cleaning cycle makes cleanup as easy as adding water and a drop of soap.
+
+Built to last with a 8-year warranty covering the motor and base. The stable base includes suction feet that prevent walking during heavy blending tasks.
+
+Blendtec Classic 575 features a powerful motor that pulverizes ice, frozen fruit, and tough vegetables in seconds. The stainless steel blades maintain their sharp edge through years of daily use.
+
+
+[product: Breville Fresh & Furious]
+category: Blenders
+brand: Breville
+price: 199.00
+color: Silver
+wireless: 
+warranty_years: 1
+
+Breville Fresh & Furious features a powerful motor that pulverizes ice, frozen fruit, and tough vegetables in seconds. The stainless steel blades maintain their sharp edge through years of daily use.
+
+Variable speed control and preset programs handle everything from smoothies and soups to nut butters and dough. The pulse function provides precise control for chunky salsas and pestos.
+
+The large-capacity pitcher is made from BPA-free, impact-resistant material that withstands thermal shock. The self-cleaning cycle makes cleanup as easy as adding water and a drop of soap.
+
+Built to last with a 1-year warranty covering the motor and base. The stable base includes suction feet that prevent walking during heavy blending tasks.
+
+
+[product: KitchenAid K400]
+category: Blenders
+brand: KitchenAid
+price: 299.00
+color: Red
+wireless: 
+warranty_years: 1
+
+The large-capacity pitcher is made from BPA-free, impact-resistant material that withstands thermal shock. The self-cleaning cycle makes cleanup as easy as adding water and a drop of soap.
+
+KitchenAid K400 features a powerful motor that pulverizes ice, frozen fruit, and tough vegetables in seconds. The stainless steel blades maintain their sharp edge through years of daily use.
+
+
+[product: LIFX Beam]
+category: Lighting
+brand: LIFX
+price: 199.00
+color: White
+wireless: true
+warranty_years: 2
+
+LIFX Beam delivers adjustable white light from warm candlelight to cool daylight, matching your mood and activity. The high color rendering index ensures colors appear natural and vibrant under the light.
+
+Energy-efficient LED technology consumes up to 80% less power than incandescent bulbs while lasting up to 25,000 hours. The instant-on design provides full brightness immediately without warm-up time.
+
+
+[product: Yeelight LED Ceiling Light]
+category: Lighting
+brand: Yeelight
+price: 89.00
+color: White
+wireless: true
+warranty_years: 1
+
+Yeelight LED Ceiling Light delivers adjustable white light from warm candlelight to cool daylight, matching your mood and activity. The high color rendering index ensures colors appear natural and vibrant under the light.
+
+Smart home integration allows voice control and automation through popular platforms. Schedule lighting scenes that gradually brighten in the morning and dim in the evening for better sleep.
+
+
+[product: Nanoleaf Shapes Hexagons]
+category: Lighting
+brand: Nanoleaf
+price: 199.00
+color: White
+wireless: true
+warranty_years: 2
+
+Smart home integration allows voice control and automation through popular platforms. Schedule lighting scenes that gradually brighten in the morning and dim in the evening for better sleep.
+
+Energy-efficient LED technology consumes up to 80% less power than incandescent bulbs while lasting up to 25,000 hours. The instant-on design provides full brightness immediately without warm-up time.
+
+
+[product: IKEA TRADFRI Bulb E27]
+category: Lighting
+brand: IKEA
+price: 9.00
+color: White
+wireless: true
+warranty_years: 2
+
+Energy-efficient LED technology consumes up to 80% less power than incandescent bulbs while lasting up to 25,000 hours. The instant-on design provides full brightness immediately without warm-up time.
+
+Smart home integration allows voice control and automation through popular platforms. Schedule lighting scenes that gradually brighten in the morning and dim in the evening for better sleep.
+
+
+[product: Nike Dri-FIT T-Shirt]
+category: T-Shirts
+brand: Nike
+price: 35.00
+color: Black
+wireless: 
+
+Nike Dri-FIT T-Shirt is crafted from merino wool blend for exceptional softness and breathability. The premium fabric feels luxurious against the skin while regulating temperature in warm and cool conditions.
+
+Pre-shrunk fabric minimizes size changes after laundering. The colorfast dye resists fading, keeping the Black shade vibrant wash after wash.
+
+The tailored fit provides a modern silhouette without being restrictive. Reinforced shoulder seams and double-stitched hems ensure the shirt maintains its shape through repeated washing.
+
+
+[product: Adidas Originals Trefoil Tee]
+category: T-Shirts
+brand: Adidas
+price: 30.00
+color: White
+wireless: 
+
+Adidas Originals Trefoil Tee is crafted from 100% organic cotton for exceptional softness and breathability. The premium fabric feels luxurious against the skin while regulating temperature in warm and cool conditions.
+
+Pre-shrunk fabric minimizes size changes after laundering. The colorfast dye resists fading, keeping the White shade vibrant wash after wash.
+
+The tailored fit provides a modern silhouette without being restrictive. Reinforced shoulder seams and double-stitched hems ensure the shirt maintains its shape through repeated washing.
+
+
+[product: Uniqlo Heattech T-Shirt]
+category: T-Shirts
+brand: Uniqlo
+price: 19.90
+color: Gray
+wireless: 
+
+Uniqlo Heattech T-Shirt is crafted from 100% organic cotton for exceptional softness and breathability. The premium fabric feels luxurious against the skin while regulating temperature in warm and cool conditions.
+
+The tailored fit provides a modern silhouette without being restrictive. Reinforced shoulder seams and double-stitched hems ensure the shirt maintains its shape through repeated washing.
+
+
+[product: Puma Essentials Logo Tee]
+category: T-Shirts
+brand: Puma
+price: 25.00
+color: Navy
+wireless: 
+
+Pre-shrunk fabric minimizes size changes after laundering. The colorfast dye resists fading, keeping the Navy shade vibrant wash after wash.
+
+The tailored fit provides a modern silhouette without being restrictive. Reinforced shoulder seams and double-stitched hems ensure the shirt maintains its shape through repeated washing.
+
+Puma Essentials Logo Tee is crafted from Supima cotton for exceptional softness and breathability. The premium fabric feels luxurious against the skin while regulating temperature in warm and cool conditions.
+
+
+[product: New Balance 990v6]
+category: Sneakers
+brand: New
+price: 199.00
+color: Gray
+wireless: 
+
+The Gray colorway transitions seamlessly from workouts to casual outings. Reflective details enhance visibility during early morning or evening runs.
+
+A padded collar and tongue cushion the ankle while the heel counter provides stability during lateral movements. The removable insole accommodates custom orthotics for personalized support.
+
+The durable rubber outsole features a traction pattern that grips confidently on pavement, gym floors, and light trails. Flex grooves in the forefoot promote natural movement and toe-off efficiency.
+
+New Balance 990v6 combines style and performance with responsive cushioning that absorbs impact during runs and daily wear. The engineered mesh upper provides targeted breathability where you need it most.
+
+
+[product: Asics Gel-Kayano 30]
+category: Sneakers
+brand: Asics
+price: 159.00
+color: Blue
+wireless: 
+
+The Blue colorway transitions seamlessly from workouts to casual outings. Reflective details enhance visibility during early morning or evening runs.
+
+The durable rubber outsole features a traction pattern that grips confidently on pavement, gym floors, and light trails. Flex grooves in the forefoot promote natural movement and toe-off efficiency.
+
+A padded collar and tongue cushion the ankle while the heel counter provides stability during lateral movements. The removable insole accommodates custom orthotics for personalized support.
+
+Asics Gel-Kayano 30 combines style and performance with responsive cushioning that absorbs impact during runs and daily wear. The engineered mesh upper provides targeted breathability where you need it most.
+
+
+[product: Converse Chuck Taylor All Star]
+category: Sneakers
+brand: Converse
+price: 65.00
+color: Black
+wireless: 
+
+A padded collar and tongue cushion the ankle while the heel counter provides stability during lateral movements. The removable insole accommodates custom orthotics for personalized support.
+
+The Black colorway transitions seamlessly from workouts to casual outings. Reflective details enhance visibility during early morning or evening runs.
+
+The durable rubber outsole features a traction pattern that grips confidently on pavement, gym floors, and light trails. Flex grooves in the forefoot promote natural movement and toe-off efficiency.
+
+Converse Chuck Taylor All Star combines style and performance with responsive cushioning that absorbs impact during runs and daily wear. The engineered mesh upper provides targeted breathability where you need it most.
+
+
+[product: Vans Old Skool]
+category: Sneakers
+brand: Vans
+price: 70.00
+color: Black
+wireless: 
+
+The Black colorway transitions seamlessly from workouts to casual outings. Reflective details enhance visibility during early morning or evening runs.
+
+Vans Old Skool combines style and performance with responsive cushioning that absorbs impact during runs and daily wear. The engineered mesh upper provides targeted breathability where you need it most.
+
+The durable rubber outsole features a traction pattern that grips confidently on pavement, gym floors, and light trails. Flex grooves in the forefoot promote natural movement and toe-off efficiency.
+
+
+[product: Puma RS-X]
+category: Sneakers
+brand: Puma
+price: 119.00
+color: White
+wireless: 
+
+A padded collar and tongue cushion the ankle while the heel counter provides stability during lateral movements. The removable insole accommodates custom orthotics for personalized support.
+
+The durable rubber outsole features a traction pattern that grips confidently on pavement, gym floors, and light trails. Flex grooves in the forefoot promote natural movement and toe-off efficiency.
+
