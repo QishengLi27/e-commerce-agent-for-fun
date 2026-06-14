@@ -68,10 +68,25 @@ class Neo4jStore:
             ProductRef if found, None otherwise.
         """
         with self._driver.session() as session:
-            # Try fulltext search first (covers name + search_terms)
+            # 1. Exact name match first — prevents "iPhone 15 Pro" resolving to "iPhone 15"
+            result = session.run(
+                "MATCH (p:Product {name: $search_term}) RETURN p.name, p.price, p.sku",
+                search_term=query,
+            )
+            record = result.single()
+            if record:
+                category = self._get_product_category(record["p.name"])
+                return ProductRef(
+                    name=record["p.name"],
+                    price=record["p.price"],
+                    sku=record["p.sku"],
+                    category_name=category,
+                )
+
+            # 2. Fulltext search (covers name + search_terms + synonyms)
             result = session.run(
                 """
-                CALL db.index.fulltext.queryNodes('product_search', $query)
+                CALL db.index.fulltext.queryNodes('product_search', $search_term)
                 YIELD node, score
                 WHERE score > 0.5
                 RETURN node.name AS name, node.price AS price,
@@ -79,7 +94,7 @@ class Neo4jStore:
                 ORDER BY score DESC
                 LIMIT 1
                 """,
-                query=query,
+                search_term=query,
             )
             record = result.single()
             if record:
@@ -91,15 +106,15 @@ class Neo4jStore:
                     category_name=category,
                 )
 
-            # Fallback: ILIKE match
+            # 3. Fallback: substring match
             result = session.run(
                 """
                 MATCH (p:Product)
-                WHERE p.name CONTAINS $query OR p.search_terms CONTAINS $query
+                WHERE p.name CONTAINS $search_term OR p.search_terms CONTAINS $search_term
                 RETURN p.name, p.price, p.sku
                 LIMIT 1
                 """,
-                query=query,
+                search_term=query,
             )
             record = result.single()
             if record:

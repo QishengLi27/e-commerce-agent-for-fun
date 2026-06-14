@@ -7,15 +7,16 @@ with sentence-window context expansion.
 
 from urllib.parse import urlparse
 
+from langchain_openai import OpenAIEmbeddings
 from llama_index.core import VectorStoreIndex
 from llama_index.core.postprocessor import MetadataReplacementPostProcessor
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.retrievers import VectorIndexRetriever
 from llama_index.core.vector_stores import FilterOperator, MetadataFilter, MetadataFilters
-from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.vector_stores.postgres import PGVectorStore
 
 from backend.config import settings
+from backend.rag.embedding_adapter import LangChainEmbeddingAdapter
 
 COLLECTION_NAME = "product_chunks"
 DEFAULT_TOP_K = 5
@@ -48,14 +49,15 @@ def _build_vector_store() -> PGVectorStore:
     )
 
 
-def _build_embed_model() -> OpenAIEmbedding:
-    """Create an OpenAIEmbedding model configured for Zhipu API."""
-    return OpenAIEmbedding(
+def _build_embed_model() -> LangChainEmbeddingAdapter:
+    """Create an embedding model configured for Zhipu API."""
+    lc_embed = OpenAIEmbeddings(
         model=settings.embedding_model,
-        api_key=settings.openai_api_key,
-        api_base=settings.openai_api_base,
-        embed_batch_size=64,
+        openai_api_key=settings.openai_api_key,
+        openai_api_base=settings.openai_api_base,
+        chunk_size=64,
     )
+    return LangChainEmbeddingAdapter(lc_embed)
 
 
 def create_product_query_engine() -> RetrieverQueryEngine:
@@ -103,7 +105,7 @@ def create_filtered_query_engine(
     index = VectorStoreIndex.from_vector_store(vector_store, embed_model=embed_model)
 
     # Build metadata filters
-    filters_list = []
+    filters_list: list[MetadataFilter | MetadataFilters] = []
     if product_names:
         filters_list.append(
             MetadataFilter(

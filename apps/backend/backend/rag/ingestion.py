@@ -14,13 +14,14 @@ import re
 from pathlib import Path
 from urllib.parse import urlparse
 
+from langchain_openai import OpenAIEmbeddings
 from llama_index.core import Document
 from llama_index.core.ingestion import IngestionPipeline
 from llama_index.core.node_parser import SentenceWindowNodeParser
-from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.vector_stores.postgres import PGVectorStore
 
 from backend.config import settings
+from backend.rag.embedding_adapter import LangChainEmbeddingAdapter
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +32,6 @@ PRODUCT_DESCRIPTIONS_PATH = (
 )
 COLLECTION_NAME = "product_chunks"
 SENTENCE_WINDOW_SIZE = 5
-SENTENCE_WINDOW_OVERLAP = 1
 CHUNK_SIZE = 64  # batch size for embedding API
 
 
@@ -166,12 +166,13 @@ def build_product_index():
         return
 
     # Create embedding model (Zhipu via OpenAI-compatible API)
-    embed_model = OpenAIEmbedding(
+    lc_embed = OpenAIEmbeddings(
         model=settings.embedding_model,
-        api_key=settings.openai_api_key,
-        api_base=settings.openai_api_base,
-        embed_batch_size=CHUNK_SIZE,
+        openai_api_key=settings.openai_api_key,
+        openai_api_base=settings.openai_api_base,
+        chunk_size=CHUNK_SIZE,
     )
+    embed_model = LangChainEmbeddingAdapter(lc_embed)
 
     # Create vector store (pgvector)
     db_params = _parse_db_url()
@@ -191,7 +192,6 @@ def build_product_index():
         transformations=[
             SentenceWindowNodeParser(
                 window_size=SENTENCE_WINDOW_SIZE,
-                window_overlap=SENTENCE_WINDOW_OVERLAP,
             ),
             embed_model,
         ],
