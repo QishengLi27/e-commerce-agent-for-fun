@@ -26,6 +26,19 @@ apps/backend/data/*.json
 apps/backend/data/chroma_db/
 apps/backend/data/cache_db/
 
+# Chroma / pgvector binary data
+*.sqlite3
+data_level0.bin
+header.bin
+length.bin
+link_lists.bin
+
+# Experiments
+experiments/
+
+# Eval artifacts
+eval_results.json
+
 # macOS
 .DS_Store
 
