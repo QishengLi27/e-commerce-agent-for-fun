@@ -10,6 +10,8 @@ Architecture:
 
 import json
 import logging
+import re
+import string
 
 from backend.agent import llm
 from backend.intent.base import (
@@ -40,6 +42,7 @@ _KNOWLEDGE_SIGNALS = {
 _ORDER_ACTION_SIGNALS = {"cancel", "return", "refund", "money back", "exchange"}
 _STRONG_POLICY_SIGNALS = {"return", "refund", "exchange", "warranty", "cancel", "money back"}
 _PRODUCT_QA_SIGNALS = {
+    # Feature / spec signals
     "does the",
     "do the",
     "can the",
@@ -56,6 +59,7 @@ _PRODUCT_QA_SIGNALS = {
     "storage",
     "color",
     "magsafe",
+    # Comparison / recommendation signals
     "compare",
     "vs",
     "versus",
@@ -65,6 +69,16 @@ _PRODUCT_QA_SIGNALS = {
     "under",
     "within budget",
     "recommend",
+    "suggest",
+    "suggestion",
+    # Quality / suitability signals (e.g. "good laptop for work")
+    "good",
+    "great",
+    "perfect",
+    "ideal",
+    "suitable",
+    "top",
+    "popular",
     "difference between",
 }
 
@@ -94,7 +108,17 @@ def _classify_with_entities(query: str, entities: dict) -> dict | None:
 
     # Product QA signals + product or generic product term
     # Placed BEFORE policy signals so "does iPhone have MagSafe?" → product_qa, not policy
-    qa_hits = [w for w in _PRODUCT_QA_SIGNALS if w in lowered]
+    # Use word-boundary matching for single-word signals to avoid false hits
+    # such as "top" matching inside "laptop".
+    qa_hits = []
+    for w in _PRODUCT_QA_SIGNALS:
+        if " " in w:
+            if w in lowered:
+                qa_hits.append(w)
+        else:
+            if re.search(r"\b" + re.escape(w) + r"\b", lowered):
+                qa_hits.append(w)
+
     generic_terms = {
         "phone",
         "laptop",
@@ -106,7 +130,9 @@ def _classify_with_entities(query: str, entities: dict) -> dict | None:
         "shirt",
         "watch",
     }
-    has_generic_product = bool(generic_terms & set(lowered.split()))
+    # Strip trailing punctuation so "laptops?" matches "laptop".
+    cleaned_words = {w.strip(string.punctuation) for w in lowered.split()}
+    has_generic_product = bool(generic_terms & cleaned_words)
     if qa_hits and (has_product or has_generic_product):
         return {
             "intent": "product_qa",
@@ -199,8 +225,8 @@ Classify the user's query into exactly one of these categories:
 - list_orders: user wants to see all their orders (e.g., "show my orders")
 - policy: user asks about store policies — returns, refunds, shipping, warranty
 - weather: user asks about weather in a city
-- knowledge: user asks about a specific product or category
-- product_qa: user asks about a product's features, specs, comparisons, or category
+- knowledge: user asks what products/categories exist or for basic product info (name, price, category)
+- product_qa: user asks about a product's features, specs, comparisons, recommendations, or what product to choose
 - unknown: greeting, small talk, or anything else
 
 {entity_context}

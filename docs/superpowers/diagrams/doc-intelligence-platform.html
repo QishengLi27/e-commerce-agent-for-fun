@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document Intelligence AI Platform - Architecture</title>
+<style>
+  :root {
+    --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --accent:#38bdf8;
+    --green:#4ade80; --amber:#fbbf24; --purple:#c084fc; --pink:#f472b6;
+    --rose:#fb7185; --border:#334155;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; line-height:1.6; }
+  header { background:var(--card); border-bottom:1px solid var(--border); padding:1.5rem 2rem; text-align:center; }
+  header h1 { font-size:1.5rem; color:var(--accent); }
+  header .sub { color:#94a3b8; font-size:0.82rem; margin-top:0.3rem; }
+  nav { display:flex; gap:0; justify-content:center; background:#1a2332; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:20; flex-wrap:wrap; }
+  nav button { background:none; border:none; color:#94a3b8; padding:0.55rem 0.9rem; cursor:pointer; font-size:0.78rem; border-bottom:2px solid transparent; transition:0.2s; font-family:inherit; }
+  nav button:hover { color:#fff; }
+  nav button.active { color:var(--accent); border-bottom-color:var(--accent); }
+  .tab-panel { display:none; max-width:1100px; margin:2rem auto; padding:0 1.5rem 6rem; }
+  .tab-panel.active { display:block; }
+  .desc { background:var(--card); border-left:3px solid var(--accent); padding:1rem 1.5rem; border-radius:0 8px 8px 0; margin:1rem 0; font-size:0.85rem; color:#94a3b8; }
+  .desc strong { color:var(--accent); }
+  .badge { display:inline-block; padding:0.1rem 0.4rem; border-radius:3px; font-size:0.66rem; font-weight:600; margin:0.1rem; }
+  .b-blue { background:#1e40af; color:#93c5fd; } .b-green { background:#065f46; color:#6ee7b7; }
+  .b-amber { background:#78350f; color:#fcd34d; } .b-purple { background:#581c87; color:#d8b4fe; }
+  .b-pink { background:#831843; color:#f9a8d4; } .b-slate { background:#334155; color:#cbd5e1; } .b-rose { background:#881337; color:#fda4af; }
+  h2 { color:var(--accent); margin:1.5rem 0 0.5rem; }
+  h3 { color:var(--accent); margin:1.2rem 0 0.5rem; font-size:1.05rem; }
+  table { width:100%; border-collapse:collapse; font-size:0.83rem; margin:1rem 0; }
+  th { border-bottom:2px solid var(--accent); text-align:left; padding:0.5rem; }
+  td { border-bottom:1px solid var(--border); padding:0.5rem; font-size:0.8rem; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:1rem 0; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin:1rem 0; }
+  @media(max-width:800px){ .grid2,.grid3 { grid-template-columns:1fr; } }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1.2rem; transition:0.2s; }
+  .card:hover { border-color:var(--accent); }
+  .card h4 { color:var(--accent); font-size:0.88rem; margin-bottom:0.5rem; }
+  .card p { color:#94a3b8; font-size:0.78rem; line-height:1.5; }
+  .pillar { border:2px solid var(--border); border-radius:12px; padding:1.5rem; margin:1rem 0; }
+  .pillar .p-header { font-size:1rem; font-weight:700; margin-bottom:0.8rem; }
+  .pillar-item { display:flex; gap:1rem; align-items:flex-start; padding:0.6rem 0; border-bottom:1px solid rgba(51,65,85,0.4); }
+  .pillar-item:last-child { border-bottom:none; }
+  .pillar-item .pi-icon { font-size:1.3rem; min-width:30px; }
+  .pillar-item .pi-body { flex:1; font-size:0.82rem; color:#94a3b8; }
+  .pillar-item .pi-body b { color:var(--text); }
+  footer { text-align:center; padding:2rem; color:#475569; font-size:0.8rem; }
+
+  /* === Pure CSS Diagram System === */
+  .diagram { margin:1.5rem 0; background:var(--card); border-radius:12px; padding:2rem; border:1px solid var(--border); overflow-x:auto; }
+  .d-row { display:flex; gap:1rem; align-items:center; justify-content:center; flex-wrap:wrap; margin:0.8rem 0; }
+  .d-col { display:flex; flex-direction:column; gap:0.6rem; align-items:center; }
+  .d-box {
+    background:#1a2332; border:2px solid var(--border); border-radius:8px;
+    padding:0.7rem 1.2rem; text-align:center; font-size:0.8rem;
+    min-width:100px; transition:0.2s;
+  }
+  .d-box:hover { border-color:var(--accent); }
+  .d-box.accent { border-color:var(--accent); }
+  .d-box.green { border-color:var(--green); }
+  .d-box.amber { border-color:var(--amber); }
+  .d-box.purple { border-color:var(--purple); }
+  .d-box.pink { border-color:var(--pink); }
+  .d-box.rose { border-color:var(--rose); }
+  .d-box .d-title { font-weight:700; color:var(--text); }
+  .d-box .d-sub { color:#94a3b8; font-size:0.7rem; margin-top:0.2rem; line-height:1.4; }
+  .d-box.sm { min-width:70px; padding:0.5rem 0.8rem; font-size:0.72rem; }
+  .d-box.lg { min-width:160px; }
+  .d-box.xl { min-width:220px; }
+  .d-arrow {
+    color:var(--accent); font-size:1.3rem; font-weight:700; min-width:30px;
+    text-align:center; display:flex; align-items:center;
+  }
+  .d-arrow.down { flex-direction:column; }
+  .d-arrow-label { color:#94a3b8; font-size:0.65rem; font-weight:400; }
+  .d-group {
+    border:2px solid var(--border); border-radius:10px; padding:1.2rem;
+    background:rgba(30,41,59,0.4); position:relative;
+  }
+  .d-group-title {
+    position:absolute; top:-12px; left:1rem; background:var(--card);
+    padding:0 0.8rem; font-size:0.75rem; color:var(--accent); font-weight:600;
+  }
+  .d-group.accent { border-color:var(--accent); }
+  .d-group.green { border-color:var(--green); }
+  .d-group.amber { border-color:var(--amber); }
+  .d-group.purple { border-color:var(--purple); }
+  .d-full { width:100%; }
+  pre.code { background:#0f172a; color:#38bdf8; padding:0.8rem; border-radius:6px; font-size:0.76rem; overflow-x:auto; margin:0.5rem 0; }
+  pre.code .cmt { color:#64748b; }
+  pre.code .kw { color:#c084fc; }
+  pre.code .str { color:#4ade80; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📄 Document Intelligence AI Platform — Architecture</h1>
+  <p class="sub">Multi-Layer Document Parsing · Agentic Workflow Orchestration · Multi-Agent Collaboration · AI Harness Engineering</p>
+</header>
+
+<nav>
+  <button class="active" onclick="switchTab('overview')">📐 Platform Overview</button>
+  <button onclick="switchTab('parsing')">🔬 Doc Parsing</button>
+  <button onclick="switchTab('agent')">🤖 Agentic Workflow</button>
+  <button onclick="switchTab('multiagent')">👥 Multi-Agent</button>
+  <button onclick="switchTab('rag')">🧠 RAG + Knowledge</button>
+  <button onclick="switchTab('harness')">⚙️ AI Harness</button>
+  <button onclick="switchTab('lowcode')">🧩 Low-Code Delivery</button>
+  <button onclick="switchTab('tech')">🔧 Tech Matrix</button>
+</nav>
+
+<!-- ===== TAB 0: OVERVIEW ===== -->
+<div class="tab-panel active" id="tab-overview">
+
+  <h2>Platform Architecture — Four Pillars</h2>
+  <div class="desc"><strong>The platform ingests enterprise documents (PDF, DOCX, PPTX, scanned images), parses them into structured content, and applies AI-powered extraction, classification, reasoning, and automation — governed by a production-grade AI harness.</strong></div>
+
+  <div class="diagram">
+    <div class="d-col" style="gap:1.5rem;">
+
+      <!-- Layer 1: Input -->
+      <div class="d-row"><div class="d-box xl accent"><div class="d-title">📄 Document Input</div><div class="d-sub">PDF · DOCX · PPTX · Scanned Images · HTML · Markdown</div></div></div>
+      <div class="d-arrow down">▼</div>
+
+      <!-- Layer 2: Parsing Pipeline -->
+      <div class="d-group accent d-full">
+        <div class="d-group-title">Layer 1: Document Parsing Pipeline</div>
+        <div class="d-row">
+          <div class="d-box rose"><div class="d-title">Tier 1: OCR</div><div class="d-sub">PaddleOCR · Tesseract<br/>Scanned docs, no text layer</div></div>
+          <div class="d-arrow">→</div>
+          <div class="d-box amber"><div class="d-title">Tier 2: Structured Parsing</div><div class="d-sub">LlamaParse · Unstructured.io<br/>Tables, headings, reading order</div></div>
+          <div class="d-arrow">→</div>
+          <div class="d-box accent"><div class="d-title">Tier 3: Vision-Language</div><div class="d-sub">ColPali · LayoutLMv3<br/>Complex layouts, no OCR needed</div></div>
+          <div class="d-arrow">→</div>
+          <div class="d-box purple"><div class="d-title">Tier 4: Multimodal LLM</div><div class="d-sub">GPT-4V · Claude Vision<br/>Unstructured, reasoning needed</div></div>
+        </div>
+      </div>
+      <div class="d-arrow down">▼</div>
+
+      <!-- Layer 3: Agentic Workflow -->
+      <div class="d-group green d-full">
+        <div class="d-group-title">Layer 2: Agentic Workflow Orchestration</div>
+        <div class="d-row">
+          <div class="d-box green"><div class="d-title">LangGraph StateGraph</div><div class="d-sub">Deterministic DAG<br/>State checkpointing</div></div>
+          <div class="d-arrow">→</div>
+          <div class="d-box green"><div class="d-title">Conditional Routing</div><div class="d-sub">classify → task_decompose<br/>→ dispatch → verify</div></div>
+          <div class="d-arrow">→</div>
+          <div class="d-box green"><div class="d-title">Tool Layer</div><div class="d-sub">extraction · classification<br/>summarization · Q&A</div></div>
+        </div>
+      </div>
+      <div class="d-arrow down">▼</div>
+
+      <!-- Layer 4: RAG + Knowledge -->
+      <div class="d-group purple d-full">
+        <div class="d-group-title">Layer 3: Multi-Framework RAG + Knowledge Graph</div>
+        <div class="d-row">
+          <div class="d-box purple"><div class="d-title">Milvus / pgvector</div><div class="d-sub">Dense + Sparse → RRF<br/>→ Batch LLM Re-rank</div></div>
+          <div class="d-box purple"><div class="d-title">Neo4j</div><div class="d-sub">Document lineage<br/>Entity relationships</div></div>
+          <div class="d-box purple"><div class="d-title">LlamaIndex Ingestion</div><div class="d-sub">SentenceWindowNodeParser<br/>Metadata-rich chunks</div></div>
+        </div>
+      </div>
+      <div class="d-arrow down">▼</div>
+
+      <!-- Layer 5: AI Harness (governs everything) -->
+      <div class="d-group amber d-full">
+        <div class="d-group-title">Layer 4: AI Harness Engineering</div>
+        <div class="d-row">
+          <div class="d-box amber sm"><div class="d-title">📊 Evaluation</div><div class="d-sub">RAGAS + custom metrics</div></div>
+          <div class="d-box amber sm"><div class="d-title">📦 Versioning</div><div class="d-sub">Prompt · Model · Pipeline</div></div>
+          <div class="d-box amber sm"><div class="d-title">🚦 Gradual Rollout</div><div class="d-sub">Feature flags · A/B testing</div></div>
+          <div class="d-box amber sm"><div class="d-title">💰 Cost Control</div><div class="d-sub">LiteLLM · Rate limiting</div></div>
+          <div class="d-box amber sm"><div class="d-title">🔌 Stability</div><div class="d-sub">Circuit breakers · Fallback</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card"><h4>🔬 Document Parsing</h4><p>4-tier architecture from OCR to multimodal LLM. Handles native PDFs, scanned images, complex layouts, tables, and signatures. ColPali for vision-based retrieval — no OCR needed for complex pages.</p></div>
+    <div class="card"><h4>🤖 Agentic Workflow</h4><p>LangGraph explicit DAG, not ReAct. Two modes: interactive (SSE streaming, per-user checkpointing) and batch (Prefect orchestration with retry and progress tracking).</p></div>
+    <div class="card"><h4>👥 Multi-Agent</h4><p>Supervisor + 5 specialized sub-agents (Parsing, Extraction, Classification, QA, Review). LangGraph Command-based handoff with shared PostgreSQL checkpoint state.</p></div>
+    <div class="card"><h4>🧠 RAG + Knowledge Graph</h4><p>Graph-first retrieval for structured queries. Vector fallback for semantic search. Neo4j for document lineage + entity relationships. LlamaIndex for ingestion.</p></div>
+    <div class="card"><h4>⚙️ AI Harness</h4><p>Evaluation (RAGAS + custom) → Versioning (LangFuse) → Gradual Rollout (Unleash) → Cost Control (LiteLLM) → Stability (circuit breakers). Every AI change evaluated before production.</p></div>
+    <div class="card"><h4>🧩 Low-Code Delivery</h4><p>Two layers: visual workflow builder (Dify/LangFlow) for simple RAG apps, and domain-specific DSL (CEL expressions) for complex extraction/classification rules. Platform provides guardrails.</p></div>
+  </div>
+</div>
+
+<!-- ===== TAB 1: DOC PARSING ===== -->
+<div class="tab-panel" id="tab-parsing">
+  <h2>4-Tier Document Parsing Architecture</h2>
+  <div class="desc"><strong>Not all documents need all tiers.</strong> A native PDF with clean text goes through Tier 2 only. A scanned handwritten contract escalates through Tier 1→2→3→4.</div>
+
+  <div class="diagram">
+    <div class="d-col" style="gap:1rem;">
+      <div class="d-box xl accent"><div class="d-title">📄 Document Input</div><div class="d-sub">PDF · DOCX · PPTX · Image · HTML · Markdown</div></div>
+      <div class="d-arrow down">▼</div>
+      <div class="d-box lg amber"><div class="d-title">🔀 Parsing Router</div><div class="d-sub">Document classifier: type · language · complexity</div></div>
+      <div class="d-row">
+        <div class="d-col"><div class="d-arrow down">▼</div><div class="d-box rose sm">Tier 1: OCR<br/>Scanned, no text</div></div>
+        <div class="d-col"><div class="d-arrow down">▼</div><div class="d-box amber sm">Tier 2: Structured<br/>Clean PDF, tables</div></div>
+        <div class="d-col"><div class="d-arrow down">▼</div><div class="d-box accent sm">Tier 3: Vision-Language<br/>Complex layout</div></div>
+        <div class="d-col"><div class="d-arrow down">▼</div><div class="d-box purple sm">Tier 4: Multimodal LLM<br/>Unstructured, reasoning</div></div>
+      </div>
+      <div class="d-box xl green"><div class="d-title">📝 Structured Output</div><div class="d-sub">Markdown + metadata · Table JSON · Entity annotations · Reading order preserved</div></div>
+    </div>
+  </div>
+
+  <h3>Tier-by-Tier Technology Comparison</h3>
+  <table>
+    <tr><th>Tier</th><th>Tools</th><th>Best For</th><th>Output Quality</th><th>Cost</th></tr>
+    <tr><td style="color:var(--rose);font-weight:700;">Tier 1: OCR</td><td>PaddleOCR · Tesseract · EasyOCR</td><td>Scanned images, no text layer</td><td>Loses layout, tables become garbled</td><td>$0 (open source)</td></tr>
+    <tr><td style="color:var(--amber);font-weight:700;">Tier 2: Structured</td><td>LlamaParse · Unstructured.io · PyMuPDF4LLM · Marker</td><td>Native PDFs, clean documents</td><td>Preserves tables, headings, reading order</td><td>$0-0.003/page</td></tr>
+    <tr><td style="color:var(--accent);font-weight:700;">Tier 3: Vision-Language</td><td>ColPali · LayoutLMv3 · Donut · DocTR</td><td>Complex layouts, forms, signatures</td><td>ColPali skips OCR entirely — embeds page images directly</td><td>GPU required</td></tr>
+    <tr><td style="color:var(--purple);font-weight:700;">Tier 4: Multimodal LLM</td><td>GPT-4V · Claude Vision · Gemini · Qwen-VL</td><td>Handwritten, reasoning required</td><td>Best quality, can answer "what does signature say?"</td><td>$0.01-0.05/page</td></tr>
+  </table>
+
+  <h3>Why ColPali is a Paradigm Shift</h3>
+  <div class="grid2">
+    <div class="card" style="border-color:#f87171;"><h4 style="color:#f87171;">Traditional Pipeline</h4><p>PDF → OCR → Plain Text → Chunking → Text Embedding → Search. <b>Losses at every step:</b> OCR errors, chunk boundaries cut tables in half, visual cues (bold, position, signatures) are lost.</p></div>
+    <div class="card" style="border-color:var(--green);"><h4 style="color:var(--green);">ColPali Pipeline</h4><p>PDF Page Screenshot → Vision Encoder → Multi-Vector Embedding → Search. <b>No OCR. No chunking.</b> The model sees the page as a human would. "The signature is in the bottom-right corner" — ColPali can retrieve this.</p></div>
+  </div>
+</div>
+
+<!-- ===== TAB 2: AGENTIC WORKFLOW ===== -->
+<div class="tab-panel" id="tab-agent">
+  <h2>Agentic Workflow Orchestration</h2>
+  <div class="desc"><strong>Why LangGraph StateGraph over ReAct.</strong> For enterprise document processing, you need deterministic, auditable execution paths. ReAct lets the LLM decide — great for exploration, unacceptable for "extract all PII and classify."</div>
+
+  <h3>Core Workflow: Document Processing Pipeline</h3>
+  <div class="diagram">
+    <div class="d-row">
+      <div class="d-box accent"><div class="d-title">START</div></div>
+      <div class="d-arrow">→</div>
+      <div class="d-box accent lg"><div class="d-title">classify_document</div><div class="d-sub">Type: contract/invoice/report/form<br/>Language: CN/EN/JP — Complexity: simple/table/mixed/scan</div></div>
+      <div class="d-arrow">→</div>
+      <div class="d-box accent"><div class="d-title">parse_document</div></div>
+      <div class="d-arrow">→</div>
+      <div class="d-box accent"><div class="d-title">extract_entities</div></div>
+      <div class="d-arrow">→</div>
+      <div class="d-box accent"><div class="d-title">classify_fields</div></div>
+      <div class="d-arrow">→</div>
+      <div class="d-box accent lg"><div class="d-title">verify_results</div><div class="d-sub">LLM auditor + hard verify<br/>Amounts in range? Names exist? Dates valid?</div></div>
+      <div class="d-arrow">→</div>
+      <div class="d-box green"><div class="d-title">synthesize_output</div></div>
+    </div>
+    <div class="d-row" style="margin-top:1rem;">
+      <div class="d-box amber sm"><div class="d-title">Retry Loop</div><div class="d-sub">max 2 retries</div></div>
+      <div class="d-arrow">←</div>
+      <div style="color:#94a3b8;font-size:0.75rem;">unverified → back to extract_entities</div>
+    </div>
+    <div class="d-row" style="margin-top:1rem;">
+      <div class="d-box accent sm"><div class="d-title">route_by_type</div></div>
+      <div class="d-arrow">→</div>
+      <div class="d-box green sm">standard doc</div>
+      <div class="d-arrow">→</div>
+      <div class="d-box purple sm">complex layout</div>
+      <div class="d-arrow">→</div>
+      <div class="d-box rose sm">handwritten</div>
+    </div>
+  </div>
+
+  <h3>Task Decomposition — Multi-Step Reasoning</h3>
+  <div class="pillar" style="border-color:var(--accent);">
+    <div class="p-header" style="color:var(--accent);">Example: "Extract all financial obligations from this 45-page contract and flag any clauses with penalties."</div>
+    <div class="pillar-item"><div class="pi-icon">S1</div><div class="pi-body"><b>Task Decomposition (LLM CoT):</b> Break into sub-tasks → (1) Identify financial sections, (2) Extract amounts/dates/parties, (3) Classify obligation type, (4) Flag penalty clauses, (5) Cross-reference amounts with summary table, (6) Generate structured output</div></div>
+    <div class="pillar-item"><div class="pi-icon">S2</div><div class="pi-body"><b>Parallel Dispatch:</b> Sub-tasks 1&2 run in parallel on different sections. Penalty flagging (sub-task 4) runs independently. LangGraph Send() API fans out to parallel nodes.</div></div>
+    <div class="pillar-item"><div class="pi-icon">S3</div><div class="pi-body"><b>Tool Calling:</b> Extraction Agent calls extract_financial_entities(). Penalty Agent calls flag_clause_pattern(). Cross-reference Agent calls validate_against_summary().</div></div>
+    <div class="pillar-item"><div class="pi-icon">S4</div><div class="pi-body"><b>Merge + Verify:</b> Cross-check — do extracted amounts sum to the total in the summary table? If discrepancy > tolerance → flag for human review.</div></div>
+  </div>
+
+  <h3>Two Operational Modes</h3>
+  <div class="grid2">
+    <div class="card" style="border-color:var(--accent);"><h4 style="color:var(--accent);">Interactive Mode</h4><p>User-facing chat/query. Real-time SSE streaming. LangGraph checkpoint per-user session. Context compression (sliding window + token budget). Circuit breaker + retry per external call.</p></div>
+    <div class="card" style="border-color:var(--purple);"><h4 style="color:var(--purple);">Batch Mode</h4><p>Async document processing. Prefect workflow orchestrator. Schedule: nightly batch, webhook-triggered. Progress tracking + partial failure handling + retry. Output → structured DB.</p></div>
+  </div>
+</div>
+
+<!-- ===== TAB 3: MULTI-AGENT ===== -->
+<div class="tab-panel" id="tab-multiagent">
+  <h2>Multi-Agent Collaboration</h2>
+  <div class="desc"><strong>Supervisor + Specialized Sub-Agents.</strong> Each sub-agent is a LangGraph subgraph with its own tools, prompts, and state. Handoff via LangGraph Command(goto=...).</div>
+
+  <div class="diagram">
+    <div class="d-col" style="gap:1.2rem;align-items:center;">
+      <div class="d-box xl accent"><div class="d-title">🎯 Supervisor Agent</div><div class="d-sub">Classifies task → Routes to specialized sub-agent</div></div>
+      <div class="d-row">
+        <div class="d-box green sm"><div class="d-title">📄 Parsing</div><div class="d-sub">parse_document()<br/>detect_layout()</div></div>
+        <div class="d-box amber sm"><div class="d-title">🔍 Extraction</div><div class="d-sub">extract_entities()<br/>extract_tables()</div></div>
+        <div class="d-box purple sm"><div class="d-title">🏷️ Classification</div><div class="d-sub">classify_by_rules()<br/>verify_taxonomy()</div></div>
+        <div class="d-box accent sm"><div class="d-title">💬 QA</div><div class="d-sub">rag_search()<br/>graph_lookup()</div></div>
+        <div class="d-box pink sm"><div class="d-title">✅ Review</div><div class="d-sub">flag_anomalies()<br/>approve_reject()</div></div>
+      </div>
+      <div class="d-box lg" style="border-style:dashed;"><div class="d-title">🔄 Shared State (PostgreSQL Checkpoint)</div><div class="d-sub">document_id · parsed_content · extracted_entities · classification_results · review_status</div></div>
+    </div>
+  </div>
+
+  <h3>Agent Specialization Details</h3>
+  <div class="grid2">
+    <div class="card"><h4>📄 Parsing Agent</h4><p><b>Tools:</b> parse_document(), detect_layout(), ocr_escalate()</p><p><b>Strategy:</b> Layout complexity < 0.3 → Tier 2. Complexity > 0.6 + needs reasoning → Tier 4 (Multimodal LLM). Otherwise → Tier 3 (ColPali).</p></div>
+    <div class="card"><h4>🔍 Extraction Agent</h4><p><b>Tools:</b> extract_entities_ner(), extract_key_value(), extract_tables()</p><p><b>CoT Prompt:</b> "Step 1: Identify field type. Step 2: Locate value. Step 3: Extend to surrounding context. Step 4: Output with confidence."</p></div>
+    <div class="card"><h4>🏷️ Classification Agent</h4><p><b>Tools:</b> classify_by_rules(), classify_by_llm(), verify_against_taxonomy()</p><p><b>Strategy:</b> CEL Rules (deterministic) → Graph proximity (Neo4j) → LLM with candidates → Verify against taxonomy.</p></div>
+    <div class="card"><h4>💬 QA Agent</h4><p><b>Tools:</b> rag_search(), graph_lookup(), cross_reference()</p><p><b>Strategy:</b> Graph-first traversal → RAG fallback. Dense+sparse→RRF→batch rerank. Output: answer + source citations (document, page, section).</p></div>
+  </div>
+</div>
+
+<!-- ===== TAB 4: RAG ===== -->
+<div class="tab-panel" id="tab-rag">
+  <h2>Multi-Framework RAG + Knowledge Graph</h2>
+  <div class="desc"><strong>Why not one framework?</strong> Document intelligence needs three patterns: (1) semantic search over paragraphs, (2) graph traversal for entity relationships, (3) structured queries over extracted data. No single DB handles all three.</div>
+
+  <div class="diagram">
+    <div class="d-col" style="gap:1rem;">
+      <div class="d-box xl accent"><div class="d-title">🔍 Query: "What are the payment terms across all Q4 supplier contracts?"</div></div>
+      <div class="d-arrow down">▼</div>
+      <div class="d-group purple d-full"><div class="d-group-title">Query Router (LangGraph)</div>
+        <div class="d-row">
+          <div class="d-box purple sm">Find Q4 contracts<br/>→ Graph search</div>
+          <div class="d-box purple sm">Payment terms<br/>→ RAG per contract</div>
+          <div class="d-box purple sm">Merge<br/>→ Synthesize</div>
+        </div>
+      </div>
+      <div class="d-row" style="gap:2rem;">
+        <div class="d-group amber d-full"><div class="d-group-title">Neo4j — Document Knowledge Graph</div>
+          <div class="d-row">
+            <div class="d-box amber sm">Find: Q4 2024 contracts<br/>CHILD_OF* hierarchy</div>
+            <div class="d-box amber sm">Traverse: contract→clauses</div>
+            <div class="d-box amber sm">Cross-ref: supplier entities</div>
+          </div>
+        </div>
+        <div class="d-group purple d-full"><div class="d-group-title">Milvus — Semantic RAG</div>
+          <div class="d-row">
+            <div class="d-box purple sm">Dense: HNSW top-5</div>
+            <div class="d-box purple sm">Sparse: BM25 top-5</div>
+            <div class="d-box purple sm">RRF k=60 fuse</div>
+            <div class="d-box purple sm">Batch LLM rerank</div>
+          </div>
+        </div>
+      </div>
+      <div class="d-box xl green"><div class="d-title">LLM Synthesis</div><div class="d-sub">Per-contract RAG extraction → Cross-contract comparison → Structured table + narrative summary</div></div>
+    </div>
+  </div>
+
+  <h3>Retrieval Strategy by Query Type</h3>
+  <table>
+    <tr><th>Query Type</th><th>Primary</th><th>Secondary</th><th>Example</th></tr>
+    <tr><td>Semantic search</td><td style="color:var(--purple);">Milvus RAG</td><td>—</td><td>"What does the confidentiality clause cover?"</td></tr>
+    <tr><td>Entity relationship</td><td style="color:var(--amber);">Neo4j graph</td><td>—</td><td>"All contracts signed by Acme Corp in 2024"</td></tr>
+    <tr><td>Cross-document analysis</td><td style="color:var(--amber);">Neo4j candidates</td><td style="color:var(--purple);">RAG per document</td><td>"Compare payment terms across Q4 MSAs"</td></tr>
+    <tr><td>Key info extraction</td><td style="color:var(--purple);">RAG</td><td style="color:var(--amber);">Graph validation</td><td>"Extract all financial obligations"</td></tr>
+    <tr><td>Compliance check</td><td style="color:var(--amber);">Graph taxonomy</td><td style="color:var(--purple);">RAG clause text</td><td>"Contracts with penalty > 5%?"</td></tr>
+  </table>
+
+  <h3>Neo4j Document Knowledge Graph — Node & Relationship Model</h3>
+  <div class="desc"><strong>Every document becomes a graph.</strong> Sections link to clauses, clauses link to financial terms and taxonomy tags, companies and signatories link to documents. Cross-document references (amendments, superseded contracts) form the most valuable edges.</div>
+
+  <!-- Node Types -->
+  <h4 style="margin:1.5rem 0 0.5rem;">Node Types</h4>
+  <div class="diagram">
+    <div class="d-row">
+      <div class="d-box accent sm"><div class="d-title">:Document</div><div class="d-sub">filename<br/>doc_type (MSA/SOW)<br/>effective_date<br/>jurisdiction<br/>status</div></div>
+      <div class="d-box green sm"><div class="d-title">:Section</div><div class="d-sub">section_number<br/>title<br/>page_number</div></div>
+      <div class="d-box amber sm"><div class="d-title">:Clause</div><div class="d-sub">clause_text<br/>clause_type<br/>is_risky (bool)<br/>risk_reason</div></div>
+      <div class="d-box purple sm"><div class="d-title">:TaxonomyTag</div><div class="d-sub">name (PII, PCI)<br/>category<br/>definition</div></div>
+      <div class="d-box pink sm"><div class="d-title">:FinancialTerm</div><div class="d-sub">amount<br/>currency<br/>frequency<br/>term_type (Net30)</div></div>
+    </div>
+    <div class="d-row" style="margin-top:0.8rem;">
+      <div class="d-box sm"><div class="d-title">:Company</div><div class="d-sub">name<br/>type (supplier/buyer)<br/>jurisdiction</div></div>
+      <div class="d-box sm"><div class="d-title">:Person</div><div class="d-sub">name, title<br/>email</div></div>
+      <div class="d-box sm"><div class="d-title">:Date</div><div class="d-sub">date_value<br/>date_type</div></div>
+      <div class="d-box sm"><div class="d-title">:Obligation</div><div class="d-sub">description<br/>obligation_type<br/>party</div></div>
+    </div>
+  </div>
+
+  <!-- Relationships -->
+  <h4 style="margin:1.5rem 0 0.5rem;">Relationship Types — What Makes This a Graph, Not Tables</h4>
+  <div class="diagram">
+    <div class="d-group amber d-full" style="margin-bottom:1rem;"><div class="d-group-title">Document Structure (Vertical)</div>
+      <div class="d-row">
+        <div class="d-col"><div class="d-box amber sm">Document</div><div class="d-arrow down">[:HAS_SECTION]</div><div class="d-box amber sm">Section</div><div class="d-arrow down">[:CONTAINS_CLAUSE]</div><div class="d-box amber sm">Clause</div></div>
+      </div>
+    </div>
+    <div class="d-group green d-full" style="margin-bottom:1rem;"><div class="d-group-title">Entity Extraction (Horizontal — from Clause to real-world entities)</div>
+      <div class="d-row">
+        <div class="d-col"><div class="d-box green sm">Clause</div><div class="d-arrow">[:HAS_OBLIGATION]</div><div class="d-box green sm">FinancialTerm</div><div class="d-arrow">[:CLASSIFIED_AS]</div><div class="d-box green sm">TaxonomyTag</div></div>
+      </div>
+      <div class="d-row" style="margin-top:0.5rem;">
+        <div class="d-col"><div class="d-box green sm">Clause</div><div class="d-arrow">[:HAS_EFFECTIVE_DATE]</div><div class="d-box green sm">Date</div></div>
+        <div class="d-col" style="margin-left:1rem;"><div class="d-box green sm">Clause</div><div class="d-arrow">[:CROSS_REFERENCES]</div><div class="d-box green sm">Clause</div></div>
+      </div>
+    </div>
+    <div class="d-group accent d-full" style="margin-bottom:1rem;"><div class="d-group-title">Party Relationships (Who signed? Who's the parent company?)</div>
+      <div class="d-row">
+        <div class="d-col"><div class="d-box accent sm">Document</div><div class="d-arrow">[:SIGNED_BY {role}]</div><div class="d-box accent sm">Company</div></div>
+        <div class="d-col" style="margin-left:1rem;"><div class="d-box accent sm">Document</div><div class="d-arrow">[:SIGNED_BY {role}]</div><div class="d-box accent sm">Person</div></div>
+        <div class="d-col" style="margin-left:1rem;"><div class="d-box accent sm">Company</div><div class="d-arrow">[:PARENT_OF]</div><div class="d-box accent sm">Company</div></div>
+      </div>
+    </div>
+    <div class="d-group purple d-full"><div class="d-group-title">Cross-Document References (The most valuable edges)</div>
+      <div class="d-row">
+        <div class="d-col"><div class="d-box purple sm">Document (Amendment)</div><div class="d-arrow">[:REFERENCES {type}]</div><div class="d-box purple sm">Document (Original MSA)</div></div>
+        <div class="d-col" style="margin-left:1rem;"><div class="d-box purple sm">Document (v2.0)</div><div class="d-arrow">[:SUPERSEDES]</div><div class="d-box purple sm">Document (v1.0)</div></div>
+      </div>
+      <div style="color:#94a3b8;font-size:0.75rem;margin-top:0.5rem;text-align:center;">
+        [:REFERENCES*] 多跳遍历 → "这份 Amendment 改了原始 MSA 的哪些条款？" → 找到同 title 的 Section → 对比 Clause 文本差异
+      </div>
+    </div>
+  </div>
+
+  <!-- Query Examples -->
+  <h4 style="margin:1.5rem 0 0.5rem;">Key Cypher Query Patterns</h4>
+  <div class="grid2">
+    <div class="card" style="border-color:var(--amber);">
+      <h4 style="color:var(--amber);">单文档：惩罚条款</h4>
+      <pre class="code">MATCH (d:Document {filename:'A.pdf'})
+  -[:CONTAINS_CLAUSE]->(c:Clause)
+  -[:CLASSIFIED_AS]->
+  (:TaxonomyTag {name:'Penalty_Clause'})
+RETURN c.clause_text</pre>
+    </div>
+    <div class="card" style="border-color:var(--amber);">
+      <h4 style="color:var(--amber);">跨文档：供应商风险</h4>
+      <pre class="code">MATCH (co:Company {name:'Acme'})
+  <-[:SIGNED_BY]-(d:Document)
+  -[:CONTAINS_CLAUSE]->(c:Clause)
+WHERE c.is_risky = true
+RETURN d.filename, c.risk_reason</pre>
+    </div>
+    <div class="card" style="border-color:var(--purple);">
+      <h4 style="color:var(--purple);">缺失条款检测</h4>
+      <pre class="code">MATCH (d:Document {doc_type:'MSA'})
+WHERE NOT EXISTS {
+  MATCH (d)-[:CONTAINS_CLAUSE]->
+  (:Clause)-[:CLASSIFIED_AS]->
+  (:TaxonomyTag {name:'Termination'})
+}
+RETURN d.filename AS missing_termination</pre>
+    </div>
+    <div class="card" style="border-color:var(--purple);">
+      <h4 style="color:var(--purple);">Amendment 链追踪</h4>
+      <pre class="code">MATCH path = (a:Document {doc_type:'Amendment'})
+  -[:REFERENCES*1..5]->(orig:Document)
+MATCH (a)-[:CONTAINS_CLAUSE]->(c1:Clause)
+MATCH (orig)-[:CONTAINS_CLAUSE]->(c2:Clause)
+WHERE c1.clause_text <> c2.clause_text
+RETURN c1.clause_text, c2.clause_text</pre>
+    </div>
+  </div>
+
+  <!-- Ingestion Pipeline -->
+  <h4 style="margin:1.5rem 0 0.5rem;">Ingestion Pipeline: Document → Graph</h4>
+  <div class="diagram">
+    <div class="d-row">
+      <div class="d-box rose sm">📄 PDF</div>
+      <div class="d-arrow">→</div>
+      <div class="d-box amber sm">Tier 1-4<br/>Parsing</div>
+      <div class="d-arrow">→</div>
+      <div class="d-box green sm">Extraction<br/>Agent (LLM)</div>
+      <div class="d-arrow">→</div>
+      <div class="d-col">
+        <div class="d-box green sm">Create<br/>(:Document)</div>
+        <div class="d-box green sm">Create<br/>(:Section)s</div>
+        <div class="d-box green sm">Create<br/>(:Clause)s</div>
+      </div>
+      <div class="d-arrow">→</div>
+      <div class="d-box purple sm">Classification<br/>Agent</div>
+      <div class="d-arrow">→</div>
+      <div class="d-col">
+        <div class="d-box purple sm">[:CLASSIFIED_AS]</div>
+        <div class="d-box purple sm">[:HAS_OBLIGATION]</div>
+      </div>
+      <div class="d-arrow">→</div>
+      <div class="d-box amber sm">Cross-Doc<br/>Agent</div>
+      <div class="d-arrow">→</div>
+      <div class="d-box purple sm">[:REFERENCES]</div>
+      <div class="d-arrow">→</div>
+      <div class="d-box accent xl"><div class="d-title">🗂️ Neo4j Graph</div><div class="d-sub">Read-only at query time<br/>Synced from PostgreSQL</div></div>
+    </div>
+  </div>
+
+  <h4 style="margin:1.5rem 0 0.5rem;">E-Commerce vs Document Intelligence — Same Graph Pattern</h4>
+  <table>
+    <tr><th>Pattern</th><th>🛒 E-Commerce</th><th>📄 Document Intelligence</th></tr>
+    <tr><td>Core Node</td><td>Product</td><td>Document → Section → Clause (hierarchical)</td></tr>
+    <tr><td>Classification Edge</td><td>IN_CATEGORY → leaf category</td><td>CLASSIFIED_AS → TaxonomyTag</td></tr>
+    <tr><td>Cross-Entity Edge</td><td>ACCESSORY_OF, ALTERNATIVE_TO</td><td>REFERENCES, SUPERSEDES, CROSS_REFERENCES</td></tr>
+    <tr><td>Party Edge</td><td>HAS_BRAND</td><td>SIGNED_BY (Company + Person)</td></tr>
+    <tr><td>Hierarchy</td><td>Category CHILD_OF* (policy inheritance)</td><td>HAS_SECTION → CONTAINS_CLAUSE (document structure, no inheritance)</td></tr>
+    <tr><td>Attribute Pattern</td><td>EAV: product_attributes table</td><td>FinancialTerm + Date node (typed values as nodes, not EAV)</td></tr>
+    <tr><td>Most Valuable Query</td><td>"Accessories for iPhone in same category, different brand"</td><td>"All Amendments that changed payment terms vs original MSA"</td></tr>
+    <tr><td>Source of Truth</td><td>PostgreSQL seed data → Neo4j sync</td><td>PostgreSQL (audit trail) → Neo4j sync</td></tr>
+  </table>
+</div>
+
+<!-- ===== TAB 5: AI HARNESS ===== -->
+<div class="tab-panel" id="tab-harness">
+  <h2>AI Harness Engineering</h2>
+  <div class="desc"><strong>Without a harness, AI features are prototypes.</strong> The harness provides evaluation, versioning, gradual rollout, cost control, and stability. It answers: "Is this model better? Can we roll back? What's it costing?"</div>
+
+  <div class="pillar" style="border-color:var(--accent);"><div class="p-header" style="color:var(--accent);">⚖️ Evaluation Framework (RAGAS + Custom)</div>
+    <div class="pillar-item"><div class="pi-icon">📊</div><div class="pi-body"><b>RAG Quality:</b> context precision, context recall, faithfulness, answer relevancy. Run automatically on 100+ Q&A test set on every PR.</div></div>
+    <div class="pillar-item"><div class="pi-icon">🎯</div><div class="pi-body"><b>Extraction Accuracy:</b> field-level F1 against human-labeled ground truth. Compare LLM-extracted vs actual contract values.</div></div>
+    <div class="pillar-item"><div class="pi-icon">🔄</div><div class="pi-body"><b>Regression Detection:</b> metric drops >5% → CI blocks merge → team reviews before proceeding.</div></div>
+  </div>
+  <div class="pillar" style="border-color:var(--purple);"><div class="p-header" style="color:var(--purple);">📦 Version Management (LangFuse)</div>
+    <div class="pillar-item"><div class="pi-icon">🏷️</div><div class="pi-body"><b>Prompt Versioning:</b> every change is versioned. LangFuse stores prompt + model + eval scores per version. Rollback = one click.</div></div>
+    <div class="pillar-item"><div class="pi-icon">🤖</div><div class="pi-body"><b>Model Versioning:</b> track which model (GPT-4o-2024-08-06 vs 2024-11-20) was used. Compare accuracy across versions.</div></div>
+    <div class="pillar-item"><div class="pi-icon">📝</div><div class="pi-body"><b>Pipeline Versioning:</b> parsing pipeline (Tier 2→3 vs Tier 2→3→4) is versioned. A/B test pipeline versions on same documents.</div></div>
+  </div>
+  <div class="pillar" style="border-color:var(--green);"><div class="p-header" style="color:var(--green);">🚦 Gradual Rollout (Unleash Feature Flags)</div>
+    <div class="pillar-item"><div class="pi-icon">📈</div><div class="pi-body"><b>Percentage Rollout:</b> 5% → 25% → 50% → 100%. Auto-rollback if error rate > baseline x1.3 or eval score drops >5%.</div></div>
+    <div class="pillar-item"><div class="pi-icon">🧪</div><div class="pi-body"><b>A/B Testing:</b> Group A: current pipeline. Group B: new pipeline. Measure extraction accuracy, cost, user feedback. Statistical significance check.</div></div>
+    <div class="pillar-item"><div class="pi-icon">🛑</div><div class="pi-body"><b>Kill Switch:</b> any feature flag immediately disabled. All traffic reverts to stable baseline.</div></div>
+  </div>
+  <div class="pillar" style="border-color:var(--amber);"><div class="p-header" style="color:var(--amber);">💰 Cost Control & Stability (LiteLLM + Circuit Breakers)</div>
+    <div class="pillar-item"><div class="pi-icon">💵</div><div class="pi-body"><b>LiteLLM Gateway:</b> unified proxy for all providers. Per-model cost tracking. Per-user rate limiting. Auto-fallback: GPT-4V rate-limited → try Claude Vision.</div></div>
+    <div class="pillar-item"><div class="pi-icon">🔌</div><div class="pi-body"><b>Circuit Breakers:</b> 3 failures → 60s open → fallback to next provider. Independent per-model circuits.</div></div>
+    <div class="pillar-item"><div class="pi-icon">📉</div><div class="pi-body"><b>Cost Budgets:</b> per-dept monthly budget. Alert at 80%, hard stop at 100%. Tiered routing: simple → cheap model, complex → expensive.</div></div>
+  </div>
+</div>
+
+<!-- ===== TAB 6: LOW-CODE ===== -->
+<div class="tab-panel" id="tab-lowcode">
+  <h2>Low-Code AI Application Delivery</h2>
+  <div class="desc"><strong>Two-layer approach.</strong> Visual workflow builder for analysts. Domain-specific DSL for engineers. Both operate within platform guardrails.</div>
+
+  <div class="grid2">
+    <div class="card" style="border-color:var(--accent);"><h4 style="color:var(--accent);">🧩 Layer 1: Visual Workflow Builder</h4><p><b>Technology:</b> Dify / LangFlow / Flowise</p><p><b>Audience:</b> Business analysts, domain experts</p><p><b>Use case:</b> "Build a Q&A bot for HR policy docs" — drag-and-drop: Loader → Chunker → Embedding → Vector Store → LLM → Output</p><p><b>Platform role:</b> Pre-built blocks, eval harness, and guardrails still apply to all deployed apps.</p></div>
+    <div class="card" style="border-color:var(--amber);"><h4 style="color:var(--amber);">🔧 Layer 2: Domain-Specific DSL</h4><p><b>Technology:</b> CEL (Common Expression Language) + YAML config</p><p><b>Audience:</b> Engineers, power users</p><p><b>Use case:</b> "For MSA contracts, extract payment terms from section 4.2, classify as Financial_Obligation, flag if Net > 60 days"</p><p><b>Platform role:</b> DSL engine + sandbox execution. Domain teams write auditable rules — not Python code.</p></div>
+  </div>
+
+  <h3>Example: CEL Rule for Contract Extraction</h3>
+  <pre class="code"><span class="cmt"># extraction_rules/payment_terms.yaml</span>
+<span class="str">name:</span> "extract_payment_terms"
+<span class="str">document_type:</span> "contract"
+<span class="str">section_pattern:</span> "(?i)(payment|compensation|fees)"
+
+<span class="str">fields:</span>
+  - <span class="str">name:</span> "payment_amount"
+    <span class="str">type:</span> "currency"
+    <span class="str">cel_rule:</span> |
+      context.sentence.contains_any(['$','USD','CNY']) &&
+      context.sentence.matches('\\d{1,3}(,\\d{3})*(\\.\\d{2})?')
+
+  - <span class="str">name:</span> "late_penalty_flag"
+    <span class="str">type:</span> "boolean"
+    <span class="str">cel_rule:</span> |
+      context.section.contains_any(['late fee','penalty','interest',
+                                    'liquidated damages'])</pre>
+</div>
+
+<!-- ===== TAB 7: TECH MATRIX ===== -->
+<div class="tab-panel" id="tab-tech">
+  <h2>Complete Technology Selection Matrix</h2>
+  <div class="desc"><strong>Every technology dimension, alternatives, choice, and reasoning.</strong> Designed to answer "why did you choose X over Y?"</div>
+
+  <table>
+    <tr><th>Dimension</th><th>Alternatives</th><th>Choice</th><th>Rationale</th></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Agent Framework</td><td>LangGraph · ReAct · CrewAI · AutoGen</td><td style="color:var(--accent);">LangGraph</td><td>Deterministic DAG for audit-required enterprise workflows. Subgraph pattern for multi-agent.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Batch Workflow</td><td>Prefect · Airflow · Temporal</td><td style="color:var(--accent);">Prefect</td><td>Pythonic, async-native, built-in retry. Better for AI workloads than Airflow.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Primary LLM</td><td>GPT-4o · Claude · DeepSeek-V3 · GLM-4</td><td style="color:var(--accent);">DeepSeek-V3 + GPT-4V</td><td>DeepSeek-V3: reasoning at low cost. GPT-4V: multimodal for complex docs. LiteLLM gateway.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">LLM Gateway</td><td>LiteLLM · Portkey · custom proxy</td><td style="color:var(--accent);">LiteLLM</td><td>OpenAI-compatible API, 100+ providers, cost tracking, rate limiting, fallback.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Embedding</td><td>BGE-M3 · text-embedding-3 · Cohere</td><td style="color:var(--green);">BGE-M3</td><td>Self-hosted, multilingual, domain fine-tunable. No per-call cost.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Vector DB</td><td>Milvus · pgvector · Qdrant · Pinecone</td><td style="color:var(--purple);">Milvus + pgvector</td><td>Milvus for scale (millions of chunks) + GPU. pgvector for cache and small collections.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Graph DB</td><td>Neo4j · PG CTE · Neptune</td><td style="color:var(--amber);">Neo4j</td><td>Document lineage, entity relationships, Cypher multi-hop traversal. Read-only graph cache.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Source of Truth</td><td>PostgreSQL · MongoDB · Neo4j-only</td><td style="color:var(--accent);">PostgreSQL</td><td>ACID for audit-critical data. JSONB for flexible metadata. pgvector for cache.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">RAG Ingestion</td><td>LlamaIndex · LangChain · Unstructured.io</td><td style="color:var(--purple);">LlamaIndex</td><td>SentenceWindowNodeParser for metadata-rich chunks. Declarative IngestionPipeline.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">RAG Retrieval</td><td>Framework default · Hand-built hybrid</td><td style="color:var(--amber);">Hand-Built Hybrid</td><td>Dense+sparse→RRF k=60→batch LLM re-rank. 5x faster than framework defaults.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Doc Parsing Tier 1</td><td>PaddleOCR · Tesseract · EasyOCR</td><td style="color:var(--rose);">PaddleOCR</td><td>Best Chinese OCR. Active maintenance. Open source.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Doc Parsing Tier 2</td><td>LlamaParse · Unstructured.io · Marker</td><td style="color:var(--amber);">LlamaParse</td><td>Seamless LlamaIndex integration. Table descriptions. Cloud + self-hosted.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Doc Parsing Tier 3</td><td>ColPali · LayoutLMv3 · Donut</td><td style="color:var(--accent);">ColPali</td><td>Vision-based — no OCR needed. Multi-vector per page. Paradigm shift in document RAG.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Doc Parsing Tier 4</td><td>GPT-4V · Claude Vision · Gemini</td><td style="color:var(--purple);">GPT-4V</td><td>Best vision reasoning. Table understanding. Used for most complex 5% of documents.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Prompt Engineering</td><td>CoT · Few-shot · DSPy · Templates</td><td style="color:var(--green);">CoT + DSPy</td><td>Chain-of-Thought for extraction/classification. DSPy for automatic prompt optimization.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Observability</td><td>LangFuse · LangSmith · OpenTelemetry</td><td style="color:var(--purple);">LangFuse + OTel</td><td>LLM-specific tracing. Standardized metrics export to Prometheus/Grafana.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">RAG Evaluation</td><td>RAGAS · DeepEval · TruLens</td><td style="color:var(--purple);">RAGAS</td><td>Standard RAG metrics. CI-integrated. Regression detection on >5% degradation.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Feature Flags</td><td>Unleash · LaunchDarkly · Flagsmith</td><td style="color:var(--green);">Unleash</td><td>Open source, self-hosted. Percentage rollout. Kill switch. A/B testing.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Resilience</td><td>Self-built · LangChain retry</td><td style="color:var(--amber);">Self-Built</td><td>Independent circuit breakers per model. Tenacity exponential backoff. Static fallback.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">AuthN/AuthZ</td><td>Okta · Keycloak · Auth0</td><td style="color:var(--accent);">Okta OAuth2 + RBAC</td><td>Enterprise standard. JWT at API layer. Document-level access control.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">API</td><td>FastAPI · Spring Boot · Flask</td><td style="color:var(--accent);">FastAPI</td><td>Python AI ecosystem. SSE streaming. Async-native. Auto OpenAPI docs.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">CI/CD</td><td>GitHub Actions · Jenkins · ArgoCD</td><td style="color:var(--accent);">GitHub Actions + ArgoCD</td><td>CI: lint→test→RAGAS eval→build. CD: GitOps via ArgoCD to K8s.</td></tr>
+    <tr><td style="color:var(--accent);font-weight:600;">Deployment</td><td>K8s · NPE · Docker Compose</td><td style="color:var(--accent);">K8s + Docker Compose</td><td>Prod: K8s with HPA. Dev: Docker Compose. Milvus on GPU nodes.</td></tr>
+  </table>
+</div>
+
+<footer>Document Intelligence AI Platform Architecture · Pure HTML/CSS — Zero Dependencies</footer>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

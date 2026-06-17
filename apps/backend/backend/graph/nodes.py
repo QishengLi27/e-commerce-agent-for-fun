@@ -58,30 +58,14 @@ def _is_weather_query(text: str) -> bool:
 
 
 def sanitize_input(state: AgentState) -> AgentState:
-    """Clean user input and check semantic cache (skips cache for weather queries)."""
+    """Clean user input (typo correction) and weather-cache guard."""
     raw = state.get("user_input", "")
     cleaned = clean_query(raw)
     state["user_input"] = cleaned
 
-    # Skip semantic cache for weather — embeddings of "weather in X" and "weather in Y"
-    # are too similar, causing false cache hits across different cities.
-    if _is_weather_query(cleaned):
-        state["cached"] = False
-        logger.info("[graph] Weather query detected, skipping semantic cache")
-        return state
-
-    # Check cache without intent — we don't know intent yet.
-    # Stale entries from misclassified runs are handled by cache TTL/intent
-    # metadata in agent.py; for the graph path we rely on prompt evolution
-    # and occasional cache clears.
-    cached = get_cached_response(cleaned)
-    if cached:
-        state["final_answer"] = cached
-        state["cached"] = True
-        logger.info("[graph] Cache hit for: %s", cleaned[:50])
-    else:
-        state["cached"] = False
-
+    # Weather queries are checked after intent classification so the intent can
+    # be used to invalidate stale cross-intent cache entries.
+    state["cached"] = False
     return state
 
 
@@ -91,7 +75,7 @@ def sanitize_input(state: AgentState) -> AgentState:
 def classify_intent(state: AgentState) -> AgentState:
     """
     Hybrid intent classification: keyword fast-path + LLM fallback.
-    Returns: order | list_orders | policy | weather | knowledge | unknown
+    Returns: order | list_orders | policy | weather | knowledge | product_qa | unknown
     """
     from backend.intent import classify_intent_hybrid
 
@@ -121,6 +105,16 @@ def classify_intent(state: AgentState) -> AgentState:
             result.get("source"),
             result.get("confidence"),
         )
+
+    # Check semantic cache AFTER intent is known so cross-intent stale entries
+    # (e.g. an old "knowledge" answer for a now-correctly-classified "product_qa"
+    # query) are skipped. Weather is always fetched fresh.
+    if not _is_weather_query(text):
+        cached = get_cached_response(text, intent=intent)
+        if cached:
+            state["final_answer"] = cached
+            state["cached"] = True
+            logger.info("[graph] Cache hit for: %s", text[:50])
 
     return state
 

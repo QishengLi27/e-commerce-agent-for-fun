@@ -77,8 +77,10 @@ def create_product_query_engine() -> RetrieverQueryEngine:
         similarity_top_k=DEFAULT_TOP_K,
     )
 
+    # Disable LlamaIndex's default LLM synthesis; we synthesize with LangChain.
     return RetrieverQueryEngine(
         retriever=retriever,
+        response_synthesizer=None,
         node_postprocessors=[
             MetadataReplacementPostProcessor(target_metadata_key="window"),
         ],
@@ -99,6 +101,10 @@ def create_filtered_query_engine(
 
     Returns:
         RetrieverQueryEngine with metadata filters pre-applied.
+
+    Note:
+        This query engine is configured without a response synthesizer because
+        answer synthesis is handled by the LangGraph/LangChain LLM downstream.
     """
     embed_model = _build_embed_model()
     vector_store = _build_vector_store()
@@ -139,9 +145,76 @@ def create_filtered_query_engine(
         filters=filters,
     )
 
+    # Disable LlamaIndex's default LLM synthesis; we synthesize with LangChain.
     return RetrieverQueryEngine(
         retriever=retriever,
+        response_synthesizer=None,
         node_postprocessors=[
             MetadataReplacementPostProcessor(target_metadata_key="window"),
         ],
     )
+
+
+def retrieve_product_chunks(
+    query: str,
+    product_names: list[str] | None = None,
+    brand: str | None = None,
+    category: str | None = None,
+    top_k: int = DEFAULT_TOP_K,
+) -> str:
+    """Retrieve relevant product description chunks as formatted text.
+
+    This is a LlamaIndex-LLM-free retrieval path: embeddings are computed via
+    the LangChain adapter, and the sentence-window postprocessor is applied
+    manually. The returned string is consumed by the LangChain LLM in
+    ``product_qa.py`` for answer synthesis.
+    """
+    embed_model = _build_embed_model()
+    vector_store = _build_vector_store()
+    index = VectorStoreIndex.from_vector_store(vector_store, embed_model=embed_model)
+
+    filters_list: list[MetadataFilter | MetadataFilters] = []
+    if product_names:
+        filters_list.append(
+            MetadataFilter(
+                key="product_name",
+                value=product_names,
+                operator=FilterOperator.IN,
+            )
+        )
+    if brand:
+        filters_list.append(
+            MetadataFilter(
+                key="brand",
+                value=brand,
+                operator=FilterOperator.EQ,
+            )
+        )
+    if category:
+        filters_list.append(
+            MetadataFilter(
+                key="category",
+                value=category,
+                operator=FilterOperator.EQ,
+            )
+        )
+    filters = MetadataFilters(filters=filters_list) if filters_list else None
+
+    retriever = VectorIndexRetriever(
+        index=index,
+        similarity_top_k=top_k,
+        filters=filters,
+    )
+    nodes = retriever.retrieve(query)
+
+    # Apply sentence-window expansion manually.
+    postprocessor = MetadataReplacementPostProcessor(target_metadata_key="window")
+    processed_nodes = postprocessor.postprocess_nodes(nodes, query_str=query)
+
+    parts: list[str] = []
+    for node in processed_nodes:
+        meta = node.metadata
+        product_name = meta.get("product_name", "Unknown")
+        parts.append(f"\n--- {product_name} ---\n{node.get_content()}")
+
+    return "\n".join(parts)

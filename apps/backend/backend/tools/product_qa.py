@@ -18,7 +18,7 @@ from langchain.tools import tool
 
 from backend.knowledge.models import ProductRef
 from backend.knowledge.neo4j_store import get_neo4j_store
-from backend.rag.query_engine import create_filtered_query_engine
+from backend.rag.query_engine import retrieve_product_chunks
 
 logger = logging.getLogger(__name__)
 
@@ -47,10 +47,40 @@ CROSS_PRODUCT_SIGNALS = {
     "difference between",
 }
 
-RECOMMENDATION_SIGNALS = {
-    "recommend",
-    "suggestion",
-    "suggest",
+# Pure recommendation requests (always route to recommendation handler)
+_RECOMMENDATION_SIGNALS = {"recommend", "suggestion", "suggest"}
+
+# Quality / suitability signals (e.g. "good laptop for work")
+_QUALITY_SIGNALS = {"good", "great", "perfect", "ideal", "suitable", "top", "popular"}
+
+# Feature words that indicate a spec/detail question even when quality words are present
+# (e.g. "Does this laptop have a good battery?" → spec, not recommendation)
+_FEATURE_WORDS = {
+    "battery",
+    "camera",
+    "screen",
+    "display",
+    "storage",
+    "memory",
+    "ram",
+    "processor",
+    "cpu",
+    "gpu",
+    "graphics",
+    "weight",
+    "size",
+    "dimension",
+    "color",
+    "port",
+    "ports",
+    "connectivity",
+    "wireless",
+    "bluetooth",
+    "wifi",
+    "magsafe",
+    "waterproof",
+    "durability",
+    "warranty",
 }
 
 
@@ -83,7 +113,12 @@ def product_qa_tool(query: str) -> str:
             return _answer_category_query(query, store)
 
         # ── Pattern 2: Recommendation queries ─────────────────────────────
-        if any(signal in lowered for signal in RECOMMENDATION_SIGNALS):
+        # Pure recommendation signals always route here. Quality signals (good/great/etc)
+        # route here only when the user is not asking about a specific feature.
+        has_recommendation = any(signal in lowered for signal in _RECOMMENDATION_SIGNALS)
+        has_quality = any(signal in lowered for signal in _QUALITY_SIGNALS)
+        has_feature = any(word in lowered for word in _FEATURE_WORDS)
+        if has_recommendation or (has_quality and not has_feature):
             return _answer_recommendation_query(query, store)
 
         # ── Pattern 3: Cross-product comparison ───────────────────────────
@@ -350,9 +385,7 @@ def _retrieve_product_chunks(query: str, product_names: list[str] | None = None)
         Formatted string of retrieved chunks, or empty string on failure.
     """
     try:
-        engine = create_filtered_query_engine(product_names=product_names)
-        response = engine.query(query)
-        return str(response) if response else ""
+        return retrieve_product_chunks(query, product_names=product_names)
     except Exception as e:
         logger.warning("[product_qa] RAG retrieval failed: %s", e)
         return ""
