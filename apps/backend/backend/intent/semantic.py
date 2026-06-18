@@ -22,6 +22,7 @@ from backend.intent.base import (
     WEATHER_SIGNALS,
     BaseIntentClassifier,
 )
+from backend.prompts import get_prompt as _get_prompt
 from backend.resilience import make_retry_decorator
 
 logger = logging.getLogger(__name__)
@@ -57,28 +58,6 @@ def _search_products_semantic(query: str, k: int = 5) -> list[dict]:
 
 # ── LLM Classification with Product Context ───────────────────────────────────
 
-_SEMANTIC_PROMPT = """You are an intent classifier for an e-commerce support chatbot.
-
-The user is asking about products that may match these catalog entries:
-{product_context}
-
-Classify the user's intent:
-- order: checking a specific order by ID
-- list_orders: seeing all orders
-- policy: returns, refunds, shipping, warranty, cancellation
-- weather: weather in a city
-- knowledge: product information, categories, pricing
-- product_qa: user asks about a product's features, specs, comparisons, or category
-- unknown: greeting, small talk, or anything else
-
-Respond with ONLY a JSON object:
-{{"intent": "<category>", "confidence": "high|medium|low",
-  "matched_products": ["<product_name>", ...],
-  "reason": "one-line reason"}}
-
-User: {query}
-"""
-
 
 def _build_product_context(products: list[dict]) -> str:
     if not products:
@@ -97,8 +76,8 @@ def _build_product_context(products: list[dict]) -> str:
 @make_retry_decorator(max_attempts=2)
 def _llm_classify_semantic(query: str, products: list[dict]) -> dict:
     product_context = _build_product_context(products)
-    prompt = _SEMANTIC_PROMPT.format(query=query, product_context=product_context)
-    response = llm.invoke(prompt)
+    output = _get_prompt("semantic").render(query=query, product_context=product_context)
+    response = llm.invoke(output.text)
     raw = response.content.strip()
     if raw.startswith("```"):
         raw = raw.strip("`").strip()

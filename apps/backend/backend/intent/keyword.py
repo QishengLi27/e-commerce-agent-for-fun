@@ -21,6 +21,7 @@ from backend.intent.base import (
     BaseIntentClassifier,
     extract_entities,
 )
+from backend.prompts import get_prompt as _get_prompt
 from backend.resilience import make_retry_decorator
 
 logger = logging.getLogger(__name__)
@@ -218,28 +219,11 @@ def _classify_with_entities(query: str, entities: dict) -> dict | None:
 
 # ── LLM Fallback ──────────────────────────────────────────────────────────────
 
-_INTENT_PROMPT = """You are an intent classifier for an e-commerce support chatbot.
-Classify the user's query into exactly one of these categories:
-
-- order: user asks about a specific order by ID (e.g., "where is order 1001?")
-- list_orders: user wants to see all their orders (e.g., "show my orders")
-- policy: user asks about store policies — returns, refunds, shipping, warranty
-- weather: user asks about weather in a city
-- knowledge: user asks what products/categories exist or for basic product info (name, price, category)
-- product_qa: user asks about a product's features, specs, comparisons, recommendations, or what product to choose
-- unknown: greeting, small talk, or anything else
-
-{entity_context}
-Respond with ONLY a JSON object (no markdown, no explanation):
-{{"intent": "<category>", "confidence": "high|medium|low", "reason": "one-line reason"}}
-
-User: {query}
-"""
-
 
 @make_retry_decorator(max_attempts=2)
 def _llm_classify_raw(query: str, entity_context: str) -> dict:
-    prompt = _INTENT_PROMPT.format(query=query, entity_context=entity_context)
+    output = _get_prompt("intent").render(query=query, entity_context=entity_context)
+    prompt = output.text
     response = llm.invoke(prompt)
     raw = response.content.strip()
     if raw.startswith("```"):

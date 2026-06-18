@@ -1,0 +1,16 @@
+---
+{
+  "name": "summarize",
+  "description": "Summarize old conversation messages for context compression",
+  "version": 1,
+  "variables": ["transcript"],
+  "model": "glm-4-flash",
+  "temperature": 0.0
+}
+---
+Summarize the following conversation in 2-3 sentences.
+Preserve key facts (order IDs, policy details, product names) but remove fluff.
+
+{{ transcript }}
+
+Summary:

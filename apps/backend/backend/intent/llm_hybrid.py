@@ -24,37 +24,13 @@ from backend.intent.base import (
     WEATHER_SIGNALS,
     BaseIntentClassifier,
 )
+from backend.prompts import get_prompt as _get_prompt
 from backend.resilience import make_retry_decorator
 
 logger = logging.getLogger(__name__)
 
 
 # ── LLM Prompt for Entity + Intent Extraction ─────────────────────────────────
-
-_LLM_EXTRACT_PROMPT = """You are an intent and entity extractor for an e-commerce support chatbot.
-
-Step 1 — Classify the user's intent into exactly one category:
-- order: tracking or checking a specific order by ID
-- list_orders: seeing all orders
-- policy: returns, refunds, shipping, warranty, cancellation
-- weather: weather in a city
-- knowledge: product information, categories, pricing
-- product_qa: user asks about a product's features, specs, comparisons, or category
-- unknown: greeting, small talk, or anything else
-
-Step 2 — Extract mentioned entities:
-- Products: any product names the user mentions
-- Categories: any product categories the user mentions
-- Order IDs: any order ID numbers (format: 10XX)
-
-Respond with ONLY a JSON object (no markdown, no explanation):
-{{"intent": "<category>", "confidence": "high|medium|low",
-  "entities": {{"products": [...], "categories": [...], "order_ids": [...]}},
-  "reason": "one-line reason"}}
-
-User: {query}
-"""
-
 
 # ── KG Validation ─────────────────────────────────────────────────────────────
 
@@ -116,8 +92,8 @@ def _validate_entities(llm_entities: dict) -> dict:
 
 @make_retry_decorator(max_attempts=2)
 def _llm_extract_raw(query: str) -> dict:
-    prompt = _LLM_EXTRACT_PROMPT.format(query=query)
-    response = llm.invoke(prompt)
+    output = _get_prompt("llm_extract").render(query=query)
+    response = llm.invoke(output.text)
     raw = response.content.strip()
     if raw.startswith("```"):
         raw = raw.strip("`").strip()

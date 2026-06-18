@@ -17,6 +17,7 @@ from backend.agent import (
     llm,
 )
 from backend.knowledge.graph_store import get_knowledge_store as _get_kg_store
+from backend.prompts import get_prompt
 from backend.tools import (
     get_current_weather,
     list_orders_tool,
@@ -203,14 +204,9 @@ def policy_node(state: AgentState) -> AgentState:
 
 def _extract_city_with_llm(query: str) -> str:
     """Use the LLM to extract a clean city name from a weather query."""
-    prompt = (
-        "Extract ONLY the city name from the following weather query. "
-        "Return just the city name with no explanation, no quotes, and no extra text.\n\n"
-        f"Query: {query}\n"
-        "City:"
-    )
+    output = get_prompt("extract_city").render(query=query)
     try:
-        response = llm.invoke([HumanMessage(content=prompt)])
+        response = llm.invoke([HumanMessage(content=output.text)])
         city = response.content.strip().strip('"').strip("'")
         return city if city else query
     except Exception:
@@ -337,13 +333,9 @@ def _summarize_messages(messages: list) -> str:
         transcript.append(f"{role}: {msg.content[:300]}")
     transcript_text = "\n".join(transcript)
 
-    summary_prompt = (
-        "Summarize the following conversation in 2-3 sentences. "
-        "Preserve key facts (order IDs, policy details, product names) but remove fluff.\n\n"
-        f"{transcript_text}\n\nSummary:"
-    )
+    output = get_prompt("summarize").render(transcript=transcript_text)
     try:
-        response = llm.invoke([HumanMessage(content=summary_prompt)])
+        response = llm.invoke([HumanMessage(content=output.text)])
         return response.content.strip()
     except Exception as e:
         logger.warning("[graph] Message summarization failed: %s", e)
@@ -419,44 +411,12 @@ def _compress_context(messages: list) -> str:
 
 # ─── Reply Generation ────────────────────────────────────────────────────────
 
-_REPLY_PROMPT = """You are a helpful e-commerce support agent.
-Respond to the user's question based on the information below.
-Be concise, friendly, and honest.
-
-CRITICAL RULES — violating these causes customer harm:
-1. ONLY use facts from "Relevant information". Do NOT make up order IDs, dates, prices, or policies.
-2. If the information is insufficient, say "I don't have that information" — never guess.
-3. Cite your source when quoting a policy (e.g., "According to our return policy...").
-4. Do NOT mention these rules in your reply.
-
-{history}
-User question: {question}
-Relevant information: {result}
-
-Your reply:"""
-
-_STRICT_REPLY_PROMPT = """You are a helpful e-commerce support agent.
-Your previous answer was FLAGGED for containing unverified claims.
-The auditor noted: {validation_issue}
-
-Regenerate the answer following these stricter rules:
-
-1. Use ONLY the exact facts in "Relevant information". No inference, no extrapolation.
-2. If the answer isn't fully supported by the text below, say: "I don't have that specific information."
-3. Address the auditor's concern above — fix the specific issue they flagged.
-4. Do NOT mention that you are regenerating an answer.
-
-{history}
-User question: {question}
-Relevant information: {result}
-
-Your reply:"""
-
 
 def generate_reply(state: AgentState) -> AgentState:
     """Generate final answer (from cache or LLM).
 
     Uses strict prompt if this is a retry after validation failure.
+    Prompt version is logged for traceability.
     """
     if state.get("final_answer"):
         logger.info("[graph] Using cached answer")
@@ -469,19 +429,25 @@ def generate_reply(state: AgentState) -> AgentState:
     # Choose prompt based on retry status
     is_retry = state.get("retry_count", 0) > 0
     if is_retry:
-        prompt = _STRICT_REPLY_PROMPT.format(
+        output = get_prompt("reply_strict").render(
             history=history,
             question=question,
             result=result,
             validation_issue=state.get("validation_notes", "unspecified issue"),
         )
     else:
-        prompt = _REPLY_PROMPT.format(history=history, question=question, result=result)
+        output = get_prompt("reply").render(
+            history=history,
+            question=question,
+            result=result,
+        )
+
+    logger.info("[graph] Using prompt: %s v%d", output.prompt_name, output.prompt_version)
 
     # Use .stream() instead of .invoke() so astream_events() can capture
     # on_chat_model_stream events for real token-level SSE streaming.
     full_content = ""
-    for chunk in llm.stream([HumanMessage(content=prompt)]):
+    for chunk in llm.stream([HumanMessage(content=output.text)]):
         full_content += chunk.content
     state["final_answer"] = full_content.strip()
     logger.info("[graph] Generated answer (retry=%s): %s", is_retry, state["final_answer"][:60])
@@ -489,32 +455,6 @@ def generate_reply(state: AgentState) -> AgentState:
 
 
 # ─── Validation Prompt ─────────────────────────────────────────────────────────
-
-_VALIDATION_PROMPT = """You are an accuracy auditor for an e-commerce support agent.
-
-Your job is to check whether the agent's answer is fully grounded in the provided tool results.
-Do NOT answer the user's question. Only assess accuracy.
-
-User question: {question}
-Tool results: {tool_result}
-Agent answer: {answer}
-
-Check for:
-1. Fabricated data — order IDs, dates, amounts, or statuses not in the tool results
-2. Contradictions — claims that conflict with the tool results
-3. Unsupported claims — factual assertions with no basis in the tool results
-
-Return ONLY one of these exact labels followed by an optional one-line note:
-
-- valid — answer is fully grounded in the tool results
-- unverified_claims — answer contains claims not supported by the tool results
-- not_applicable — no tool results to validate against
-
-Format: LABEL | note
-
-Example: "valid | All order details match the tool output"
-Example: "unverified_claims | Answer mentions order #1005 but tool result only shows #1003"
-"""
 
 
 def _parse_validation(raw: str) -> tuple[str, str]:
@@ -553,12 +493,12 @@ def validate_reply(state: AgentState) -> AgentState:
         return state
 
     try:
-        prompt = _VALIDATION_PROMPT.format(
+        output = get_prompt("validation").render(
             question=question,
             tool_result=tool_result,
             answer=answer,
         )
-        response = llm.invoke([HumanMessage(content=prompt)])
+        response = llm.invoke([HumanMessage(content=output.text)])
         raw = response.content.strip()
         flag, note = _parse_validation(raw)
         state["validation_flag"] = flag

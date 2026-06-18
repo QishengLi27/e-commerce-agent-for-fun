@@ -1,0 +1,19 @@
+---
+{
+  "name": "rerank",
+  "description": "Batch LLM re-rank: score document relevance 1-10",
+  "version": 1,
+  "variables": ["query", "documents"],
+  "model": "glm-4-flash",
+  "temperature": 0.0
+}
+---
+Rate how relevant each document is to answering the user's question.
+For each document, respond with its number and a score from 1 to 10
+(10 = perfectly relevant).
+
+User question: {{ query }}
+
+{{ documents }}
+
+Scores (format: [N] score):

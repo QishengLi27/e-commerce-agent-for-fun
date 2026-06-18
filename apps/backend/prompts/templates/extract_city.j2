@@ -1,0 +1,15 @@
+---
+{
+  "name": "extract_city",
+  "description": "Extract a clean city name from a weather query",
+  "version": 1,
+  "variables": ["query"],
+  "model": "glm-4-flash",
+  "temperature": 0.0
+}
+---
+Extract ONLY the city name from the following weather query.
+Return just the city name with no explanation, no quotes, and no extra text.
+
+Query: {{ query }}
+City:

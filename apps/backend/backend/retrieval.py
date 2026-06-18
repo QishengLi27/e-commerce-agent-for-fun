@@ -194,14 +194,11 @@ class HybridPolicyRetriever:
         for i, (doc, _) in enumerate(docs, start=1):
             doc_blocks.append(f"[{i}] {doc.page_content[:400]}")
 
-        prompt = (
-            "Rate how relevant each document is to answering the user's question. "
-            "For each document, respond with its number and a score from 1 to 10 "
-            "(10 = perfectly relevant).\n\n"
-            f"User question: {query}\n\n"
-            + "\n\n".join(doc_blocks)
-            + "\n\nScores (format: [N] score):"
-        )
+        from backend.prompts import get_prompt as _get_prompt
+
+        docs_text = "\n\n".join(doc_blocks)
+        output = _get_prompt("rerank").render(query=query, documents=docs_text)
+        prompt = output.text
 
         try:
             raw = self.llm_circuit.call(
